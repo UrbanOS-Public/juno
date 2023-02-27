@@ -58,6 +58,6 @@ jobs:
       - name: Perform Teardown
         id: performteardown
         shell: bash
-        run: /
+        run: |
           cd cdktf.out/stacks/juno
           cdktf destroy --auto-approve
