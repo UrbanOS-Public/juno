@@ -1,0 +1,27 @@
+name: Deploy UrbanOS
+
+on:
+  workflow_dispatch:
+    inputs:
+      entered_kickoff_password:
+        description: "Password to start UrbanOS Deployment"
+        required: true
+
+jobs:
+  verify_password:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify Password
+        id: verifypassword
+        shell: bash
+        run: |
+          echo "Entered: $ENTERED_KICKOFF_PASSWORD"
+          echo "Correct password: $KICKOFF_PASSWORD"
+          if [ "$KICKOFF_PASSWORD" == "$ENTERED_KICKOFF_PASSWORD" ]; then
+            echo "Password entered correctly"
+          else
+            echo "Incorrect password entered"
+          fi
+        env:
+          KICKOFF_PASSWORD: ${{secrets.KICKOFF_PASSWORD}}
+          ENTERED_KICKOFF_PASSWORD: ${{github.event.inputs.entered_kickoff_password}}
