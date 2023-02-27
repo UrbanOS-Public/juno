@@ -44,6 +44,7 @@ jobs:
           cdktfVersion: 0.15.5
           stackName: juno
           mode: auto-approve-apply
+          commentOnPr: false
         env:
           JUNO_AZURE_SUB_ID: ${{secrets.JUNO_AZURE_SUB_ID}}
           JUNO_DEMO_AZURE_APP_ID: ${{secrets.JUNO_DEMO_AZURE_APP_ID}}
