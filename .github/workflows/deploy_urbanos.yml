@@ -10,6 +10,7 @@ on:
 jobs:
   verify_password:
     runs-on: ubuntu-latest
+    environment: Actions
     steps:
       - name: Verify Password
         id: verifypassword
