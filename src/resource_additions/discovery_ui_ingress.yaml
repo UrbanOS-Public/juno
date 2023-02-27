@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: discovery-ui-custom-ingress
+  namespace: urbanos
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    # limit incoming requests to 3 a second
+    # https://www.nginx.com/blog/rate-limiting-nginx/
+    # https://serverfault.com/a/817165
+    # nginx.ingress.kubernetes.io/server-snippet: |
+    #   limit_req_zone global zone=requests:1k rate=3/s;
+    #   need a different way to rate limit :/
+    #   " controller throws and says "limit_req_zone" directive is not allowed here"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - discovery.urbanos-demo.com
+      secretName: tls-secret
+  rules:
+    - host: discovery.urbanos-demo.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: discovery-ui
+                port:
+                  number: 8080

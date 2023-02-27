@@ -1,0 +1,367 @@
+global:
+  redis:
+    host: redis-master
+    port: 6379
+    passwordSecret: urban-os-redis-password
+    sslEnabled: false
+  kafka:
+    brokers: pipeline-kafka-bootstrap:9092
+  ingress:
+    dnsZone: "urbanos-demo.com"
+    rootDnsZone: "urbanos-demo.com"
+  buckets:
+    hostedFileBucket: "hosted-dataset-files"
+    hiveStorageBucket: "presto-hive-storage"
+  presto:
+    url: http://urban-os-trino:8080
+  auth:
+    auth0_domain: urbanos-demo.us.auth0.com
+    jwt_issuer: "https://urbanos-demo.us.auth0.com/" #end "/"" required for jwks_endpoint to be reached
+    raptor_url: http://raptor/api
+    auth0_management_client_id: jSEXPEDqWSmEs2UGRTvL2cyXKk4BAjtD
+  vault:
+    endpoint: "urban-os-vault:8200"
+  objectStore:
+    host: minio
+    port: 80
+    hiveStoragePath: hive-s3
+    accessKey: "secret-injected-during-deploy"
+    accessSecret: "secret-injected-during-deploy"
+  require_api_key: false
+  subdomains:
+    andi: "andi"
+    share: "sharedata"
+    discoveryApi: "data"
+    discoveryUi: "discovery"
+    raptor: "raptor"
+
+secrets:
+  minio:
+    base64UserAccessKey: "inject-during-deployment"
+    base64UserSecretKey: "inject-during-deployment"
+    rootUserName: "inject-during-deployment"
+    rootPassword: "inject-during-deployment"
+
+# todo: pin all images corresponding to chart 1.13.31
+andi:
+  enabled: false
+  image:
+    tag: development
+  ingress:
+    tls: false
+    enabled: true
+  postgres:
+    host: ""
+    port: "5432"
+    dbname: "andi"
+    user: "padmin"
+    password: "secret-injected-during-deploy"
+    verifySNI: false
+  auth:
+    auth0_client_id: "S3H3cToHVddG7Q7zEKK1nJbzrAy9GqG0"
+    auth0_client_secret: "secret-injected-during-deploy"
+  aws:
+    accessKeyId: ""
+    accessKeySecret: ""
+    s3HostName: "minio.minio"
+    s3Port: 9000
+  s3:
+    hostedFileBucket: "andi-public-sample-datasets"
+    hostedFileRegion: "us-west-2"
+  footer:
+    rightLinks: '[{"linkText":"Powered by UrbanOS", "url":"https://github.com/UrbanOS-Public"}]'
+  secureCookie: "false"
+
+discovery-api:
+  enabled: false
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 500m
+    requests:
+      memory: 512Mi
+      cpu: 500m
+  image:
+    tag: development
+    pullPolicy: Always
+  ingress:
+    enabled: true
+  secrets:
+    discoveryApiPresignKey: "secret-injected-during-deploy"
+    guardianSecretKey: "secret-injected-during-deploy"
+  postgres:
+    host: ""
+    port: "5432"
+    dbname: "discovery"
+    user: "padmin"
+    password: "secret-injected-during-deploy"
+    verifySNI: false
+  auth:
+    jwks_endpoint: https://urbanos-demo.us.auth0.com/.well-known/jwks.json
+    user_info_endpoint: https://urbanos-demo.us.auth0.com/userinfo
+    client_id: "3o2V7xHvmV2nQjp1HapX68DzWvxVQdJ2"
+    redirect_base_url: "http://localhost"
+  elasticsearch:
+    host: elasticsearch-master:9200
+    tls: false
+  aws:
+    s3HostName: "minio.minio"
+    s3Port: 9000
+
+discovery-streams:
+  enabled: false
+  auth:
+    raptor_url: "http://raptor/api"
+  resources:
+    requests:
+      cpu: 500m
+      memory: 500M
+    limits:
+      cpu: 500m
+      memory: 500M
+  image:
+    tag: development
+  ingress:
+    enabled: true
+  kafka:
+    dataTopicPrefix: "validated"
+
+discovery-ui:
+  enabled: true
+  image:
+    tag: development
+  ingress:
+    enabled: false
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 400m
+    requests:
+      memory: 512Mi
+      cpu: 400m
+  env:
+    disc_api_url: "https://data.urbanos-demo.com"
+    disc_streams_url: "ws://streams.urbanos-demo.com"
+    disc_ui_url: "http://discovery.urbanos-demo.com"
+    streets_tile_layer_url: ""
+    mapbox_access_token: ""
+    auth0_domain: "urbanos-demo.us.auth0.com"
+    auth0_client_id: "3o2V7xHvmV2nQjp1HapX68DzWvxVQdJ2"
+    auth0_audience: "discovery_api"
+    additional_csp_hosts: "*.urbanos-demo.com"
+    footer_right_links: '[{"linkText":"Powered by UrbanOS", "url":"https://github.com/UrbanOS-Public"}]'
+    regenerate_api_key_ff: true
+
+elasticsearch:
+  enabled: false
+  replicas: 1
+  # securityContext:
+  # oc get project default -o yaml
+  # get this number from the command upon deploy?
+  # runAsUser: 1000670000
+  # podSecurityContext:
+  # fsGroup: 1000670000
+  # runAsUser: 1000670000
+  sysctlInitContainer:
+    enabled: false
+  resources:
+    requests:
+      cpu: 500m
+      memory: 2Gi
+    limits:
+      cpu: 500m
+      memory: 2Gi
+
+forklift:
+  enabled: false
+  overwrite_mode: true
+  resources:
+    requests:
+      cpu: 500m
+      memory: 500M
+    limits:
+      cpu: 500m
+      memory: 500M
+  image:
+    tag: development
+  kafka:
+    dataTopicPrefix: "validated"
+  aws:
+    s3HostName: minio.dev.svc.cluster.local
+    s3Port: 80
+
+kafka:
+  enabled: false
+  strimzi-kafka-operator:
+    enabled: false
+  kafka:
+    enabled: false
+    version: 3.1.2
+    defaultReplicas: 1
+    resources:
+      requests:
+        cpu: 500m
+        memory: 5000M
+      limits:
+        cpu: 500m
+        memory: 5000M
+  zookeeper:
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 200m
+        memory: 512Mi
+
+kubernetes-data-platform:
+  enabled: false
+monitoring:
+  enabled: false
+
+minio-operator:
+  enabled: false
+
+minio-tenant:
+  enabled: false
+  tenant:
+    log:
+      db:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: managed-premium
+    prometheus:
+      storageClassName: managed-premium
+    pools:
+      - affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                    - key: v1.min.io/tenant
+                      operator: In
+                      values:
+                        - minio1
+                    - key: v1.min.io/pool
+                      operator: In
+                      values:
+                        - pool-0
+                topologyKey: kubernetes.io/hostname
+        name: pool-0
+        servers: 1
+        storageClassName: managed-premium
+        volumesPerServer: 4
+        resources:
+          limits:
+            memory: 2Gi
+            cpu: 500m
+          requests:
+            memory: 2Gi
+            cpu: 500m
+    users:
+      - name: demo-user-0
+
+persistence:
+  enabled: false
+
+  metastore:
+    resources:
+      limits:
+        memory: 2Gi
+        cpu: 500m
+      requests:
+        memory: 2Gi
+        cpu: 500m
+    postgres:
+      user: padmin
+      host: ""
+      port: 5432
+      name: trino_metastore
+
+  trino:
+    image:
+      tag: 389
+    server:
+      log:
+        trino:
+          level: INFO
+    serviceAccount:
+      create: true
+      name: trino
+
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+
+    coordinator:
+      resources:
+        limits:
+          memory: 3Gi
+          cpu: 800m
+        requests:
+          memory: 3Gi
+          cpu: 800m
+
+    worker:
+      resources:
+        limits:
+          memory: 2Gi
+          cpu: 800m
+        requests:
+          memory: 2Gi
+          cpu: 800m
+
+raptor:
+  enabled: false
+  resources:
+    requests:
+      cpu: 500m
+      memory: 500M
+    limits:
+      cpu: 500m
+      memory: 500M
+  auth:
+    auth0_client_id: PuL20cfxgzSu6jpMRQAT2mZ2pwhfFzH8
+    auth0_client_secret: "secret-injected-during-deploy"
+  image:
+    tag: development
+
+reaper:
+  enabled: false
+  resources:
+    limits:
+      memory: 8Gi
+      cpu: 300m
+      ephemeral-storage: 15G
+    requests:
+      memory: 8Gi
+      cpu: 300m
+      ephemeral-storage: 15G
+  image:
+    tag: development
+  outputTopicPrefix: "raw"
+  aws:
+    accessKeyId: "example"
+    accessKeySecret: "example"
+
+valkyrie:
+  enabled: false
+  image:
+    tag: development
+  kafka:
+    inputTopicPrefix: "transformed"
+    outputTopicPrefix: "validated"
+
+alchemist:
+  enabled: false
+  image:
+    tag: development
+  kafka:
+    inputTopicPrefix: "raw"
+    outputTopicPrefix: "transformed"
+
+vault:
+  enabled: false
+
+external-services:
+  enabled: false

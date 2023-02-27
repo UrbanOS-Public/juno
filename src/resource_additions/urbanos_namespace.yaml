@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: urbanos
+    # creating this namespace with a resource creation, instead of automatically
+    #   creating it upon helm install, due to needing this disable-validation
+    #   label
+    cert-manager.io/disable-validation: "true"
+    name: urbanos
+  name: urbanos
+  resourceVersion: "9564"
+spec:
+  finalizers:
+    - kubernetes
