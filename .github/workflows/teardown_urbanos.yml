@@ -60,4 +60,4 @@ jobs:
         shell: bash
         run: |
           cd cdktf.out/stacks/juno
-          cdktf destroy --auto-approve
+          cdktf destroy juno --auto-approve
