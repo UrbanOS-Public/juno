@@ -1,14 +1,14 @@
-name: Deploy UrbanOS
+name: Teardown UrbanOS
 
 on:
   workflow_dispatch:
     inputs:
       entered_kickoff_password:
-        description: "Password to start UrbanOS Deployment"
+        description: "Password to start UrbanOS Teardown"
         required: true
 
 jobs:
-  Deploy_UrbanOS:
+  Teardown_UrbanOS:
     runs-on: ubuntu-latest
     environment: Actions
     steps:
@@ -37,13 +37,13 @@ jobs:
       - name: Generate module and provider bindings
         run: npx cdktf-cli get
 
-      - name: Run Terraform CDK and Deploy UrbanOS
+      - name: Prepare Teardown with Terraform CDK
         uses: hashicorp/terraform-cdk-action@v0.1.10
         with:
           terraformVersion: 1.3.7
           cdktfVersion: 0.15.5
           stackName: juno
-          mode: auto-approve-apply
+          mode: synth-only
           commentOnPr: false
         env:
           JUNO_AZURE_SUB_ID: ${{secrets.JUNO_AZURE_SUB_ID}}
@@ -54,3 +54,10 @@ jobs:
           JUNO_DEMO_TF_BACKEND_KEY: ${{secrets.JUNO_DEMO_TF_BACKEND_KEY}}
           JUNO_DOMAIN_NO_SUFFIX: ${{secrets.JUNO_DOMAIN_NO_SUFFIX}}
           JUNO_DOMAIN_WITH_SUFFIX: ${{secrets.JUNO_DOMAIN_WITH_SUFFIX}}
+
+      - name: Perform Teardown
+        id: performteardown
+        shell: bash
+        run: /
+          cd cdktf.out/stacks/juno
+          cdktf destroy --auto-approve
