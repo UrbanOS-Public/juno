@@ -16,13 +16,31 @@ jobs:
         id: verifypassword
         shell: bash
         run: |
-          echo "Entered: $ENTERED_KICKOFF_PASSWORD"
-          echo "Correct password: $KICKOFF_PASSWORD"
           if [ "$KICKOFF_PASSWORD" == "$ENTERED_KICKOFF_PASSWORD" ]; then
             echo "Password entered correctly"
           else
             echo "Incorrect password entered"
+            exit 1
           fi
         env:
           KICKOFF_PASSWORD: ${{secrets.KICKOFF_PASSWORD}}
           ENTERED_KICKOFF_PASSWORD: ${{github.event.inputs.entered_kickoff_password}}
+
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.19.0
+
+      - run: npm ci
+
+      - name: Generate module and provider bindings
+        run: npx cdktf-cli get
+
+      - name: Run Terraform CDK
+        uses: hashicorp/terraform-cdk-action@v0.1.10
+        with:
+          terraformVersion: 1.3.7
+          cdktfVersion: 0.15.5
+          stackName: juno
+          mode: auto-approve-apply
