@@ -50,27 +50,27 @@ jobs:
           commentOnPr: false
         env:
           # make sure these are added to "deploy_urbanos" as well
+          JUNO_DEMO_MODE_ENABLED: ${{vars.JUNO_DEMO_MODE_ENABLED}}
+          JUNO_RESOURCE_PREFIX: ${{vars.JUNO_RESOURCE_PREFIX}}
           JUNO_AZURE_SUB_ID: ${{secrets.JUNO_AZURE_SUB_ID}}
           JUNO_DEMO_AZURE_APP_ID: ${{secrets.JUNO_DEMO_AZURE_APP_ID}}
           JUNO_DEMO_AZURE_PASSWORD: ${{secrets.JUNO_DEMO_AZURE_PASSWORD}}
           JUNO_DEMO_AZURE_TENANT: ${{secrets.JUNO_DEMO_AZURE_TENANT}}
-          JUNO_DEMO_MODE_ENABLED: ${{secrets.JUNO_DEMO_MODE_ENABLED}}
           JUNO_DEMO_TF_BACKEND_KEY: ${{secrets.JUNO_DEMO_TF_BACKEND_KEY}}
           JUNO_DOMAIN_NO_SUFFIX: ${{secrets.JUNO_DOMAIN_NO_SUFFIX}}
           JUNO_DOMAIN_WITH_SUFFIX: ${{secrets.JUNO_DOMAIN_WITH_SUFFIX}}
-          JUNO_RESOURCE_PREFIX: ${{secrets.JUNO_RESOURCE_PREFIX}}
 
       - name: Perform Teardown
         id: performteardown
         shell: bash
         run: cdktf destroy --auto-approve
         env:
+          JUNO_DEMO_MODE_ENABLED: ${{vars.JUNO_DEMO_MODE_ENABLED}}
+          JUNO_RESOURCE_PREFIX: ${{vars.JUNO_RESOURCE_PREFIX}}
           JUNO_AZURE_SUB_ID: ${{secrets.JUNO_AZURE_SUB_ID}}
           JUNO_DEMO_AZURE_APP_ID: ${{secrets.JUNO_DEMO_AZURE_APP_ID}}
           JUNO_DEMO_AZURE_PASSWORD: ${{secrets.JUNO_DEMO_AZURE_PASSWORD}}
           JUNO_DEMO_AZURE_TENANT: ${{secrets.JUNO_DEMO_AZURE_TENANT}}
-          JUNO_DEMO_MODE_ENABLED: ${{secrets.JUNO_DEMO_MODE_ENABLED}}
           JUNO_DEMO_TF_BACKEND_KEY: ${{secrets.JUNO_DEMO_TF_BACKEND_KEY}}
           JUNO_DOMAIN_NO_SUFFIX: ${{secrets.JUNO_DOMAIN_NO_SUFFIX}}
           JUNO_DOMAIN_WITH_SUFFIX: ${{secrets.JUNO_DOMAIN_WITH_SUFFIX}}
-          JUNO_RESOURCE_PREFIX: ${{secrets.JUNO_RESOURCE_PREFIX}}
