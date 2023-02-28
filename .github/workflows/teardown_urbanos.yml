@@ -60,4 +60,4 @@ jobs:
         shell: bash
         run: |
           cd cdktf.out/stacks/juno
-          cdktf destroy juno --auto-approve
+          terraform destroy --auto-approve
