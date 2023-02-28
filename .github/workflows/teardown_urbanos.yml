@@ -37,6 +37,9 @@ jobs:
       - name: Generate module and provider bindings
         run: npx cdktf-cli get
 
+      # https://github.com/hashicorp/terraform-cdk-action/pull/30
+      # Just used to put proper versions of tf + cdktf on the machine
+      #     until destroy is a mode option
       - name: Prepare Teardown with Terraform CDK
         uses: hashicorp/terraform-cdk-action@v0.1.10
         with:
@@ -59,3 +62,12 @@ jobs:
         id: performteardown
         shell: bash
         run: cdktf destroy --auto-approve
+        env:
+          JUNO_AZURE_SUB_ID: ${{secrets.JUNO_AZURE_SUB_ID}}
+          JUNO_DEMO_AZURE_APP_ID: ${{secrets.JUNO_DEMO_AZURE_APP_ID}}
+          JUNO_DEMO_AZURE_PASSWORD: ${{secrets.JUNO_DEMO_AZURE_PASSWORD}}
+          JUNO_DEMO_AZURE_TENANT: ${{secrets.JUNO_DEMO_AZURE_TENANT}}
+          JUNO_DEMO_MODE_ENABLED: ${{secrets.JUNO_DEMO_MODE_ENABLED}}
+          JUNO_DEMO_TF_BACKEND_KEY: ${{secrets.JUNO_DEMO_TF_BACKEND_KEY}}
+          JUNO_DOMAIN_NO_SUFFIX: ${{secrets.JUNO_DOMAIN_NO_SUFFIX}}
+          JUNO_DOMAIN_WITH_SUFFIX: ${{secrets.JUNO_DOMAIN_WITH_SUFFIX}}
