@@ -58,6 +58,4 @@ jobs:
       - name: Perform Teardown
         id: performteardown
         shell: bash
-        run: |
-          cd cdktf.out/stacks/juno
-          terraform destroy --auto-approve
+        run: cdktf destroy --auto-approve
