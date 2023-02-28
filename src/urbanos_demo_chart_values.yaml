@@ -27,7 +27,7 @@ global:
     hiveStoragePath: hive-s3
     accessKey: "secret-injected-during-deploy"
     accessSecret: "secret-injected-during-deploy"
-  require_api_key: false
+  require_api_key: true
   subdomains:
     andi: "andi"
     share: "sharedata"
