@@ -11,6 +11,6 @@ the latest remote UrbanOS chart, to \"helm_template_output.yaml\".
 printf >&2 '%s ' 'Enter to continue'
 read ans
 
-helm template urbanos urbanos/urban-os -f urbanos_demo_chart_values.yaml > helm_template_output.yaml
+helm template urbanos urbanos/urban-os -f src/urbanos_demo_chart_values.yaml > helm_template_output.yaml
 
 echo "Template saved to \"helm_template_output.yaml\""
