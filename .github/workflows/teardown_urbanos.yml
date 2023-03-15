@@ -40,6 +40,7 @@ jobs:
       # https://github.com/hashicorp/terraform-cdk-action/pull/30
       # Just used to put proper versions of tf + cdktf on the machine
       #     until destroy is a mode option
+      # TODO: this is live, replace and remove "perform teardown  "
       - name: Prepare Teardown with Terraform CDK
         uses: hashicorp/terraform-cdk-action@v0.1.10
         with:

@@ -1,0 +1,48 @@
+# https://github.com/minio/operator/blob/master/helm/tenant/values.yaml
+secrets:
+  # MinIO root user and password
+  accessKey: minio_root
+  secretKey: minio123
+
+## MinIO Tenant Definition
+tenant:
+  # Tenant name
+  name: urbanos-minio
+  pools:
+    ## Servers specifies the number of MinIO Tenant Pods / Servers in this pool.
+    ## For standalone mode, supply 1. For distributed mode, supply 4 or more.
+    ## Note that the operator does not support upgrading from standalone to distributed mode.
+    - servers: 1
+      ## custom name for the pool
+      name: pool-0
+      ## volumesPerServer specifies the number of volumes attached per MinIO Tenant Pod / Server.
+      volumesPerServer: 1
+      ## size specifies the capacity per volume
+      size: 10Gi
+      ## storageClass specifies the storage class name to be used for this pool
+      storageClassName: azurefile
+
+  ## List of bucket names to create during tenant provisioning
+  # https://github.com/minio/operator/issues/1002#issuecomment-1028393926
+  buckets:
+    - name: "hosted-dataset-files"
+    - name: "presto-hive-storage"
+
+  # works because "minio_user.yaml" was applied prior to tenant install
+  users:
+    - name: "minio-user"
+
+  prometheus:
+    # When set to true disables the creation of prometheus deployment
+    disabled: true
+
+  ## LogSearch API setup for MinIO Tenant.
+  log:
+    # When set to true disables the creation of logsearch api deployment
+    disabled: true
+
+ingress:
+  api:
+    enabled: false
+  console:
+    enabled: false

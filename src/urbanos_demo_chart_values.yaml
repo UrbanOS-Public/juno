@@ -219,47 +219,13 @@ kubernetes-data-platform:
 monitoring:
   enabled: false
 
+# see minio_operator_values.yaml, installed before urbanos helm release
 minio-operator:
   enabled: false
 
+# see minio_tenant_values.yaml, installed before urbanos helm release
 minio-tenant:
   enabled: false
-  tenant:
-    log:
-      db:
-        volumeClaimTemplate:
-          spec:
-            storageClassName: managed-premium
-    prometheus:
-      storageClassName: managed-premium
-    pools:
-      - affinity:
-          podAntiAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              - labelSelector:
-                  matchExpressions:
-                    - key: v1.min.io/tenant
-                      operator: In
-                      values:
-                        - minio1
-                    - key: v1.min.io/pool
-                      operator: In
-                      values:
-                        - pool-0
-                topologyKey: kubernetes.io/hostname
-        name: pool-0
-        servers: 1
-        storageClassName: managed-premium
-        volumesPerServer: 4
-        resources:
-          limits:
-            memory: 2Gi
-            cpu: 500m
-          requests:
-            memory: 2Gi
-            cpu: 500m
-    users:
-      - name: demo-user-0
 
 persistence:
   enabled: false

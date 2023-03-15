@@ -1,0 +1,3 @@
+# https://github.com/minio/operator/blob/master/helm/operator/values.yaml
+operator:
+  replicaCount: 1

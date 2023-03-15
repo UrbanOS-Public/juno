@@ -28,7 +28,7 @@ import {
   initializeHelm,
   installCertManager,
   installIngressNginx,
-  installUrbanOS,
+  // installUrbanOS,
 } from "./helm";
 
 class MyStack extends TerraformStack {
@@ -64,7 +64,9 @@ class MyStack extends TerraformStack {
     // Install UrbanOS, Ingress-Nginx for ingress proxy, Cert-Manager for auto
     //     TLS renewal with let's encrypt
     initializeHelm(classRef, clusterKubeConf);
-    installUrbanOS(classRef, { dependsOn: [namespace] });
+
+    // installUrbanOS(classRef, { dependsOn: [namespace] });
+    // pending "urbanos_install.sh" script
     const ingressRelease = installIngressNginx(classRef, publicIPForCluster, {
       dependsOn: [namespace, dnsZone],
     });
