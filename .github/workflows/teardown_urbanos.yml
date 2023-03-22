@@ -37,35 +37,16 @@ jobs:
       - name: Generate module and provider bindings
         run: npx cdktf-cli get
 
-      # https://github.com/hashicorp/terraform-cdk-action/pull/30
-      # Just used to put proper versions of tf + cdktf on the machine
-      #     until destroy is a mode option
-      # TODO: this is live, replace and remove "perform teardown  "
       - name: Prepare Teardown with Terraform CDK
-        uses: hashicorp/terraform-cdk-action@v0.1.10
+        uses: hashicorp/terraform-cdk-action@v0.1.13
         with:
           terraformVersion: 1.3.7
           cdktfVersion: 0.15.5
           stackName: juno
-          mode: synth-only
+          mode: auto-approve-destroy
           commentOnPr: false
         env:
-          # make sure these are added to "deploy_urbanos" as well
-          JUNO_DEMO_MODE_ENABLED: ${{vars.JUNO_DEMO_MODE_ENABLED}}
-          JUNO_RESOURCE_PREFIX: ${{vars.JUNO_RESOURCE_PREFIX}}
-          JUNO_AZURE_SUB_ID: ${{secrets.JUNO_AZURE_SUB_ID}}
-          JUNO_DEMO_AZURE_APP_ID: ${{secrets.JUNO_DEMO_AZURE_APP_ID}}
-          JUNO_DEMO_AZURE_PASSWORD: ${{secrets.JUNO_DEMO_AZURE_PASSWORD}}
-          JUNO_DEMO_AZURE_TENANT: ${{secrets.JUNO_DEMO_AZURE_TENANT}}
-          JUNO_DEMO_TF_BACKEND_KEY: ${{secrets.JUNO_DEMO_TF_BACKEND_KEY}}
-          JUNO_DOMAIN_NO_SUFFIX: ${{secrets.JUNO_DOMAIN_NO_SUFFIX}}
-          JUNO_DOMAIN_WITH_SUFFIX: ${{secrets.JUNO_DOMAIN_WITH_SUFFIX}}
-
-      - name: Perform Teardown
-        id: performteardown
-        shell: bash
-        run: cdktf destroy --auto-approve
-        env:
+          # ensure edits to these are added to the "deploy_urbanos" workflow as well
           JUNO_DEMO_MODE_ENABLED: ${{vars.JUNO_DEMO_MODE_ENABLED}}
           JUNO_RESOURCE_PREFIX: ${{vars.JUNO_RESOURCE_PREFIX}}
           JUNO_AZURE_SUB_ID: ${{secrets.JUNO_AZURE_SUB_ID}}

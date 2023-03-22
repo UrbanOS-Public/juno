@@ -38,7 +38,7 @@ jobs:
         run: npx cdktf-cli get
 
       - name: Run Terraform CDK and Deploy UrbanOS
-        uses: hashicorp/terraform-cdk-action@v0.1.10
+        uses: hashicorp/terraform-cdk-action@v0.1.13
         with:
           terraformVersion: 1.3.7
           cdktfVersion: 0.15.5
@@ -46,7 +46,7 @@ jobs:
           mode: auto-approve-apply
           commentOnPr: false
         env:
-          # make sure these are added to "teardown_urbanos" as well
+          # ensure edits to these are added to the "teardown_urbanos" workflow as well
           JUNO_DEMO_MODE_ENABLED: ${{vars.JUNO_DEMO_MODE_ENABLED}}
           JUNO_RESOURCE_PREFIX: ${{vars.JUNO_RESOURCE_PREFIX}}
           JUNO_AZURE_SUB_ID: ${{secrets.JUNO_AZURE_SUB_ID}}
