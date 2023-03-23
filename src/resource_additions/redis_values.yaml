@@ -1,0 +1,38 @@
+# default values 17.1.4; https://github.com/bitnami/charts/blob/99ea3c659edc6e4123a30b4dedc5f3c3b0486b39/bitnami/redis/values.yaml
+
+master:
+  disableCommands: []
+  persistence:
+    size: 2Gi
+  podSecurityContext:
+    enabled: true
+  containerSecurityContext:
+    enabled: true
+  resources:
+    requests:
+      cpu: 200m
+      memory: 250M
+    limits:
+      cpu: 200m
+      memory: 250M
+
+replica:
+  replicaCount: 0
+  disableCommands: []
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+  resources:
+    requests:
+      cpu: 200m
+      memory: 250M
+    limits:
+      cpu: 200m
+      memory: 250M
+
+auth:
+  password: urbanos123
+
+volumePermissions:
+  enabled: true

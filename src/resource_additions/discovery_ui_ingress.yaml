@@ -17,7 +17,7 @@ spec:
   tls:
     - hosts:
         - discovery.urbanos-demo.com
-      secretName: tls-secret
+      secretName: discovery-tls-secret
   rules:
     - host: discovery.urbanos-demo.com
       http:

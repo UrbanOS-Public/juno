@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: andi-custom-ingress
+  namespace: urbanos
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - andi.urbanos-demo.com
+      secretName: andi-tls-secret
+  rules:
+    - host: andi.urbanos-demo.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: andi
+                port:
+                  number: 80

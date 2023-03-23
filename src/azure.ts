@@ -88,7 +88,7 @@ export const assignUrbanOSDNSRecords = (
   rg: ResourceGroup,
   ip: PublicIp
 ) => {
-  ["Discovery"].forEach((domain) => {
+  ["Discovery", "Andi"].forEach((domain) => {
     new DnsARecord(classRef, `${domain}DomainRecord`, {
       name: domain.toLowerCase(),
       zoneName: dnsZone.name,
