@@ -51,11 +51,11 @@ andi:
     tls: false
     enabled: true
   postgres:
-    host: ""
+    host: "postgresql"
     port: "5432"
     dbname: "andi"
-    user: "padmin"
-    password: "secret-injected-during-deploy"
+    user: "urbanos"
+    password: "admin"
     verifySNI: false
   auth:
     auth0_client_id: "S3H3cToHVddG7Q7zEKK1nJbzrAy9GqG0"
@@ -90,11 +90,11 @@ discovery-api:
     discoveryApiPresignKey: "secret-injected-during-deploy"
     guardianSecretKey: "secret-injected-during-deploy"
   postgres:
-    host: ""
+    host: "postgresql"
     port: "5432"
     dbname: "discovery"
-    user: "padmin"
-    password: "secret-injected-during-deploy"
+    user: "urbanos"
+    password: "admin"
     verifySNI: false
   auth:
     jwks_endpoint: https://urbanos-demo.us.auth0.com/.well-known/jwks.json
@@ -129,7 +129,8 @@ discovery-streams:
 discovery-ui:
   enabled: true
   image:
-    tag: development
+    tag: 2.1.13 # the urbanos chart should pin versions but it just points to
+    # development tags, meaning images could outpace the pinned chart version.
   ingress:
     enabled: false
   resources:
@@ -239,8 +240,9 @@ persistence:
         memory: 2Gi
         cpu: 500m
     postgres:
-      user: padmin
-      host: ""
+      host: postgresql
+      user: urbanos
+      password: admin
       port: 5432
       name: trino_metastore
 

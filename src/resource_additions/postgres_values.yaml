@@ -1,0 +1,23 @@
+# https://github.com/bitnami/charts/blob/e42e0a158ee42c88a7fcd6cb67d50aa11a32e38e/bitnami/postgresql/values.yaml
+global:
+  storageClass: "managed"
+
+auth:
+  enablePostgresUser: true
+  postgresPassword: "admin"
+  username: "urbanos"
+  password: "admin"
+
+architecture: standalone
+
+primary:
+  resources:
+    limits: {}
+    requests:
+      memory: 256Mi
+      cpu: 250m
+  persistence:
+    size: 1Gi
+
+volumePermissions:
+  enabled: true
