@@ -1,4 +1,5 @@
 global:
+  require_api_key: true # true since on public endpoints
   redis:
     host: redis-master
     port: 6379
@@ -20,14 +21,13 @@ global:
     raptor_url: http://raptor/api
     auth0_management_client_id: jSEXPEDqWSmEs2UGRTvL2cyXKk4BAjtD
   vault:
-    endpoint: "urban-os-vault:8200"
+    endpoint: "urban-os-vault:8200" # not deployed, demo doesn't have vault
   objectStore:
     host: minio
     port: 9000
     hiveStoragePath: hive-s3
     accessKey: "minio-user"
     accessSecret: "minio123"
-  require_api_key: true
   subdomains:
     andi: "andi"
     share: "sharedata"
@@ -42,7 +42,10 @@ secrets:
     rootUserName: "inject-during-deployment"
     rootPassword: "inject-during-deployment"
 
-# todo: pin all images corresponding to chart 1.13.31 (jan 30th 2023)
+# All images pinned corresponding to chart 1.13.31 (jan 30th 2023)
+#     pinned to whatever tag was around that time.
+# The urbanos chart should pin versions but it just points to
+#     development tags, meaning images could outpace the pinned chart version.
 andi:
   enabled: true
   image:
@@ -59,7 +62,8 @@ andi:
     verifySNI: false
   auth:
     auth0_client_id: "S3H3cToHVddG7Q7zEKK1nJbzrAy9GqG0"
-    # {{ .Release.Name }}-andi-auth0-client-secret will be referenced
+    # {{ .Release.Name }}-andi-auth0-client-secret will be referenced,
+    #   created ahead of time
     auth0_client_secret: ""
   aws:
     accessKeyId: "minio_user"
@@ -130,8 +134,7 @@ discovery-streams:
 discovery-ui:
   enabled: true
   image:
-    tag: 2.1.13 # the urbanos chart should pin versions but it just points to
-    # development tags, meaning images could outpace the pinned chart version.
+    tag: 2.1.13
   ingress:
     enabled: false
   resources:
@@ -302,22 +305,26 @@ raptor:
     tag: development
 
 reaper:
-  enabled: false
+  enabled: true
+  image:
+    tag: 2.0.18
+    pullPolicy: IfNotPresent
   resources:
     limits:
-      memory: 8Gi
+      memory: 1Gi
       cpu: 300m
-      ephemeral-storage: 15G
+      ephemeral-storage: 2G
     requests:
-      memory: 8Gi
+      memory: 1Gi
       cpu: 300m
-      ephemeral-storage: 15G
-  image:
-    tag: development
-  outputTopicPrefix: "raw"
+      ephemeral-storage: 2G
+
+  # Chart Fix: this should instead use global.objectStore
+  # Also: does reaper even use s3... ? Region and secrets are set, but host is
+  # never referenced, so is it even using minio?
   aws:
-    accessKeyId: "example"
-    accessKeySecret: "example"
+    accessKeyId: "minio-user"
+    accessKeySecret: "minio123"
 
 valkyrie:
   enabled: false
