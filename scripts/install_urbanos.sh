@@ -19,7 +19,10 @@ helm upgrade postgresql bitnami/postgresql --install --version "12.1.14" --names
 kubectl apply -f "src/resource_additions/strimzi-crds-0.33.2.yaml" -n urbanos
 
 # install auth0 secret
-kubectl apply -f "src/resource_additions/andi_secret.yaml" -n  urbanos
+kubectl apply -f "src/resource_additions/andi_secret.yaml" -n urbanos
+
+# install andi ingress
+kubectl apply -f "src/resource_additions/andi_ingress.yaml" -n urbanos
 
 # install redis
 helm upgrade redis bitnami/redis --install --version "17.1.4" --namespace urbanos -f src/resource_additions/redis_values.yaml
