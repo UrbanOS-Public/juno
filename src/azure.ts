@@ -52,7 +52,7 @@ export const createCluster = (classRef: TerraformStack, rg: ResourceGroup) =>
       // az vm list-sizes --location eastus
       // vmSize: "Standard_B2s", // 4GB RAM, 8 GB Storage $.05 / hr
       vmSize: "Standard_B2ms", //8GB RAM, 16 GB Storage $.1 / hr
-      nodeCount: 6,
+      nodeCount: 7,
       tags: Config.tags,
     },
     tags: Config.tags,
