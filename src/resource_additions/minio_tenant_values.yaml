@@ -21,7 +21,15 @@ tenant:
       ## size specifies the capacity per volume
       size: 4Gi
       ## storageClass specifies the storage class name to be used for this pool
-      storageClassName: azurefile
+      storageClassName: default
+      ## Configure resource requests and limits for MinIO containers
+      resources:
+        requests:
+          cpu: 300m
+          memory: 500M
+        limits:
+          cpu: 300m
+          memory: 500M
 
   ## List of bucket names to create during tenant provisioning
   # https://github.com/minio/operator/issues/1002#issuecomment-1028393926

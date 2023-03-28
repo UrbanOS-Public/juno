@@ -14,7 +14,7 @@ global:
     hostedFileBucket: "hosted-dataset-files"
     hiveStorageBucket: "presto-hive-storage"
   presto:
-    url: http://urban-os-trino:8080
+    url: http://urbanos-trino:8080
   auth:
     auth0_domain: urbanos-demo.us.auth0.com
     jwt_issuer: "https://urbanos-demo.us.auth0.com/" #end "/"" required for jwks_endpoint to be reached
@@ -75,10 +75,10 @@ discovery-api:
   resources:
     limits:
       memory: 512Mi
-      cpu: 500m
+      cpu: 250m
     requests:
       memory: 512Mi
-      cpu: 500m
+      cpu: 250m
   image:
     tag: 1.3.8
     pullPolicy: IfNotPresent
@@ -107,22 +107,21 @@ discovery-api:
     s3Port: 80
 
 discovery-streams:
-  enabled: false
+  enabled: true
+  image:
+    tag: 3.0.20
+    pullPolicy: IfNotPresent
   auth:
     raptor_url: "http://raptor/api"
   resources:
     requests:
-      cpu: 500m
+      cpu: 250m
       memory: 500M
     limits:
-      cpu: 500m
+      cpu: 250m
       memory: 500M
-  image:
-    tag: development
   ingress:
-    enabled: true
-  kafka:
-    dataTopicPrefix: "validated"
+    enabled: false
 
 discovery-ui:
   enabled: true
@@ -133,10 +132,10 @@ discovery-ui:
   resources:
     limits:
       memory: 512Mi
-      cpu: 400m
+      cpu: 300m
     requests:
       memory: 512Mi
-      cpu: 400m
+      cpu: 300m
   env:
     disc_api_url: "https://data.urbanos-demo.com"
     disc_streams_url: "ws://streams.urbanos-demo.com"
@@ -166,24 +165,10 @@ elasticsearch:
     limits:
       cpu: 500m
       memory: 1500M
-
-forklift:
-  enabled: false
-  overwrite_mode: true
-  resources:
-    requests:
-      cpu: 500m
-      memory: 500M
-    limits:
-      cpu: 500m
-      memory: 500M
-  image:
-    tag: development
-  kafka:
-    dataTopicPrefix: "validated"
-  aws:
-    s3HostName: minio
-    s3Port: 80
+  volumeClaimTemplate:
+    resources:
+      requests:
+        storage: 500M
 
 kafka:
   enabled: true
@@ -289,20 +274,21 @@ persistence:
 
 raptor:
   enabled: true
+  image:
+    tag: 1.2.13
+    pullPolicy: IfNotPresent
   resources:
     requests:
-      cpu: 500m
+      cpu: 250m
       memory: 500M
     limits:
-      cpu: 500m
+      cpu: 250m
       memory: 500M
   auth:
     auth0_client_id: PuL20cfxgzSu6jpMRQAT2mZ2pwhfFzH8
     # {{ .Release.Name }}-andi-auth0-client-secret will be referenced,
     #   created ahead of time
     auth0_client_secret: ""
-  image:
-    tag: development
 
 reaper:
   enabled: true
@@ -311,36 +297,73 @@ reaper:
     pullPolicy: IfNotPresent
   resources:
     limits:
-      memory: 1Gi
-      cpu: 300m
+      memory: 500M
+      cpu: 400m
       ephemeral-storage: 2G
     requests:
-      memory: 1Gi
-      cpu: 300m
+      memory: 500M
+      cpu: 400m
       ephemeral-storage: 2G
-
-  # Chart Fix: this should instead use global.objectStore
-  # Also: does reaper even use s3... ? Region and secrets are set, but host is
-  # never referenced, so is it even using minio?
   aws:
     accessKeyId: "minio_root"
     accessKeySecret: "minio123"
 
-valkyrie:
-  enabled: false
-  image:
-    tag: development
-  kafka:
-    inputTopicPrefix: "transformed"
-    outputTopicPrefix: "validated"
-
 alchemist:
-  enabled: false
+  enabled: true
   image:
-    tag: development
+    tag: 0.2.19
+    pullPolicy: IfNotPresent
   kafka:
     inputTopicPrefix: "raw"
     outputTopicPrefix: "transformed"
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 512Mi
+
+valkyrie:
+  enabled: true
+  image:
+    tag: 1.7.23
+    pullPolicy: IfNotPresent
+  replicaCount: 1
+  kafka:
+    inputTopicPrefix: "transformed"
+    outputTopicPrefix: "validated"
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 512Mi
+
+forklift:
+  enabled: true
+  image:
+    tag: 0.19.5
+    pullPolicy: IfNotPresent
+  overwrite_mode: true
+  resources:
+    requests:
+      cpu: 400m
+      memory: 500M
+    limits:
+      cpu: 400m
+      memory: 500M
+  aws:
+    s3HostName: minio
+    s3Port: 80
+  # NOTE: forklift is default, if good, remove.
+  kdp:
+    user: "forklift"
+  kafka:
+    #comma delimited list of kafka seed brokers
+    dataTopicPrefix: "validated"
+    outputTopic: "streaming-persisted"
 
 vault:
   enabled: false

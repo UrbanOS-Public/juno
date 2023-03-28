@@ -27,13 +27,18 @@ kubectl apply -f "src/resource_additions/andi_ingress.yaml" -n urbanos
 # install redis
 helm upgrade redis bitnami/redis --install --version "17.1.4" --namespace urbanos -f src/resource_additions/redis_values.yaml
 
-# install disc-api
+# install disc-api ingress
 kubectl apply -f "src/resource_additions/discovery_api_ingress.yaml" -n urbanos
+
+# install disc-streams ingress
+kubectl apply -f "src/resource_additions/discovery_streams_ingress.yaml" -n urbanos
 
 # install urbanos w tenant config
 
 # note: installing urbanos has an api / elasticsearch race condition.
 # might need to isolate the install of elasticsearch to happen first
+# note: strimzi takes forever, might want to wait for a kafka health check
+# to pass somehow first?
 
 # https://github.com/UrbanOS-Public/charts/releases/tag/urban-os-1.13.31
 helm upgrade urbanos urbanos/urban-os --install --version "1.13.31" -i -f src/urbanos_demo_chart_values.yaml -n urbanos

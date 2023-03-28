@@ -1,4 +1,5 @@
 kubectl delete -f src/resource_additions/andi_secret.yaml -n urbanos
+kubectl delete -f src/resource_additions/raptor_secret.yaml -n urbanos
 
 helm uninstall urbanos -n urbanos
 

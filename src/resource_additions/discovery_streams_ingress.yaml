@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: discovery-streams-custom-ingress
+  namespace: urbanos
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - streams.urbanos-demo.com
+      secretName: discovery-streams-tls-secret
+  rules:
+    - host: streams.urbanos-demo.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: discovery-streams
+                port:
+                  number: 80
