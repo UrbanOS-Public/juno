@@ -20,4 +20,7 @@ echo "removing kafka pvcs"
 kubectl delete pvc data-pipeline-kafka-0 -n urbanos
 kubectl delete pvc data-pipeline-zookeeper-0 -n urbanos
 
+echo "removing elasticsearch pvcs"
+kubectl delete pvc elasticsearch-master-elasticsearch-master-0 -n urbanos
+
 kubectl delete -f "src/resource_additions/strimzi-crds-0.33.2.yaml" -n urbanos

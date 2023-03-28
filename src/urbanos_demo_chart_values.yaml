@@ -151,24 +151,21 @@ discovery-ui:
     regenerate_api_key_ff: true
 
 elasticsearch:
-  enabled: false
+  # https://github.com/elastic/helm-charts/blob/v7.14.0/elasticsearch/values.yaml
+  enabled: true
+  imageTag: "7.14.1"
+  clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
+  esConfig:
+    elasticsearch.yml: |
+      ingest.geoip.downloader.enabled: false
   replicas: 1
-  # securityContext:
-  # oc get project default -o yaml
-  # get this number from the command upon deploy?
-  # runAsUser: 1000670000
-  # podSecurityContext:
-  # fsGroup: 1000670000
-  # runAsUser: 1000670000
-  sysctlInitContainer:
-    enabled: false
   resources:
     requests:
       cpu: 500m
-      memory: 2Gi
+      memory: 1500M
     limits:
       cpu: 500m
-      memory: 2Gi
+      memory: 1500M
 
 forklift:
   enabled: false
