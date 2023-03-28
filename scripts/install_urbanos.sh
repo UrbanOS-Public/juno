@@ -17,8 +17,9 @@ helm upgrade postgresql bitnami/postgresql --install --version "12.1.14" --names
 # install strimzi CRDs
 kubectl apply -f "src/resource_additions/strimzi-crds-0.33.2.yaml" -n urbanos
 
-# install auth0 secret
+# install auth0 secrets
 kubectl apply -f "src/resource_additions/andi_secret.yaml" -n urbanos
+kubectl apply -f "src/resource_additions/raptor_secret.yaml" -n urbanos
 
 # install andi ingress
 kubectl apply -f "src/resource_additions/andi_ingress.yaml" -n urbanos
@@ -30,5 +31,9 @@ helm upgrade redis bitnami/redis --install --version "17.1.4" --namespace urbano
 kubectl apply -f "src/resource_additions/discovery_api_ingress.yaml" -n urbanos
 
 # install urbanos w tenant config
+
+# note: installing urbanos has an api / elasticsearch race condition.
+# might need to isolate the install of elasticsearch to happen first
+
 # https://github.com/UrbanOS-Public/charts/releases/tag/urban-os-1.13.31
 helm upgrade urbanos urbanos/urban-os --install --version "1.13.31" -i -f src/urbanos_demo_chart_values.yaml -n urbanos

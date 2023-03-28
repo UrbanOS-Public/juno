@@ -287,9 +287,8 @@ persistence:
         hive.s3.endpoint=http://minio:80
         hive.s3.ssl.enabled=false
 
-# TODO: raptor enable
 raptor:
-  enabled: false
+  enabled: true
   resources:
     requests:
       cpu: 500m
@@ -299,7 +298,9 @@ raptor:
       memory: 500M
   auth:
     auth0_client_id: PuL20cfxgzSu6jpMRQAT2mZ2pwhfFzH8
-    auth0_client_secret: "secret-injected-during-deploy"
+    # {{ .Release.Name }}-andi-auth0-client-secret will be referenced,
+    #   created ahead of time
+    auth0_client_secret: ""
   image:
     tag: development
 
