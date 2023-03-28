@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: discovery-api-custom-ingress
+  namespace: urbanos
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - data.urbanos-demo.com
+      secretName: discovery-api-tls-secret
+  rules:
+    - host: data.urbanos-demo.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: discovery-api
+                port:
+                  number: 80

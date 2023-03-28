@@ -26,6 +26,9 @@ kubectl apply -f "src/resource_additions/andi_ingress.yaml" -n urbanos
 # install redis
 helm upgrade redis bitnami/redis --install --version "17.1.4" --namespace urbanos -f src/resource_additions/redis_values.yaml
 
+# install disc-api
+kubectl apply -f "src/resource_additions/discovery_api_ingress.yaml" -n urbanos
+
 # install urbanos w tenant config
 # https://github.com/UrbanOS-Public/charts/releases/tag/urban-os-1.13.31
 helm upgrade urbanos urbanos/urban-os --install --version "1.13.31" -i -f src/urbanos_demo_chart_values.yaml -n urbanos
