@@ -1,4 +1,5 @@
-# https://github.com/minio/operator/blob/master/helm/tenant/values.yaml
+# 4.5.8 - https://github.com/minio/operator/blob/v4.5.8/helm/tenant/values.yaml
+
 secrets:
   # MinIO root user and password
   accessKey: minio_root
@@ -18,7 +19,7 @@ tenant:
       ## volumesPerServer specifies the number of volumes attached per MinIO Tenant Pod / Server.
       volumesPerServer: 1
       ## size specifies the capacity per volume
-      size: 5Gi
+      size: 4Gi
       ## storageClass specifies the storage class name to be used for this pool
       storageClassName: azurefile
 
@@ -28,10 +29,6 @@ tenant:
     - name: "hosted-dataset-files"
     - name: "presto-hive-storage"
 
-  # works because "minio_user.yaml" was applied prior to tenant install
-  users:
-    - name: "minio-user"
-
   prometheus:
     # When set to true disables the creation of prometheus deployment
     disabled: true
@@ -40,6 +37,9 @@ tenant:
   log:
     # When set to true disables the creation of logsearch api deployment
     disabled: true
+
+  certificate:
+    requestAutoCert: false
 
 ingress:
   api:

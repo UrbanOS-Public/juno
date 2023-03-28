@@ -1,10 +1,10 @@
-kubectl delete -f src/resource_additions/minio_user.yaml -n urbanos
 kubectl delete -f src/resource_additions/andi_secret.yaml -n urbanos
 
 helm uninstall urbanos -n urbanos
+
 helm uninstall redis -n urbanos
-helm uninstall minio-operator -n urbanos
 helm uninstall minio-tenant -n urbanos
+helm uninstall minio-operator -n urbanos
 helm uninstall postgresql -n urbanos
 
 echo "removing minio pvc"
