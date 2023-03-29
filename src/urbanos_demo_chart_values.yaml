@@ -151,7 +151,7 @@ discovery-ui:
 
 elasticsearch:
   # https://github.com/elastic/helm-charts/blob/v7.14.0/elasticsearch/values.yaml
-  enabled: true
+  enabled: false
   imageTag: "7.14.1"
   clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
   esConfig:

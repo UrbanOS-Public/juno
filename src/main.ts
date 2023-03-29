@@ -22,12 +22,14 @@ import {
 import {
   createUrbanOSNamespace,
   initializeKubectlProvider,
-  installDiscoveryUIIngress,
+  installIngresses,
 } from "./kubectl";
 import {
   initializeHelm,
   installCertManager,
   installIngressNginx,
+  installMinioOperator,
+  installMinioTenant,
   // installUrbanOS,
 } from "./helm";
 
@@ -58,21 +60,34 @@ class MyStack extends TerraformStack {
     const namespace = createUrbanOSNamespace(classRef, {
       dependsOn: [cluster],
     });
-    installDiscoveryUIIngress(classRef, { dependsOn: [namespace] });
 
     //////////////////////////////////////////////////////////////////////////
     // Install UrbanOS, Ingress-Nginx for ingress proxy, Cert-Manager for auto
     //     TLS renewal with let's encrypt
     initializeHelm(classRef, clusterKubeConf);
 
-    // installUrbanOS(classRef, { dependsOn: [namespace] });
-    // pending "urbanos_install.sh" script
     const ingressRelease = installIngressNginx(classRef, publicIPForCluster, {
       dependsOn: [namespace, dnsZone],
     });
     installCertManager(classRef, {
       dependsOn: [namespace, dnsZone, ingressRelease],
     });
+    installIngresses(classRef, { dependsOn: [namespace] });
+
+    const minioOperator = installMinioOperator(classRef, {
+      dependsOn: [namespace],
+    });
+
+    // todo: install postgres, dependsOn namespace
+    // todo: install strimzi CRDs, dependsOn namespace
+    // todo: install raptor + andi auth0 secrets, dependsOn namespace
+    // todo: install redis, dependsOn namespace
+    // todo: install elasticsearch, dependsOn namespace
+
+    installMinioTenant(classRef, { dependsOn: [minioOperator] });
+
+    // todo: installUrbanOS(classRef, { dependsOn: [miniotenant, elasticsearch
+    //      postgres, strimzi, andiAuth0Secret, raptorAuth0Secret, redis] });
 
     //////////////////////////////////////////////////////////////////////////
     // Outputs

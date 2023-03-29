@@ -33,16 +33,24 @@ export const createUrbanOSNamespace = (
     "resource_additions/urbanos_namespace.yaml"
   );
 
-export const installDiscoveryUIIngress = (
+export const installIngresses = (
   classRef: TerraformStack,
   dependsOn: DependsOn
-) =>
-  installResource(
-    classRef,
-    dependsOn,
-    "DiscUIIngress",
-    "resource_additions/discovery_ui_ingress.yaml"
-  );
+) => {
+  [
+    ["andi.yaml", "Andi"],
+    ["discovery_api.yaml", "API"],
+    ["discovery_streams.yaml", "Streams"],
+    ["discovery_ui.yaml", "UI"],
+  ].forEach(([ingress_file, label]) => {
+    installResource(
+      classRef,
+      dependsOn,
+      `${label}Ingress`,
+      `resource_additions/ingresses/${ingress_file}`
+    );
+  });
+};
 
 const installResource = (
   classRef: TerraformStack,

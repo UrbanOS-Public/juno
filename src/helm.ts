@@ -41,6 +41,46 @@ export const installUrbanOS = (
   });
 };
 
+export const installMinioOperator = (
+  classRef: TerraformStack,
+  dependsOn: DependsOn
+) => {
+  return new Release(classRef, "MinioOperatorHelmRelease", {
+    name: "minio-operator",
+    chart: "operator",
+    version: "4.5.8",
+    repository: "https://operator.min.io/",
+    description:
+      "Install of Minio Operator using values from the Juno terraform repo. Installed with the helm provider.",
+    namespace: "urbanos",
+    createNamespace: false,
+    values: [
+      loadFileContentsAsString("resource_additions/minio_operator_values.yaml"),
+    ],
+    ...dependsOn,
+  });
+};
+
+export const installMinioTenant = (
+  classRef: TerraformStack,
+  dependsOn: DependsOn
+) => {
+  new Release(classRef, "MinioTenantHelmRelease", {
+    name: "minio-tenant",
+    chart: "tenant",
+    version: "4.5.8",
+    repository: "https://operator.min.io/",
+    description:
+      "Install of Minio Tenant using values from the Juno terraform repo. Installed with the helm provider.",
+    namespace: "urbanos",
+    createNamespace: false,
+    values: [
+      loadFileContentsAsString("resource_additions/minio_tenant_values.yaml"),
+    ],
+    ...dependsOn,
+  });
+};
+
 export const installIngressNginx = (
   classRef: TerraformStack,
   ip: PublicIp,
