@@ -55,6 +55,7 @@ export const createCluster = (classRef: TerraformStack, rg: ResourceGroup) =>
       nodeCount: 7,
       tags: Config.tags,
     },
+    azurePolicyEnabled: true,
     tags: Config.tags,
     identity: {
       type: "SystemAssigned",

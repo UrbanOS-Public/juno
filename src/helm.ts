@@ -44,8 +44,8 @@ export const installUrbanOS = (
 export const installMinioOperator = (
   classRef: TerraformStack,
   dependsOn: DependsOn
-) => {
-  return new Release(classRef, "MinioOperatorHelmRelease", {
+) =>
+  new Release(classRef, "MinioOperatorHelmRelease", {
     name: "minio-operator",
     chart: "operator",
     version: "4.5.8",
@@ -59,12 +59,11 @@ export const installMinioOperator = (
     ],
     ...dependsOn,
   });
-};
 
 export const installMinioTenant = (
   classRef: TerraformStack,
   dependsOn: DependsOn
-) => {
+) =>
   new Release(classRef, "MinioTenantHelmRelease", {
     name: "minio-tenant",
     chart: "tenant",
@@ -79,12 +78,11 @@ export const installMinioTenant = (
     ],
     ...dependsOn,
   });
-};
 
 export const installPostgresql = (
   classRef: TerraformStack,
   dependsOn: DependsOn
-) => {
+) =>
   new Release(classRef, "PostgresqlHelmRelease", {
     name: "postgresql",
     chart: "postgresql",
@@ -99,7 +97,39 @@ export const installPostgresql = (
     ],
     ...dependsOn,
   });
-};
+
+export const installRedis = (classRef: TerraformStack, dependsOn: DependsOn) =>
+  new Release(classRef, "RedisHelmRelease", {
+    name: "redis",
+    chart: "redis",
+    version: "17.1.4",
+    repository: "https://charts.bitnami.com/bitnami",
+    description:
+      "Install of Redis using values from the Juno terraform repo. Installed with the helm provider.",
+    namespace: "urbanos",
+    createNamespace: false,
+    values: [loadFileContentsAsString("resource_additions/redis_values.yaml")],
+    ...dependsOn,
+  });
+
+export const installElasticsearch = (
+  classRef: TerraformStack,
+  dependsOn: DependsOn
+) =>
+  new Release(classRef, "ElasticsearchHelmRelease", {
+    name: "elasticsearch",
+    chart: "elasticsearch",
+    version: "7.14.0",
+    repository: "https://helm.elastic.co",
+    description:
+      "Install of Elasticsearch using values from the Juno terraform repo. Installed with the helm provider.",
+    namespace: "urbanos",
+    createNamespace: false,
+    values: [
+      loadFileContentsAsString("resource_additions/elasticsearch_values.yaml"),
+    ],
+    ...dependsOn,
+  });
 
 export const installIngressNginx = (
   classRef: TerraformStack,

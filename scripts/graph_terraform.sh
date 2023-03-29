@@ -15,6 +15,6 @@ read ans
 cdktf synth
 cd "cdktf.out/stacks/juno"
 
-terraform graph -type=plan -draw-circles | dot -Tpng > ../../../graph.png
+terraform graph -type=plan -draw-cycles | dot -Tpng > ../../../graph.png
 
 echo "Saved to \"graph.png\" at repo root."

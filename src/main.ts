@@ -29,11 +29,13 @@ import {
 import {
   initializeHelm,
   installCertManager,
+  installElasticsearch,
   installIngressNginx,
   installMinioOperator,
   installMinioTenant,
   installPostgresql,
-  // installUrbanOS,
+  installRedis,
+  installUrbanOS,
 } from "./helm";
 
 class MyStack extends TerraformStack {
@@ -77,27 +79,44 @@ class MyStack extends TerraformStack {
     });
 
     installIngresses(classRef, { dependsOn: [namespace] });
+
     const minioOperator = installMinioOperator(classRef, {
       dependsOn: [namespace],
     });
+    const minioTenant = installMinioTenant(classRef, {
+      dependsOn: [minioOperator],
+    });
 
-    installPostgresql(classRef, {
+    const postgresql = installPostgresql(classRef, {
       dependsOn: [namespace],
     });
 
-    installStrimziCRDs(classRef, { dependsOn: [namespace] });
-
-    installAuth0Secrets(classRef, {
+    const strimziCRDs = installStrimziCRDs(classRef, {
       dependsOn: [namespace],
     });
 
-    // todo: install redis, dependsOn namespace
-    // todo: install elasticsearch, dependsOn namespace
+    const auth0 = installAuth0Secrets(classRef, {
+      dependsOn: [namespace],
+    });
 
-    installMinioTenant(classRef, { dependsOn: [minioOperator] });
+    const redis = installRedis(classRef, {
+      dependsOn: [namespace],
+    });
 
-    // todo: installUrbanOS(classRef, { dependsOn: [miniotenant, elasticsearch
-    //      postgres, strimzi, andiAuth0Secret, raptorAuth0Secret, redis] });
+    const elasticsearch = installElasticsearch(classRef, {
+      dependsOn: [namespace],
+    });
+
+    installUrbanOS(classRef, {
+      dependsOn: [
+        minioTenant,
+        postgresql,
+        strimziCRDs,
+        auth0,
+        redis,
+        elasticsearch,
+      ],
+    });
 
     //////////////////////////////////////////////////////////////////////////
     // Outputs

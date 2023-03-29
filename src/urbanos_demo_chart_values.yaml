@@ -150,25 +150,7 @@ discovery-ui:
     regenerate_api_key_ff: true
 
 elasticsearch:
-  # https://github.com/elastic/helm-charts/blob/v7.14.0/elasticsearch/values.yaml
   enabled: false
-  imageTag: "7.14.1"
-  clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
-  esConfig:
-    elasticsearch.yml: |
-      ingest.geoip.downloader.enabled: false
-  replicas: 1
-  resources:
-    requests:
-      cpu: 500m
-      memory: 1500M
-    limits:
-      cpu: 500m
-      memory: 1500M
-  volumeClaimTemplate:
-    resources:
-      requests:
-        storage: 500M
 
 kafka:
   enabled: true
@@ -205,11 +187,9 @@ kubernetes-data-platform:
 monitoring:
   enabled: false
 
-# see minio_operator_values.yaml, installed before urbanos helm release
 minio-operator:
   enabled: false
 
-# see minio_tenant_values.yaml, installed before urbanos helm release
 minio-tenant:
   enabled: false
 
@@ -357,11 +337,7 @@ forklift:
   aws:
     s3HostName: minio
     s3Port: 80
-  # NOTE: forklift is default, if good, remove.
-  kdp:
-    user: "forklift"
   kafka:
-    #comma delimited list of kafka seed brokers
     dataTopicPrefix: "validated"
     outputTopic: "streaming-persisted"
 

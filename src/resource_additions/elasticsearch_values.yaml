@@ -1,0 +1,18 @@
+# https://github.com/elastic/helm-charts/blob/v7.14.0/elasticsearch/values.yaml
+imageTag: "7.14.1"
+clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
+esConfig:
+  elasticsearch.yml: |
+    ingest.geoip.downloader.enabled: false
+replicas: 1
+resources:
+  requests:
+    cpu: 500m
+    memory: 1500M
+  limits:
+    cpu: 500m
+    memory: 1500M
+volumeClaimTemplate:
+  resources:
+    requests:
+      storage: 500M
