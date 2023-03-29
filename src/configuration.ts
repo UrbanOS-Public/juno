@@ -81,6 +81,20 @@ export class Config {
     });
   }
 
+  static get andiAuth0Secret() {
+    return this.getEnvVar({
+      varName: "JUNO_ANDI_AUTH0_CLIENT_SECRET",
+      errorMsg: "UrbanOS requires auth0 client secret for Andi service",
+    });
+  }
+
+  static get raptorAuth0Secret() {
+    return this.getEnvVar({
+      varName: "JUNO_RAPTOR_AUTH0_CLIENT_SECRET",
+      errorMsg: "UrbanOS requires auth0 client secret for Raptor service",
+    });
+  }
+
   private static getEnvVar(input: {
     varName: string;
     defaultValue?: string;

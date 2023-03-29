@@ -81,6 +81,26 @@ export const installMinioTenant = (
   });
 };
 
+export const installPostgresql = (
+  classRef: TerraformStack,
+  dependsOn: DependsOn
+) => {
+  new Release(classRef, "PostgresqlHelmRelease", {
+    name: "postgresql",
+    chart: "postgresql",
+    version: "12.1.14",
+    repository: "https://charts.bitnami.com/bitnami",
+    description:
+      "Install of Postgresql using values from the Juno terraform repo. Installed with the helm provider.",
+    namespace: "urbanos",
+    createNamespace: false,
+    values: [
+      loadFileContentsAsString("resource_additions/postgres_values.yaml"),
+    ],
+    ...dependsOn,
+  });
+};
+
 export const installIngressNginx = (
   classRef: TerraformStack,
   ip: PublicIp,

@@ -22,7 +22,9 @@ import {
 import {
   createUrbanOSNamespace,
   initializeKubectlProvider,
+  installAuth0Secrets,
   installIngresses,
+  installStrimziCRDs,
 } from "./kubectl";
 import {
   initializeHelm,
@@ -30,6 +32,7 @@ import {
   installIngressNginx,
   installMinioOperator,
   installMinioTenant,
+  installPostgresql,
   // installUrbanOS,
 } from "./helm";
 
@@ -72,15 +75,22 @@ class MyStack extends TerraformStack {
     installCertManager(classRef, {
       dependsOn: [namespace, dnsZone, ingressRelease],
     });
-    installIngresses(classRef, { dependsOn: [namespace] });
 
+    installIngresses(classRef, { dependsOn: [namespace] });
     const minioOperator = installMinioOperator(classRef, {
       dependsOn: [namespace],
     });
 
-    // todo: install postgres, dependsOn namespace
-    // todo: install strimzi CRDs, dependsOn namespace
-    // todo: install raptor + andi auth0 secrets, dependsOn namespace
+    installPostgresql(classRef, {
+      dependsOn: [namespace],
+    });
+
+    installStrimziCRDs(classRef, { dependsOn: [namespace] });
+
+    installAuth0Secrets(classRef, {
+      dependsOn: [namespace],
+    });
+
     // todo: install redis, dependsOn namespace
     // todo: install elasticsearch, dependsOn namespace
 

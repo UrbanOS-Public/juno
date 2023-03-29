@@ -2,6 +2,7 @@ import { TerraformStack, Fn } from "cdktf";
 import { KubernetesClusterKubeConfigOutputReference } from "../.gen/providers/azurerm/kubernetes-cluster";
 import { Manifest } from "../.gen/providers/kubectl/manifest";
 import { KubectlProvider } from "../.gen/providers/kubectl/provider";
+import { Config } from "./configuration";
 import { DependsOn, loadFileContentsAsString } from "./utils";
 
 /////////////////////////////////////////////////////
@@ -52,13 +53,57 @@ export const installIngresses = (
   });
 };
 
+export const installStrimziCRDs = (
+  classRef: TerraformStack,
+  dependsOn: DependsOn
+) =>
+  installResource(
+    classRef,
+    dependsOn,
+    "StrimziCRD",
+    "resource_additions/strimzi-crds-0.33.2.yaml"
+  );
+
+export const installAuth0Secrets = (
+  classRef: TerraformStack,
+  dependsOn: DependsOn
+) => {
+  const raptor = installResource(
+    classRef,
+    dependsOn,
+    "RaptorAuth0Secret",
+    "resource_additions/raptor_secret.yaml",
+    { key: "REPLACE-WITH-BASE64", value: btoa(Config.raptorAuth0Secret) }
+  );
+  return installResource(
+    classRef,
+    { dependsOn: [...dependsOn.dependsOn, raptor] },
+    // doesn't really require raptor but, this way what's returned represents
+    //     both resources added.
+    "AndiAuth0Secret",
+    "resource_additions/andi_secret.yaml",
+    { key: "REPLACE-WITH-BASE64", value: btoa(Config.andiAuth0Secret) }
+  );
+};
+
 const installResource = (
   classRef: TerraformStack,
   dependsOn: DependsOn,
   tfID: string,
-  yamlFile: string
-) =>
-  new Manifest(classRef, tfID, {
+  yamlFile: string,
+  secretInject?: {
+    key: string;
+    value: string;
+  }
+) => {
+  let yamlBody = loadFileContentsAsString(yamlFile);
+
+  if (secretInject) {
+    yamlBody = yamlBody.replace(secretInject.key, secretInject.value);
+  }
+
+  return new Manifest(classRef, tfID, {
     ...dependsOn,
-    yamlBody: loadFileContentsAsString(yamlFile),
+    yamlBody,
   });
+};

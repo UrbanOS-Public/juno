@@ -12,14 +12,14 @@ echo "Is your kubeconfig up to date? ./scripts/copy_new_kube_config.sh"
 
 # install postgres
 helm repo add bitnami https://charts.bitnami.com/bitnami
-helm upgrade postgresql bitnami/postgresql --install --version "12.1.14" --namespace urbanos -f src/resource_additions/postgres_values.yaml
+# helm upgrade postgresql bitnami/postgresql --install --version "12.1.14" --namespace urbanos -f src/resource_additions/postgres_values.yaml
 
 # install strimzi CRDs
-kubectl apply -f "src/resource_additions/strimzi-crds-0.33.2.yaml" -n urbanos
+# kubectl apply -f "src/resource_additions/strimzi-crds-0.33.2.yaml" -n urbanos
 
 # install auth0 secrets
-kubectl apply -f "src/resource_additions/andi_secret.yaml" -n urbanos
-kubectl apply -f "src/resource_additions/raptor_secret.yaml" -n urbanos
+# kubectl apply -f "src/resource_additions/andi_secret.yaml" -n urbanos
+# kubectl apply -f "src/resource_additions/raptor_secret.yaml" -n urbanos
 
 # install andi ingress
 # kubectl apply -f "src/resource_additions/andi_ingress.yaml" -n urbanos
