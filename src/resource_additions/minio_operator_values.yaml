@@ -1,3 +1,8 @@
-# https://github.com/minio/operator/blob/master/helm/operator/values.yaml
+# https://github.com/minio/operator/blob/v4.5.8/helm/operator/values.yaml
 operator:
   replicaCount: 1
+  resources:
+    requests:
+      cpu: 200m
+      memory: 250M
+      ephemeral-storage: 500Mi

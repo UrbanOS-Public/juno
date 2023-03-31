@@ -131,11 +131,18 @@ export const installElasticsearch = (
     ...dependsOn,
   });
 
+// + 0.025 per hour per ingress w resulting load balancer (~5 * .025)
+// + $.005 per GB transferred to consumers outside of the client
+// (aka usage of discovery suite, over standard load balancer)
+// https://azure.microsoft.com/en-us/pricing/details/load-balancer/#pricing
 export const installIngressNginx = (
   classRef: TerraformStack,
   ip: PublicIp,
   dependsOn: DependsOn
 ) =>
+  // because this release is wired up to the loadBalancerIP, if the azure
+  // networking connection isn't sound, domains aren't resolved, this helm release
+  // will fail
   new Release(classRef, "IngressNginxHelmRelease", {
     name: "ingress-nginx",
     chart: "ingress-nginx",

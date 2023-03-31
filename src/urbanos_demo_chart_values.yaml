@@ -69,6 +69,13 @@ andi:
   footer:
     rightLinks: '[{"linkText":"Powered by UrbanOS", "url":"https://github.com/UrbanOS-Public"}]'
   secureCookie: "false"
+  resources:
+    limits:
+      memory: 250M
+      cpu: 150m
+    requests:
+      memory: 250M
+      cpu: 150m
 
 discovery-api:
   enabled: true
@@ -105,6 +112,13 @@ discovery-api:
   aws:
     s3HostName: "minio"
     s3Port: 80
+  resources:
+    limits:
+      memory: 500M
+      cpu: 1
+    requests:
+      memory: 500M
+      cpu: 1
 
 discovery-streams:
   enabled: true
@@ -131,10 +145,10 @@ discovery-ui:
     enabled: false
   resources:
     limits:
-      memory: 512Mi
+      memory: 500M
       cpu: 300m
     requests:
-      memory: 512Mi
+      memory: 500M
       cpu: 300m
   env:
     disc_api_url: "https://data.urbanos-demo.com"
@@ -156,6 +170,13 @@ kafka:
   enabled: true
   strimzi-kafka-operator:
     enabled: true
+    resources:
+      limits:
+        memory: 400M
+        cpu: 500m
+      requests:
+        memory: 400M
+        cpu: 500m
   kafka:
     enabled: true
     storageSize: 4Gi
@@ -172,10 +193,10 @@ kafka:
     resources:
       requests:
         cpu: 200m
-        memory: 512Mi
+        memory: 500M
       limits:
         cpu: 200m
-        memory: 512Mi
+        memory: 500M
   kafkaExporter:
     enabled: false
   rbac:
@@ -299,10 +320,10 @@ alchemist:
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
+      memory: 500M
     requests:
       cpu: 250m
-      memory: 512Mi
+      memory: 500M
 
 valkyrie:
   enabled: true
@@ -316,10 +337,10 @@ valkyrie:
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
+      memory: 500M
     requests:
       cpu: 250m
-      memory: 512Mi
+      memory: 500M
 
 forklift:
   enabled: true

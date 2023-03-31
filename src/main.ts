@@ -121,11 +121,16 @@ class MyStack extends TerraformStack {
     //////////////////////////////////////////////////////////////////////////
     // Outputs
     // (tf commands run from cdk.out/juno/stacks, after cdktf synth from root)
-    // Ex retrieval: `tf output -state=terraform.juno.tfstate juno_kube_config`
-    // Ex retrieval: `tf output juno_kube_config`
+    // Ex retrieval: `terraform output -state=terraform.juno.tfstate juno_kube_config`
+    // Ex retrieval: `terraform output juno_kube_config`
     new TerraformOutput(this, "juno_kube_config", {
       value: cluster.kubeConfigRaw,
       sensitive: true,
+    });
+
+    new TerraformOutput(this, "ingress_load_balancer_ip", {
+      value: publicIPForCluster,
+      sensitive: false,
     });
   }
 }

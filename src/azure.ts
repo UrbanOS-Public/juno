@@ -1,5 +1,6 @@
 import { TerraformStack } from "cdktf";
 import { KubernetesCluster } from "../.gen/providers/azurerm/kubernetes-cluster";
+// import { KubernetesClusterNodePool } from "../.gen/providers/azurerm/kubernetes-cluster-node-pool";
 import { PublicIp } from "../.gen/providers/azurerm/public-ip";
 import { ResourceGroup } from "../.gen/providers/azurerm/resource-group";
 import { AzurermProvider } from "../.gen/providers/azurerm/provider";
@@ -41,17 +42,19 @@ export const createResourceGroup = (classRef: TerraformStack) =>
 
 // ref: https://github.com/tribe-health/cdk-typescript-azurerm-k8s/blob/9d99becc2cedd876571cd9f867763ae5f34d1746/main.ts#L35
 // ref: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster
-export const createCluster = (classRef: TerraformStack, rg: ResourceGroup) =>
-  new KubernetesCluster(classRef, `AzureCluster`, {
+export const createCluster = (classRef: TerraformStack, rg: ResourceGroup) => {
+  // az vm list-sizes --location eastus
+  // https://azure.microsoft.com/en-us/pricing/vm-selector/
+  // see resource_calculations.xlsx for compute pricing
+
+  const cluster = new KubernetesCluster(classRef, `AzureCluster`, {
     name: `${Config.resourcePrefix}-cluster`,
     location: rg.location,
     resourceGroupName: rg.name,
     dnsPrefix: Config.resourcePrefix,
     defaultNodePool: {
-      name: `clusterpool`,
-      // az vm list-sizes --location eastus
-      // vmSize: "Standard_B2s", // 4GB RAM, 8 GB Storage $.05 / hr
-      vmSize: "Standard_B2ms", //8GB RAM, 16 GB Storage $.1 / hr
+      name: `defaultpool`,
+      vmSize: "Standard_B2s", // 4GB RAM, 8 GB Storage $.05 / hr
       nodeCount: 7,
       tags: Config.tags,
     },
@@ -62,6 +65,20 @@ export const createCluster = (classRef: TerraformStack, rg: ResourceGroup) =>
     },
   });
 
+  // adding a new cluster pool, in attempt to take advantage of multiple
+  //   vmSizes, caused errors with the ingress install.
+  // new KubernetesClusterNodePool(classRef, "AddPoolOne", {
+  //   name: "poolone",
+  //   kubernetesClusterId: cluster.id,
+  //   vmSize: "Standard_B2ms", //8GB RAM, 16 GB Storage $.1 / hr
+  //   nodeCount: 3,
+  //   tags: Config.tags,
+  // });
+
+  return cluster;
+};
+
+// $2.63 a month https://azure.microsoft.com/en-us/pricing/details/ip-addresses/
 // https://github.com/hashicorp/terraform-provider-azurerm/issues/14849#issuecomment-1008341086
 export const reservePublicIP = (
   classRef: TerraformStack,
@@ -80,6 +97,7 @@ export const reservePublicIP = (
 export const getKubeConfFromCluster = (cluster: KubernetesCluster) =>
   cluster.kubeConfig.get(0);
 
+// .50 a month https://azure.microsoft.com/en-us/pricing/details/dns/
 export const createDNSZone = (classRef: TerraformStack, rg: ResourceGroup) =>
   new DnsZone(classRef, "DNSZone", {
     name: Config.URLWithSuffix,

@@ -14,7 +14,7 @@ primary:
   resources:
     limits: {}
     requests:
-      memory: 256Mi
+      memory: 250M
       cpu: 250m
   persistence:
     size: 1Gi
