@@ -46,6 +46,7 @@ export const createCluster = (classRef: TerraformStack, rg: ResourceGroup) => {
   // az vm list-sizes --location eastus
   // https://azure.microsoft.com/en-us/pricing/vm-selector/
   // see resource_calculations.xlsx for compute pricing
+  // https://azureprice.net/
 
   const cluster = new KubernetesCluster(classRef, `AzureCluster`, {
     name: `${Config.resourcePrefix}-cluster`,
@@ -55,7 +56,7 @@ export const createCluster = (classRef: TerraformStack, rg: ResourceGroup) => {
     defaultNodePool: {
       name: `defaultpool`,
       vmSize: "Standard_B2s", // 4GB RAM, 8 GB Storage $.05 / hr
-      nodeCount: 7,
+      nodeCount: 9,
       tags: Config.tags,
     },
     azurePolicyEnabled: true,
