@@ -13,8 +13,6 @@ import { initTFRemoteBackend } from "./remote_tf_state";
 import {
   assignUrbanOSDNSRecords,
   createCluster,
-  createDNSZone,
-  createResourceGroup,
   getKubeConfFromCluster,
   initializeAzureProvider,
   reservePublicIP,
@@ -51,12 +49,10 @@ class MyStack extends TerraformStack {
     ////////////////////////////////////////////////////////////////////////
     // Azure Setup
     initializeAzureProvider(classRef);
-    const rg = createResourceGroup(classRef);
-    const dnsZone = createDNSZone(classRef, rg);
-    const cluster = createCluster(classRef, rg);
+    const cluster = createCluster(classRef);
     const clusterKubeConf = getKubeConfFromCluster(cluster);
-    const publicIPForCluster = reservePublicIP(classRef, rg, cluster);
-    assignUrbanOSDNSRecords(classRef, dnsZone, rg, publicIPForCluster);
+    const publicIPForCluster = reservePublicIP(classRef, cluster);
+    assignUrbanOSDNSRecords(classRef, publicIPForCluster);
 
     /////////////////////////////////////////////////////
     // Initialize Kubectl to install additional resources.
@@ -72,10 +68,10 @@ class MyStack extends TerraformStack {
     initializeHelm(classRef, clusterKubeConf);
 
     const ingressRelease = installIngressNginx(classRef, publicIPForCluster, {
-      dependsOn: [namespace, dnsZone],
+      dependsOn: [namespace],
     });
     installCertManager(classRef, {
-      dependsOn: [namespace, dnsZone, ingressRelease],
+      dependsOn: [namespace, ingressRelease],
     });
 
     installIngresses(classRef, { dependsOn: [namespace] });

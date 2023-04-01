@@ -25,6 +25,16 @@ export class Config {
     });
   }
 
+  static get resourceGroupLocation() {
+    // too lazy to move to .env
+    return "eastus";
+  }
+
+  static get resourceGroupName() {
+    // too lazy to move to .env
+    return "urbanos-team";
+  }
+
   // May need to run `az account set --subscription=ID` in order for the
   //     underlying `az` binary to create resources + prompt login
   static get azureSubID() {

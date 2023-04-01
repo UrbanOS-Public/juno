@@ -1,12 +1,9 @@
 import { TerraformStack } from "cdktf";
 import { KubernetesCluster } from "../.gen/providers/azurerm/kubernetes-cluster";
-// import { KubernetesClusterNodePool } from "../.gen/providers/azurerm/kubernetes-cluster-node-pool";
 import { PublicIp } from "../.gen/providers/azurerm/public-ip";
-import { ResourceGroup } from "../.gen/providers/azurerm/resource-group";
 import { AzurermProvider } from "../.gen/providers/azurerm/provider";
 import { Config } from "./configuration";
 import { DnsARecord } from "../.gen/providers/azurerm/dns-a-record";
-import { DnsZone } from "../.gen/providers/azurerm/dns-zone";
 
 export const initializeAzureProvider = (classRef: TerraformStack) => {
   let credentials = {};
@@ -24,25 +21,21 @@ export const initializeAzureProvider = (classRef: TerraformStack) => {
     };
   }
   new AzurermProvider(classRef, "AzureRm", {
-    features: {
-      resourceGroup: {
-        preventDeletionIfContainsResources: false,
-      },
-    },
+    features: {},
     ...credentials,
   });
 };
 
-export const createResourceGroup = (classRef: TerraformStack) =>
-  new ResourceGroup(classRef, "ResourceGroup", {
-    name: `${Config.resourcePrefix}-resource-group`,
-    location: "eastus",
-    tags: Config.tags,
-  });
+// export const createResourceGroup = (classRef: TerraformStack) =>
+//   new ResourceGroup(classRef, "ResourceGroup", {
+//     name: `${Config.resourcePrefix}-resource-group`,
+//     location: "eastus",
+//     tags: Config.tags,
+//   });
 
 // ref: https://github.com/tribe-health/cdk-typescript-azurerm-k8s/blob/9d99becc2cedd876571cd9f867763ae5f34d1746/main.ts#L35
 // ref: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster
-export const createCluster = (classRef: TerraformStack, rg: ResourceGroup) => {
+export const createCluster = (classRef: TerraformStack) => {
   // az vm list-sizes --location eastus
   // https://azure.microsoft.com/en-us/pricing/vm-selector/
   // see resource_calculations.xlsx for compute pricing
@@ -50,13 +43,14 @@ export const createCluster = (classRef: TerraformStack, rg: ResourceGroup) => {
 
   const cluster = new KubernetesCluster(classRef, `AzureCluster`, {
     name: `${Config.resourcePrefix}-cluster`,
-    location: rg.location,
-    resourceGroupName: rg.name,
+    location: Config.resourceGroupLocation,
+    resourceGroupName: Config.resourceGroupName,
     dnsPrefix: Config.resourcePrefix,
     defaultNodePool: {
       name: `defaultpool`,
       vmSize: "Standard_B2s", // 4GB RAM, 8 GB Storage $.05 / hr
-      nodeCount: 9,
+      // todo: compare w standard B2ms
+      nodeCount: 11,
       tags: Config.tags,
     },
     azurePolicyEnabled: true,
@@ -83,12 +77,11 @@ export const createCluster = (classRef: TerraformStack, rg: ResourceGroup) => {
 // https://github.com/hashicorp/terraform-provider-azurerm/issues/14849#issuecomment-1008341086
 export const reservePublicIP = (
   classRef: TerraformStack,
-  rg: ResourceGroup,
   cluster: KubernetesCluster
 ) =>
   new PublicIp(classRef, "ClusterIPAddress", {
     name: "UrbanOSClusterIP",
-    location: rg.location,
+    location: Config.resourceGroupLocation,
     resourceGroupName: cluster.nodeResourceGroup,
     allocationMethod: "Static",
     sku: "Standard",
@@ -99,24 +92,22 @@ export const getKubeConfFromCluster = (cluster: KubernetesCluster) =>
   cluster.kubeConfig.get(0);
 
 // .50 a month https://azure.microsoft.com/en-us/pricing/details/dns/
-export const createDNSZone = (classRef: TerraformStack, rg: ResourceGroup) =>
-  new DnsZone(classRef, "DNSZone", {
-    name: Config.URLWithSuffix,
-    resourceGroupName: rg.name,
-    tags: Config.tags,
-  });
+// export const createDNSZone = (classRef: TerraformStack, rg: ResourceGroup) =>
+//   new DnsZone(classRef, "DNSZone", {
+//     name: Config.URLWithSuffix,
+//     resourceGroupName: rg.name,
+//     tags: Config.tags,
+//   });
 
 export const assignUrbanOSDNSRecords = (
   classRef: TerraformStack,
-  dnsZone: DnsZone,
-  rg: ResourceGroup,
   ip: PublicIp
 ) => {
   ["Discovery", "Andi", "Data", "Streams"].forEach((domain) => {
     new DnsARecord(classRef, `${domain}DomainRecord`, {
       name: domain.toLowerCase(),
-      zoneName: dnsZone.name,
-      resourceGroupName: rg.name,
+      zoneName: Config.URLWithSuffix,
+      resourceGroupName: Config.resourceGroupName,
       ttl: 300,
       records: [ip.ipAddress],
       tags: Config.tags,
