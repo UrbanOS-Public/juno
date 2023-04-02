@@ -8,8 +8,8 @@ global:
   kafka:
     brokers: pipeline-kafka-bootstrap:9092
   ingress:
-    dnsZone: "urbanos-demo.com"
-    rootDnsZone: "urbanos-demo.com"
+    dnsZone: "demo-urbanos.com"
+    rootDnsZone: "demo-urbanos.com"
   buckets:
     hostedFileBucket: "hosted-dataset-files"
     hiveStorageBucket: "presto-hive-storage"
@@ -151,15 +151,15 @@ discovery-ui:
       memory: 500M
       cpu: 300m
   env:
-    disc_api_url: "https://data.urbanos-demo.com"
-    disc_streams_url: "ws://streams.urbanos-demo.com"
-    disc_ui_url: "http://discovery.urbanos-demo.com"
+    disc_api_url: "https://data.demo-urbanos.com"
+    disc_streams_url: "ws://streams.demo-urbanos.com"
+    disc_ui_url: "http://discovery.demo-urbanos.com"
     streets_tile_layer_url: ""
     mapbox_access_token: ""
     auth0_domain: "urbanos-demo.us.auth0.com"
     auth0_client_id: "3o2V7xHvmV2nQjp1HapX68DzWvxVQdJ2"
     auth0_audience: "discovery_api"
-    additional_csp_hosts: "*.urbanos-demo.com"
+    additional_csp_hosts: "*.demo-urbanos.com"
     footer_right_links: '[{"linkText":"Powered by UrbanOS", "url":"https://github.com/UrbanOS-Public"}]'
     regenerate_api_key_ff: true
 
@@ -185,10 +185,10 @@ kafka:
     resources:
       requests:
         cpu: 500m
-        memory: 1000M
+        memory: 700M
       limits:
         cpu: 500m
-        memory: 1000M
+        memory: 700M
   zookeeper:
     resources:
       requests:
@@ -224,13 +224,13 @@ persistence:
       password: admin
       port: 5432
       name: trino_metastore
-  resources:
-    limits:
-      memory: 500M
-      cpu: 500m
-    requests:
-      memory: 500M
-      cpu: 500m
+    resources:
+      limits:
+        memory: 500M
+        cpu: 500m
+      requests:
+        memory: 500M
+        cpu: 500m
 
   trino:
     image:
@@ -239,22 +239,40 @@ persistence:
       workers: 1
 
     coordinator:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: agentpool
+                operator: In
+                values:
+                - highrampool
       resources:
         limits:
           memory: 3000M
-          cpu: 800m
+          cpu: 500m
         requests:
           memory: 3000M
-          cpu: 800m
+          cpu: 500m
 
     worker:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: agentpool
+                operator: In
+                values:
+                - highrampool
       resources:
         limits:
           memory: 3000M
-          cpu: 800m
+          cpu: 500m
         requests:
           memory: 3000M
-          cpu: 800m
+          cpu: 500m
 
     additionalCatalogs:
       hive: |
@@ -319,10 +337,10 @@ alchemist:
     outputTopicPrefix: "transformed"
   resources:
     limits:
-      cpu: 250m
+      cpu: 400m
       memory: 500M
     requests:
-      cpu: 250m
+      cpu: 400m
       memory: 500M
 
 valkyrie:

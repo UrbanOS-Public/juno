@@ -16,10 +16,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - discovery.urbanos-demo.com
+        - discovery.demo-urbanos.com
       secretName: discovery-tls-secret
   rules:
-    - host: discovery.urbanos-demo.com
+    - host: discovery.demo-urbanos.com
       http:
         paths:
           - path: /

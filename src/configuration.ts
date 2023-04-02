@@ -45,7 +45,7 @@ export class Config {
   }
 
   // demoMode is intended for github actions execution and effecting
-  //     urbanos-demo.com resources. Should not be enabled in other
+  //     demo-urbanos.com resources. Should not be enabled in other
   //     contexts or if developers are running the script locally for other
   //     domains.
   static get demoMode() {

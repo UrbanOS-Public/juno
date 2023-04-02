@@ -67,14 +67,15 @@ class MyStack extends TerraformStack {
     //     TLS renewal with let's encrypt
     initializeHelm(classRef, clusterKubeConf);
 
-    const ingressRelease = installIngressNginx(classRef, publicIPForCluster, {
+    const certManager = installCertManager(classRef, {
       dependsOn: [namespace],
     });
-    installCertManager(classRef, {
-      dependsOn: [namespace, ingressRelease],
+
+    const ingressNginx = installIngressNginx(classRef, publicIPForCluster, {
+      dependsOn: [namespace, certManager],
     });
 
-    installIngresses(classRef, { dependsOn: [namespace] });
+    installIngresses(classRef, { dependsOn: [ingressNginx] });
 
     const minioOperator = installMinioOperator(classRef, {
       dependsOn: [namespace],

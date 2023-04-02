@@ -24,7 +24,7 @@ export const initializeHelm = (
 export const installUrbanOS = (
   classRef: TerraformStack,
   dependsOn: DependsOn
-) => {
+) =>
   new Release(classRef, "UrbanOSHelmRelease", {
     name: "urbanos",
     chart: "urban-os",
@@ -39,7 +39,6 @@ export const installUrbanOS = (
     values: [loadFileContentsAsString("urbanos_demo_chart_values.yaml")],
     ...dependsOn,
   });
-};
 
 export const installMinioOperator = (
   classRef: TerraformStack,

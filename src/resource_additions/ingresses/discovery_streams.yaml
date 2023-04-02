@@ -9,10 +9,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - streams.urbanos-demo.com
+        - streams.demo-urbanos.com
       secretName: discovery-streams-tls-secret
   rules:
-    - host: streams.urbanos-demo.com
+    - host: streams.demo-urbanos.com
       http:
         paths:
           - path: /

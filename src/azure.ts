@@ -1,5 +1,6 @@
 import { TerraformStack } from "cdktf";
 import { KubernetesCluster } from "../.gen/providers/azurerm/kubernetes-cluster";
+import { KubernetesClusterNodePool } from "../.gen/providers/azurerm/kubernetes-cluster-node-pool";
 import { PublicIp } from "../.gen/providers/azurerm/public-ip";
 import { AzurermProvider } from "../.gen/providers/azurerm/provider";
 import { Config } from "./configuration";
@@ -49,8 +50,7 @@ export const createCluster = (classRef: TerraformStack) => {
     defaultNodePool: {
       name: `defaultpool`,
       vmSize: "Standard_B2s", // 4GB RAM, 8 GB Storage $.05 / hr
-      // todo: compare w standard B2ms
-      nodeCount: 11,
+      nodeCount: 5,
       tags: Config.tags,
     },
     azurePolicyEnabled: true,
@@ -60,15 +60,14 @@ export const createCluster = (classRef: TerraformStack) => {
     },
   });
 
-  // adding a new cluster pool, in attempt to take advantage of multiple
-  //   vmSizes, caused errors with the ingress install.
-  // new KubernetesClusterNodePool(classRef, "AddPoolOne", {
-  //   name: "poolone",
-  //   kubernetesClusterId: cluster.id,
-  //   vmSize: "Standard_B2ms", //8GB RAM, 16 GB Storage $.1 / hr
-  //   nodeCount: 3,
-  //   tags: Config.tags,
-  // });
+  // adding a new cluster pool, to take advantage of multiple vmSizes
+  new KubernetesClusterNodePool(classRef, "AddPoolOne", {
+    name: "highrampool",
+    kubernetesClusterId: cluster.id,
+    vmSize: "Standard_B2ms", //8GB RAM, 16 GB Storage $.1 / hr
+    nodeCount: 3,
+    tags: Config.tags,
+  });
 
   return cluster;
 };
