@@ -262,15 +262,15 @@ persistence:
           cpu: 500m
 
     # applies to worker and coordinator as of chart 0.8.0
-    affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: agentpool
-                operator: In
-                values:
-                - highrampool
+    # affinity:
+    #     nodeAffinity:
+    #       requiredDuringSchedulingIgnoredDuringExecution:
+    #         nodeSelectorTerms:
+    #         - matchExpressions:
+    #           - key: agentpool
+    #             operator: In
+    #             values:
+    #             - highrampool
 
     additionalCatalogs:
       hive: |
