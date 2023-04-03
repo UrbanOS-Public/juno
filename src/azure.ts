@@ -49,7 +49,7 @@ export const createCluster = (classRef: TerraformStack) => {
     dnsPrefix: Config.resourcePrefix,
     defaultNodePool: {
       name: `defaultpool`,
-      vmSize: "Standard_B2s", // 4GB RAM, 8 GB Storage $.05 / hr
+      vmSize: "Standard_B2s", // 4GB RAM, 8 GB Storage $.0416 / hr
       nodeCount: 5,
       tags: Config.tags,
     },
@@ -60,12 +60,19 @@ export const createCluster = (classRef: TerraformStack) => {
     },
   });
 
-  // adding a new cluster pool, to take advantage of multiple vmSizes
   new KubernetesClusterNodePool(classRef, "AddPoolOne", {
+    name: "medrampool",
+    kubernetesClusterId: cluster.id,
+    vmSize: "Standard_B2ms", //8GB RAM, 16 GB Storage $.0832 / hr
+    nodeCount: 1,
+    tags: Config.tags,
+  });
+
+  new KubernetesClusterNodePool(classRef, "AddPoolTwo", {
     name: "highrampool",
     kubernetesClusterId: cluster.id,
-    vmSize: "Standard_B2ms", //8GB RAM, 16 GB Storage $.1 / hr
-    nodeCount: 3,
+    vmSize: "Standard_B4ms", //16GB RAM, 32 GB Storage $.166 / hr
+    nodeCount: 1,
     tags: Config.tags,
   });
 
