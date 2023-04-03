@@ -2,30 +2,12 @@ name: Teardown UrbanOS
 
 on:
   workflow_dispatch:
-    inputs:
-      entered_kickoff_password:
-        description: "Password to start UrbanOS Teardown"
-        required: true
 
 jobs:
   Teardown_UrbanOS:
     runs-on: ubuntu-latest
     environment: Actions
     steps:
-      - name: Verify Password
-        id: verifypassword
-        shell: bash
-        run: |
-          if [ "$KICKOFF_PASSWORD" == "$ENTERED_KICKOFF_PASSWORD" ]; then
-            echo "Password entered correctly"
-          else
-            echo "Incorrect password entered"
-            exit 1
-          fi
-        env:
-          KICKOFF_PASSWORD: ${{secrets.KICKOFF_PASSWORD}}
-          ENTERED_KICKOFF_PASSWORD: ${{github.event.inputs.entered_kickoff_password}}
-
       - uses: actions/checkout@v2
 
       - uses: actions/setup-node@v2
