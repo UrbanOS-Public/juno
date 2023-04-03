@@ -12,7 +12,9 @@ architecture: standalone
 
 primary:
   resources:
-    limits: {}
+    limits:
+      memory: 250M
+      cpu: 250m
     requests:
       memory: 250M
       cpu: 250m
