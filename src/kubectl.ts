@@ -90,13 +90,33 @@ export const installAuth0Secrets = (
 export const installStreamsToEventHubSecrets = (
   classRef: TerraformStack,
   dependsOn: DependsOn
+) => {
+  const api_key = installResource(
+    classRef,
+    dependsOn,
+    "Auth0ApiKeySecret",
+    "resource_additions/auth0_user_api_key.yaml",
+    { key: "REPLACE-WITH-BASE64", value: btoa(Config.auth0ApiKey) }
+  );
+
+  return installResource(
+    classRef,
+    { dependsOn: [...dependsOn.dependsOn, api_key] },
+    "EventHubURLSecret",
+    "resource_additions/event_hub_secret.yaml",
+    { key: "REPLACE-WITH-BASE64", value: btoa(Config.eventHubURL) }
+  );
+};
+
+export const installMinioUser = (
+  classRef: TerraformStack,
+  dependsOn: DependsOn
 ) =>
   installResource(
     classRef,
     dependsOn,
-    "EventHubURLSecret",
-    "resource_additions/event_hub_secret.yaml",
-    { key: "REPLACE-WITH-BASE64", value: btoa(Config.eventHubURL) }
+    "MinioUser",
+    "resource_additions/minio_user.yaml"
   );
 
 const installResource = (

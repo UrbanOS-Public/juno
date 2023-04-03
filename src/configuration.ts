@@ -64,6 +64,13 @@ export class Config {
       : false;
   }
 
+  static get auth0ApiKey() {
+    return this.getEnvVar({
+      varName: "AUTH0_USER_API_KEY",
+      defaultValue: "",
+    });
+  }
+
   // tag to put on all created resources, helpful for billing info + confirming
   //     that resources related to this terraform has been entirely removed
   static get tags() {

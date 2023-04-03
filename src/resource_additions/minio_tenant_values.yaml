@@ -32,10 +32,15 @@ tenant:
           memory: 500M
 
   ## List of bucket names to create during tenant provisioning
-  # https://github.com/minio/operator/issues/1002#issuecomment-1028393926
   buckets:
     - name: "hosted-dataset-files"
     - name: "presto-hive-storage"
+
+  # works because "minio_user.yaml" was applied prior to tenant install
+  # required in order to create buckets
+  # https://github.com/minio/operator/issues/1002#issuecomment-1028393926
+  users:
+    - name: "minio-user"
 
   prometheus:
     # When set to true disables the creation of prometheus deployment

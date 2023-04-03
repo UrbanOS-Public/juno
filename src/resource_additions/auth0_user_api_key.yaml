@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: streams-api-key
+  namespace: urbanos
+type: Opaque
+data:
+  streams-api-key: REPLACE-WITH-BASE64

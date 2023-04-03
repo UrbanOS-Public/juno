@@ -5,7 +5,7 @@ import { HelmProvider } from "../.gen/providers/helm/provider";
 import { Release } from "../.gen/providers/helm/release";
 import { Manifest } from "../.gen/providers/kubectl/manifest";
 import { Config } from "./configuration";
-import { installStreamsToEventHubSecrets } from "./kubectl";
+import { installMinioUser, installStreamsToEventHubSecrets } from "./kubectl";
 import { DependsOn, loadFileContentsAsString } from "./utils";
 
 export const initializeHelm = (
@@ -35,10 +35,9 @@ export const installUrbanOS = (
       "Install of UrbanOS using values from the Juno terraform repo. Installed with the helm provider.",
     namespace: "urbanos",
     createNamespace: false,
-    recreatePods: true,
-    forceUpdate: true,
     values: [loadFileContentsAsString("urbanos_demo_chart_values.yaml")],
     ...dependsOn,
+    timeout: 600,
   });
 
 export const installMinioOperator = (
@@ -63,8 +62,10 @@ export const installMinioOperator = (
 export const installMinioTenant = (
   classRef: TerraformStack,
   dependsOn: DependsOn
-) =>
-  new Release(classRef, "MinioTenantHelmRelease", {
+) => {
+  const user = installMinioUser(classRef, dependsOn);
+
+  return new Release(classRef, "MinioTenantHelmRelease", {
     name: "minio-tenant",
     chart: "tenant",
     version: "4.5.8",
@@ -76,8 +77,9 @@ export const installMinioTenant = (
     values: [
       loadFileContentsAsString("resource_additions/minio_tenant_values.yaml"),
     ],
-    ...dependsOn,
+    dependsOn: [...dependsOn.dependsOn, user],
   });
+};
 
 export const installPostgresql = (
   classRef: TerraformStack,
@@ -152,19 +154,28 @@ export const installStreamsToEventHub = (
   classRef: TerraformStack,
   dependsOn: DependsOn
 ) => {
-  const secret = installStreamsToEventHubSecrets(classRef, dependsOn);
+  const secrets = installStreamsToEventHubSecrets(classRef, dependsOn);
 
-  return new Release(classRef, "MockCVEHelmRelease", {
+  return new Release(classRef, "SteamsToEventHubRelease", {
     name: "streams-to-event-hub",
     chart: "streams-to-event-hub",
-    version: "0.0.2",
+    version: "0.0.6",
     repository: "https://urbanos-public.github.io/streams-to-event-hub",
     description:
       "Install of StreamsToEventHub using values from the Juno terraform repo. Installed with the helm provider.",
     namespace: "urbanos",
     createNamespace: false,
-    values: [],
-    dependsOn: [...dependsOn.dependsOn, secret],
+    set: [
+      {
+        name: "sourceStreamsUrl",
+        value: "wss://streams.demo-urbanos.com/socket/websocket",
+      },
+      {
+        name: "streamsTopic",
+        value: "streaming:traffic_center__connected_vehicle_live_data",
+      },
+    ],
+    dependsOn: [...dependsOn.dependsOn, secrets],
   });
 };
 
