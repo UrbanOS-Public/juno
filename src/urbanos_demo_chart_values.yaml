@@ -42,7 +42,12 @@ global:
 andi:
   enabled: true
   image:
-    tag: 2.5.53
+    # versions newer than march 2023 will break the "initialize ingestions"
+    # script. Calls there will now require a user auth0 key, which is great,
+    # but making that a problem for the future, since at the moment no images
+    # for smartcitiesdata are being cut, and I don't want to pin to the always
+    # changing "development"
+    tag: 2.5.53 # jan 30th 2023
   ingress:
     tls: true
     enabled: false
@@ -239,15 +244,6 @@ persistence:
       workers: 1
 
     coordinator:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: agentpool
-                operator: In
-                values:
-                - highrampool
       resources:
         limits:
           memory: 3000M
@@ -257,7 +253,16 @@ persistence:
           cpu: 500m
 
     worker:
-      affinity:
+      resources:
+        limits:
+          memory: 3000M
+          cpu: 500m
+        requests:
+          memory: 3000M
+          cpu: 500m
+
+    # applies to worker and coordinator as of chart 0.8.0
+    affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
@@ -266,13 +271,6 @@ persistence:
                 operator: In
                 values:
                 - highrampool
-      resources:
-        limits:
-          memory: 3000M
-          cpu: 500m
-        requests:
-          memory: 3000M
-          cpu: 500m
 
     additionalCatalogs:
       hive: |
