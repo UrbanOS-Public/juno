@@ -121,7 +121,7 @@ export class Config {
     const envVar = process.env[varName];
     if (envVar) {
       return envVar;
-    } else if (defaultValue) {
+    } else if (defaultValue != undefined) {
       return defaultValue;
     } else {
       throw Error(

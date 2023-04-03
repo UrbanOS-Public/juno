@@ -152,10 +152,7 @@ export const installStreamsToEventHub = (
   classRef: TerraformStack,
   dependsOn: DependsOn
 ) => {
-  const secret = installStreamsToEventHubSecrets(
-    classRef,
-    dependsOn
-  )
+  const secret = installStreamsToEventHubSecrets(classRef, dependsOn);
 
   return new Release(classRef, "MockCVEHelmRelease", {
     name: "streams-to-event-hub",
@@ -167,7 +164,7 @@ export const installStreamsToEventHub = (
     namespace: "urbanos",
     createNamespace: false,
     values: [],
-    {dependsOn: [...dependsOn.dependsOn, secret]}
+    dependsOn: [...dependsOn.dependsOn, secret],
   });
 };
 
