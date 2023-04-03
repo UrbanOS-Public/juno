@@ -18,3 +18,4 @@ helm_template_output.yaml
 .DS_Store
 graph.png
 -approve/
+response.txt
