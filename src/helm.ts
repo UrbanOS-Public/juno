@@ -130,6 +130,23 @@ export const installElasticsearch = (
     ...dependsOn,
   });
 
+export const installMockCVEData = (
+  classRef: TerraformStack,
+  dependsOn: DependsOn
+) =>
+  new Release(classRef, "MockCVEHelmRelease", {
+    name: "mock-cve-data",
+    chart: "mock-cve-data",
+    version: "0.0.3",
+    repository: "https://urbanos-public.github.io/mock-cve-data",
+    description:
+      "Install of MockCVE using values from the Juno terraform repo. Installed with the helm provider.",
+    namespace: "urbanos",
+    createNamespace: false,
+    values: [],
+    ...dependsOn,
+  });
+
 // + 0.025 per hour per ingress w resulting load balancer (~5 * .025)
 // + $.005 per GB transferred to consumers outside of the client
 // (aka usage of discovery suite, over standard load balancer)

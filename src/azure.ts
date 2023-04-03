@@ -102,7 +102,7 @@ export const assignUrbanOSDNSRecords = (
   classRef: TerraformStack,
   ip: PublicIp
 ) => {
-  ["Discovery", "Andi", "Data", "Streams"].forEach((domain) => {
+  ["Discovery", "Andi", "Data", "Streams", "Crash"].forEach((domain) => {
     new DnsARecord(classRef, `${domain}DomainRecord`, {
       name: domain.toLowerCase(),
       zoneName: Config.URLWithSuffix,

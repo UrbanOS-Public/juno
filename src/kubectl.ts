@@ -43,6 +43,7 @@ export const installIngresses = (
     ["discovery_api.yaml", "API"],
     ["discovery_streams.yaml", "Streams"],
     ["discovery_ui.yaml", "UI"],
+    ["crash.yaml", "Crash"],
   ].forEach(([ingress_file, label]) => {
     installResource(
       classRef,

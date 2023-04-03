@@ -31,6 +31,7 @@ import {
   installIngressNginx,
   installMinioOperator,
   installMinioTenant,
+  installMockCVEData,
   installPostgresql,
   installRedis,
   installUrbanOS,
@@ -104,7 +105,7 @@ class MyStack extends TerraformStack {
       dependsOn: [namespace],
     });
 
-    installUrbanOS(classRef, {
+    const urbanos = installUrbanOS(classRef, {
       dependsOn: [
         minioTenant,
         postgresql,
@@ -113,6 +114,10 @@ class MyStack extends TerraformStack {
         redis,
         elasticsearch,
       ],
+    });
+
+    installMockCVEData(classRef, {
+      dependsOn: [urbanos],
     });
 
     //////////////////////////////////////////////////////////////////////////
