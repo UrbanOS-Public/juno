@@ -53,11 +53,14 @@ those references can be made in "configuration.ts"
     environments would be much smoother if charts didn't always point to
     "development" image tag, and image versions were cut more often)
   - PS. I noticed andi now has API protection, so "initialize_andi.sh" might
-    need to be upgraded to include support for providing an auth0 user secret
+    need to be upgraded to include support for providing an auth0 user secret.
+    Additionally, "initialize_andi" will need to be updated / replaced with
+    something that supports dynamic ids coming back from endpoints.
 - It takes a lot of time to destroy / reapply, just to fix urbanos bugs that
   have nothing to do w azure resources. Could be a "refresh urbanos" action,
-  that helm uninstalls everything, then runs the terraform apply action again to
-  create only the helm releases and reuse existing azure resources.
+  that helm uninstalls everything + manually deletes pvcs + secrets, then runs
+  the terraform apply action again to create only the helm releases and reuse
+  existing azure resources.
 
 ### Using this repo to creating your own instance of UrbanOS
 
