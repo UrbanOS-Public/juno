@@ -41,21 +41,21 @@ if [[ $* != *--skip-health-check* ]]; then
   fi
 fi
 
-Echo "Creating traffic center organization"
+echo "Creating traffic center organization"
 res_code=$(curl -s -o response.txt -w "%{http_code}" -d "@scripts/initialize_andi_req_data/create_org_two.json" -H "Content-Type: application/json" -X POST https://andi.demo-urbanos.com/api/v1/organization)
 confirm_success
 sleep 5
 
-Echo "Creating crash dataset"
+echo "Creating crash dataset"
 res_code=$(curl -s -o response.txt -w "%{http_code}" -d "@scripts/initialize_andi_req_data/create_crash_dataset.json" -H "Content-Type: application/json" -X PUT https://andi.demo-urbanos.com/api/v1/dataset)
 confirm_success
 sleep 5
 
-Echo "Drafting crash ingestion"
+echo "Drafting crash ingestion"
 res_code=$(curl -s -o response.txt -w "%{http_code}" -d "@scripts/initialize_andi_req_data/create_crash_ingestion.json" -H "Content-Type: application/json" -X PUT https://andi.demo-urbanos.com/api/v1/ingestion)
 confirm_success
 sleep 5
 
-Echo "Publishing drafted crash ingestion"
+echo "Publishing drafted crash ingestion"
 res_code=$(curl -s -o response.txt -w "%{http_code}" -X POST "https://andi.demo-urbanos.com/api/v1/ingestion/publish?id=a9ab987d-fcce-4ee7-94b4-9b87588a1c68")
 confirm_success
