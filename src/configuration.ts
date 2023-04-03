@@ -35,6 +35,13 @@ export class Config {
     return "urbanos-team";
   }
 
+  static get eventHubURL() {
+    return this.getEnvVar({
+      varName: "JUNO_EVENT_HUB_URL",
+      defaultValue: "",
+    });
+  }
+
   // May need to run `az account set --subscription=ID` in order for the
   //     underlying `az` binary to create resources + prompt login
   static get azureSubID() {

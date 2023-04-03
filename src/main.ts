@@ -34,6 +34,7 @@ import {
   installMockCVEData,
   installPostgresql,
   installRedis,
+  installStreamsToEventHub,
   installUrbanOS,
 } from "./helm";
 
@@ -116,9 +117,15 @@ class MyStack extends TerraformStack {
       ],
     });
 
-    installMockCVEData(classRef, {
+    const mockCVEData = installMockCVEData(classRef, {
       dependsOn: [urbanos],
     });
+
+    if (Config.eventHubURL) {
+      installStreamsToEventHub(classRef, {
+        dependsOn: [mockCVEData],
+      });
+    }
 
     //////////////////////////////////////////////////////////////////////////
     // Outputs

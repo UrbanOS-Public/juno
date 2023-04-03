@@ -5,6 +5,7 @@ import { HelmProvider } from "../.gen/providers/helm/provider";
 import { Release } from "../.gen/providers/helm/release";
 import { Manifest } from "../.gen/providers/kubectl/manifest";
 import { Config } from "./configuration";
+import { installStreamsToEventHubSecrets } from "./kubectl";
 import { DependsOn, loadFileContentsAsString } from "./utils";
 
 export const initializeHelm = (
@@ -146,6 +147,29 @@ export const installMockCVEData = (
     values: [],
     ...dependsOn,
   });
+
+export const installStreamsToEventHub = (
+  classRef: TerraformStack,
+  dependsOn: DependsOn
+) => {
+  const secret = installStreamsToEventHubSecrets(
+    classRef,
+    dependsOn
+  )
+
+  return new Release(classRef, "MockCVEHelmRelease", {
+    name: "streams-to-event-hub",
+    chart: "streams-to-event-hub",
+    version: "0.0.2",
+    repository: "https://urbanos-public.github.io/streams-to-event-hub",
+    description:
+      "Install of StreamsToEventHub using values from the Juno terraform repo. Installed with the helm provider.",
+    namespace: "urbanos",
+    createNamespace: false,
+    values: [],
+    {dependsOn: [...dependsOn.dependsOn, secret]}
+  });
+};
 
 // + 0.025 per hour per ingress w resulting load balancer (~5 * .025)
 // + $.005 per GB transferred to consumers outside of the client

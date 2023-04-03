@@ -87,6 +87,18 @@ export const installAuth0Secrets = (
   );
 };
 
+export const installStreamsToEventHubSecrets = (
+  classRef: TerraformStack,
+  dependsOn: DependsOn
+) =>
+  installResource(
+    classRef,
+    dependsOn,
+    "EventHubURLSecret",
+    "resource_additions/event_hub_secret.yaml",
+    { key: "REPLACE-WITH-BASE64", value: btoa(Config.eventHubURL) }
+  );
+
 const installResource = (
   classRef: TerraformStack,
   dependsOn: DependsOn,

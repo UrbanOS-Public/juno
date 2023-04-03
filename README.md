@@ -21,26 +21,43 @@ those references can be made in "configuration.ts"
 
 ## Notes
 
-- This instance has it's own tenant "urbanos-demo". Contact
-  "benjamin.mitchinson@accenture.com" to be added as a user or admin.
+- This instance has it's own auth0 tenant "urbanos-demo". Contact
+  "benjamin.mitchinson@accenture.com" to be added as a user or admin. A login
+  at that tenant is required to access Andi or Discovery
+- See [this commit](https://github.com/UrbanOS-Public/juno/commit/14743c8b8ce1203420330a0e5c10578f7c3d7445)
+  for an example of adding a new ingress / subdomain
+- Secrets used in github actions are added as "environment" secrets, not repo
+  secrets.
 
 ## Billing
 
-- All Azure resources are created with `juno-terraform` in the event they
-  need to be manually removed from Azure / identified for billing.
--
+- Cost per hour of the entire environment is about $.47 an hour. A breakdown
+  of cost is available in resource_calculations.xlsx
+- All Azure resources are created with the `environment` tag `juno-terraform`
+  in the event they need to be manually removed from Azure / identified for
+  billing.
 
-## Future upgrades
+## Future upgrades / ideas
 
-- UrbanOS charts aren't pinned to an image release of apps in smartcitiesdata
-  repo. Upgrading to latest (past the Jan30th version freeze implemented here),
-  will require
-  - upgrading the chart version installed in helm.ts
-  - altering chart values to correspond with this new chart version
-  - pinning images at a release tag (or preferably, pinning those in the charts
-    repo itself)
+- The data ingested by default isn't super interesting, lets find exciting
+  data and have it be created by default!
+- Kafka might need to be set to a highrampool affinity, like the trino
+  worker / coordinators are. Requires a chart update to allow affinity as a
+  value of the "kafka" chart.
+- Images are pinned at January 30th 2023. Upgrading to newer versions will
+  require:
+  - upgrading the urbanos chart version installed in helm.ts
+  - altering urbanos_demo_chart_values to correspond with this new chart version
+  - pinning each urbanos image in urbanos_demo_chart_values at a release tag
+    (or preferably, pinning those in the charts repo itself. Upgrading all
+    environments would be much smoother if charts didn't always point to
+    "development" image tag, and image versions were cut more often)
   - PS. I noticed andi now has API protection, so "initialize_andi.sh" might
     need to be upgraded to include support for providing an auth0 user secret
+- It takes a lot of time to destroy / reapply, just to fix urbanos bugs that
+  have nothing to do w azure resources. Could be a "refresh urbanos" action,
+  that helm uninstalls everything, then runs the terraform apply action again to
+  create only the helm releases and reuse existing azure resources.
 
 ### Using this repo to creating your own instance of UrbanOS
 
@@ -48,6 +65,7 @@ Create your own instance of UrbanOS, separate from the Demo instance that
 the github workflow here creates.
 
 Instructions TODO, but running `cdktf apply` from root and editing `.env` should
-be most of it.
+be most of it. You'll need your own domain or resource group ahead of time for
+this terraform to deploy into.
 
 [Notes on using CDKTF are here](/notes/cdktf.md)
