@@ -1,0 +1,138 @@
+{
+  "id": "a9ab987d-fcce-4ee7-94b4-9b87588a1c68",
+  "targetDataset": "1c4812ec-999d-4bc9-a0da-0e790206ad90",
+  "name": "Crash Ingestion",
+  "allow_duplicates": true,
+  "cadence": "*/10 * * * * *",
+  "extractSteps": [
+    {
+      "assigns": {},
+      "context": {
+        "action": "GET",
+        "body": {},
+        "headers": {},
+        "protocol": null,
+        "queryParams": {},
+        "url": "https://crash.demo-urbanos.com/data"
+      },
+      "id": "1d94aca1-f2b7-4abe-96e3-1ee2dae8a168",
+      "ingestion_id": "a9ab987d-fcce-4ee7-94b4-9b87588a1c68",
+      "sequence": 2,
+      "type": "http"
+    }
+  ],
+  "schema": [
+    {
+      "biased": "No",
+      "demographic": "None",
+      "description": "",
+      "ingestion_id": "a9ab987d-fcce-4ee7-94b4-9b87588a1c68",
+      "masked": "N/A",
+      "name": "crash_type",
+      "pii": "None",
+      "sequence": 11,
+      "subSchema": [],
+      "type": "string"
+    },
+    {
+      "biased": "No",
+      "demographic": "None",
+      "description": "",
+      "ingestion_id": "a9ab987d-fcce-4ee7-94b4-9b87588a1c68",
+      "masked": "N/A",
+      "name": "is_crashed",
+      "pii": "None",
+      "sequence": 12,
+      "subSchema": [],
+      "type": "boolean"
+    },
+    {
+      "biased": "No",
+      "demographic": "None",
+      "description": "",
+      "ingestion_id": "a9ab987d-fcce-4ee7-94b4-9b87588a1c68",
+      "masked": "N/A",
+      "name": "lat",
+      "pii": "None",
+      "sequence": 13,
+      "subSchema": [],
+      "type": "string"
+    },
+    {
+      "biased": "No",
+      "demographic": "None",
+      "description": "",
+      "ingestion_id": "a9ab987d-fcce-4ee7-94b4-9b87588a1c68",
+      "masked": "N/A",
+      "name": "long",
+      "pii": "None",
+      "sequence": 14,
+      "subSchema": [],
+      "type": "string"
+    },
+    {
+      "biased": "No",
+      "demographic": "None",
+      "description": "",
+      "ingestion_id": "a9ab987d-fcce-4ee7-94b4-9b87588a1c68",
+      "masked": "N/A",
+      "name": "path_id",
+      "pii": "None",
+      "sequence": 15,
+      "subSchema": [],
+      "type": "string"
+    },
+    {
+      "biased": "No",
+      "demographic": "None",
+      "description": "",
+      "ingestion_id": "a9ab987d-fcce-4ee7-94b4-9b87588a1c68",
+      "masked": "N/A",
+      "name": "speed",
+      "pii": "None",
+      "sequence": 16,
+      "subSchema": [],
+      "type": "float"
+    },
+    {
+      "biased": "No",
+      "demographic": "None",
+      "description": "",
+      "ingestion_id": "a9ab987d-fcce-4ee7-94b4-9b87588a1c68",
+      "masked": "N/A",
+      "name": "speed_unit",
+      "pii": "None",
+      "sequence": 17,
+      "subSchema": [],
+      "type": "string"
+    },
+    {
+      "biased": "No",
+      "demographic": "None",
+      "description": "",
+      "format": "{ISO:Extended}",
+      "ingestion_id": "a9ab987d-fcce-4ee7-94b4-9b87588a1c68",
+      "masked": "N/A",
+      "name": "timestamp",
+      "pii": "None",
+      "sequence": 18,
+      "subSchema": [],
+      "type": "timestamp"
+    },
+    {
+      "biased": "No",
+      "demographic": "None",
+      "description": "",
+      "ingestion_id": "a9ab987d-fcce-4ee7-94b4-9b87588a1c68",
+      "masked": "N/A",
+      "name": "vehicle_id",
+      "pii": "None",
+      "sequence": 19,
+      "subSchema": [],
+      "type": "string"
+    }
+  ],
+  "sourceFormat": "application/json",
+  "topLevelSelector": null,
+  "transformations": []
+}

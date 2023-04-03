@@ -40,3 +40,6 @@ jobs:
           JUNO_DOMAIN_WITH_SUFFIX: ${{secrets.JUNO_DOMAIN_WITH_SUFFIX}}
           JUNO_ANDI_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_ANDI_AUTH0_CLIENT_SECRET}}
           JUNO_RAPTOR_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_RAPTOR_AUTH0_CLIENT_SECRET}}
+
+      - name: Initialize Andi Sample Datasets
+        run: ./scripts/initialize_andi_req_data/initialize_andi.sh
