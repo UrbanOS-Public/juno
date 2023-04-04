@@ -51,7 +51,7 @@ class MyStack extends TerraformStack {
     ////////////////////////////////////////////////////////////////////////
     // Azure Setup
     initializeAzureProvider(classRef);
-    const cluster = createCluster(classRef);
+    const { cluster, medram, highram } = createCluster(classRef);
     const clusterKubeConf = getKubeConfFromCluster(cluster);
     const publicIPForCluster = reservePublicIP(classRef, cluster);
     assignUrbanOSDNSRecords(classRef, publicIPForCluster);
@@ -114,6 +114,9 @@ class MyStack extends TerraformStack {
         auth0,
         redis,
         elasticsearch,
+        cluster,
+        medram,
+        highram,
       ],
     });
 

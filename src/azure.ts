@@ -60,7 +60,7 @@ export const createCluster = (classRef: TerraformStack) => {
     },
   });
 
-  new KubernetesClusterNodePool(classRef, "AddPoolOne", {
+  const medram = new KubernetesClusterNodePool(classRef, "AddPoolOne", {
     name: "medrampool",
     kubernetesClusterId: cluster.id,
     vmSize: "Standard_B2ms", //8GB RAM, 16 GB Storage $.0832 / hr
@@ -68,7 +68,7 @@ export const createCluster = (classRef: TerraformStack) => {
     tags: Config.tags,
   });
 
-  new KubernetesClusterNodePool(classRef, "AddPoolTwo", {
+  const highram = new KubernetesClusterNodePool(classRef, "AddPoolTwo", {
     name: "highrampool",
     kubernetesClusterId: cluster.id,
     vmSize: "Standard_B4ms", //16GB RAM, 32 GB Storage $.166 / hr
@@ -76,7 +76,7 @@ export const createCluster = (classRef: TerraformStack) => {
     tags: Config.tags,
   });
 
-  return cluster;
+  return { cluster, medram, highram };
 };
 
 // $2.63 a month https://azure.microsoft.com/en-us/pricing/details/ip-addresses/
