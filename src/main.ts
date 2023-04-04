@@ -77,8 +77,6 @@ class MyStack extends TerraformStack {
       dependsOn: [namespace, certManager],
     });
 
-    installIngresses(classRef, { dependsOn: [ingressNginx] });
-
     const minioOperator = installMinioOperator(classRef, {
       dependsOn: [namespace],
     });
@@ -116,6 +114,8 @@ class MyStack extends TerraformStack {
         elasticsearch,
       ],
     });
+
+    installIngresses(classRef, { dependsOn: [ingressNginx, urbanos] });
 
     const mockCVEData = installMockCVEData(classRef, { dependsOn: [urbanos] });
 
