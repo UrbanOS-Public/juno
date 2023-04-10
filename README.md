@@ -22,7 +22,7 @@ those references can be made in "configuration.ts"
 ## Notes
 
 - This instance has it's own auth0 tenant "urbanos-demo". Contact
-  "benjamin.mitchinson@accenture.com" to be added as a user or admin. A login
+  Fred Estabrook to be added as a user or admin. A login
   at that tenant is required to access Andi or Discovery
 - See [this commit](https://github.com/UrbanOS-Public/juno/commit/14743c8b8ce1203420330a0e5c10578f7c3d7445)
   for an example of adding a new ingress / subdomain
