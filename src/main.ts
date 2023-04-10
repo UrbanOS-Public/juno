@@ -125,6 +125,8 @@ class MyStack extends TerraformStack {
       installStreamsToEventHub(classRef, {
         dependsOn: [mockCVEData],
       });
+    } else {
+      console.log("EVENTHUB WILL *NOT* BE INSTALLED");
     }
 
     // wait to install ingresses until mockCVE and urbanos are deployed, so that
