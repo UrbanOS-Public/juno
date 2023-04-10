@@ -45,7 +45,7 @@ export const createCluster = (classRef: TerraformStack) => {
   const date = new Date();
 
   const cluster = new KubernetesCluster(classRef, `AzureCluster`, {
-    name: `${date.getMonth()}-${date.getDate()}-${
+    name: `${date.getMonth() + 1}-${date.getDate()}-${
       Config.resourcePrefix
     }-cluster`,
     location: Config.resourceGroupLocation,
