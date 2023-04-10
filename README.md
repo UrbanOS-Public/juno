@@ -41,9 +41,9 @@ those references can be made in "configuration.ts"
 
 - The data ingested by default isn't super interesting, lets find exciting
   data and have it be created by default!
-- Kafka might need to be set to a highrampool affinity, like the trino
-  worker / coordinators are. Requires a chart update to allow affinity as a
-  value of the "kafka" chart.
+  - Andi is initialized with a bash script, but it would be easier to
+    generate API bodies (dynamic urls / ids) in another language to alter
+    json. The URL is hardcoded to demo-urbanos.com in a few places.
 - Images are pinned at January 30th 2023. Upgrading to newer versions will
   require:
   - upgrading the urbanos chart version installed in helm.ts
@@ -61,6 +61,22 @@ those references can be made in "configuration.ts"
   that helm uninstalls everything + manually deletes pvcs + secrets, then runs
   the terraform apply action again to create only the helm releases and reuse
   existing azure resources.
+- The environment can be stood up 5 times a week.
+  - This is because we're regenerating certs for ingresses upon environment
+    start. Lets Encrypt allows for 5 generations per specific URL. See
+    "cluster_issuer.yaml" for more information.
+  - To start the environment more than 5 times a week, we'll need to implement
+    a way to cache the generated certs, with a 90 day expiry. With that in place,
+    you'd be able to stand up the environment as many times as you want.
+  - Idea on how to accomplish this:
+    - Create a managed identity for the cluster, and allow that identity to write
+      to azure keyvault. Follow the following guides to auto generate the secrets
+      into azure keyvault.
+    - https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-nginx-tls#bind-certificate-to-ingress-controller
+    - https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml#L513
+    - https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-driver
+    - https://learn.microsoft.com/en-us/azure/aks/use-managed-identity
+    - https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-identity-access#code-try-7
 
 ### Using this repo to creating your own instance of UrbanOS
 

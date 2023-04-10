@@ -5,7 +5,13 @@ metadata:
   namespace: urbanos
 spec:
   acme:
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    server: https://acme-v02.api.letsencrypt.org/directory # prod
+    # server: https://acme-staging-v02.api.letsencrypt.org/directory # staging
+    # "staging" url works just as good as prod, but isn't considered a trusted
+    # CA :/
+    # prod letsencrypt usage limits: https://letsencrypt.org/docs/rate-limits/
+    # staging usage limits: https://letsencrypt.org/docs/staging-environment/
+    # if learning about caching certs, should practice first with staging.
     email: benjamin.mitchinson@accenture.com
     privateKeySecretRef:
       name: letsencrypt
