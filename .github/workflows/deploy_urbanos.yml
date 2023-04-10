@@ -49,4 +49,5 @@ jobs:
           JUNO_RAPTOR_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_RAPTOR_AUTH0_CLIENT_SECRET}}
 
       - name: Initialize Andi Sample Datasets
-        run: ! ${{github.events.inputs.skip-andi-init}} && ./scripts/initialize_andi_req_data/initialize_andi.sh
+        run: ./scripts/initialize_andi_req_data/initialize_andi.sh
+        if: github.events.inputs.skip-andi-init == false
