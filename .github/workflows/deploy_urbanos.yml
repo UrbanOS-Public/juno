@@ -2,6 +2,10 @@ name: Deploy UrbanOS
 
 on:
   workflow_dispatch:
+    inputs:
+      skip-andi-init:
+        type: boolean
+        description: Skip initializing Andi. Useful to skip if Andi has already been initialized.
 
 jobs:
   Deploy_UrbanOS:
@@ -41,5 +45,10 @@ jobs:
           JUNO_ANDI_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_ANDI_AUTH0_CLIENT_SECRET}}
           JUNO_RAPTOR_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_RAPTOR_AUTH0_CLIENT_SECRET}}
 
+  Initialize_Andi:
+    if: github.events.inputs.skip-andi-init == false
+    runs-on: ubuntu-latest
+    environment: Actions
+    steps:
       - name: Initialize Andi Sample Datasets
         run: ./scripts/initialize_andi_req_data/initialize_andi.sh
