@@ -77,8 +77,6 @@ class MyStack extends TerraformStack {
       dependsOn: [namespace, certManager],
     });
 
-    installIngresses(classRef, { dependsOn: [ingressNginx] });
-
     const minioOperator = installMinioOperator(classRef, {
       dependsOn: [namespace],
     });
@@ -127,6 +125,10 @@ class MyStack extends TerraformStack {
         dependsOn: [mockCVEData],
       });
     }
+
+    // wait to install ingresses until mockCVE and urbanos are deployed, so that
+    //   service challenges pass when generating certs
+    installIngresses(classRef, { dependsOn: [ingressNginx, mockCVEData] });
 
     //////////////////////////////////////////////////////////////////////////
     // Outputs
