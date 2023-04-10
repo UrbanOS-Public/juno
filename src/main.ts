@@ -121,6 +121,7 @@ class MyStack extends TerraformStack {
     const mockCVEData = installMockCVEData(classRef, { dependsOn: [urbanos] });
 
     if (Config.eventHubURL) {
+      console.log("EVENTHUB WILL BE INSTALLED");
       installStreamsToEventHub(classRef, {
         dependsOn: [mockCVEData],
       });
