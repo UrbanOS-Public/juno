@@ -18,36 +18,37 @@ jobs:
         with:
           node-version: 16.19.0
 
-      - run: npm ci
+      # - run: npm ci
 
-      - name: Generate module and provider bindings
-        run: npx cdktf-cli get
+      # - name: Generate module and provider bindings
+      #   run: npx cdktf-cli get
 
-      - name: Run Terraform CDK and Deploy UrbanOS
-        uses: hashicorp/terraform-cdk-action@v0.1.13
-        with:
-          terraformVersion: 1.3.7
-          cdktfVersion: 0.15.5
-          stackName: juno
-          mode: auto-approve-apply
-          commentOnPr: false
-        env:
-          # ensure edits to these are added to the "teardown_urbanos" workflow as well
-          JUNO_DEMO_MODE_ENABLED: ${{vars.JUNO_DEMO_MODE_ENABLED}}
-          JUNO_RESOURCE_PREFIX: ${{vars.JUNO_RESOURCE_PREFIX}}
-          # in order of env secrets of github action settings
-          AUTH0_USER_API_KEY: ${{secrets.AUTH0_USER_API_KEY}}
-          JUNO_ANDI_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_ANDI_AUTH0_CLIENT_SECRET}}
-          JUNO_AZURE_SUB_ID: ${{secrets.JUNO_AZURE_SUB_ID}}
-          JUNO_DEMO_AZURE_APP_ID: ${{secrets.JUNO_DEMO_AZURE_APP_ID}}
-          JUNO_DEMO_AZURE_PASSWORD: ${{secrets.JUNO_DEMO_AZURE_PASSWORD}}
-          JUNO_DEMO_AZURE_TENANT: ${{secrets.JUNO_DEMO_AZURE_TENANT}}
-          JUNO_DEMO_TF_BACKEND_KEY: ${{secrets.JUNO_DEMO_TF_BACKEND_KEY}}
-          JUNO_DOMAIN_NO_SUFFIX: ${{secrets.JUNO_DOMAIN_NO_SUFFIX}}
-          JUNO_DOMAIN_WITH_SUFFIX: ${{secrets.JUNO_DOMAIN_WITH_SUFFIX}}
-          JUNO_EVENT_HUB_URL: ${{secrets.JUNO_EVENT_HUB_URL}}
-          JUNO_RAPTOR_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_RAPTOR_AUTH0_CLIENT_SECRET}}
+      # - name: Run Terraform CDK and Deploy UrbanOS
+      #   uses: hashicorp/terraform-cdk-action@v0.1.13
+      #   with:
+      #     terraformVersion: 1.3.7
+      #     cdktfVersion: 0.15.5
+      #     stackName: juno
+      #     mode: auto-approve-apply
+      #     commentOnPr: false
+      #   env:
+      #     # ensure edits to these are added to the "teardown_urbanos" workflow as well
+      #     JUNO_DEMO_MODE_ENABLED: ${{vars.JUNO_DEMO_MODE_ENABLED}}
+      #     JUNO_RESOURCE_PREFIX: ${{vars.JUNO_RESOURCE_PREFIX}}
+      #     # in order of env secrets of github action settings
+      #     AUTH0_USER_API_KEY: ${{secrets.AUTH0_USER_API_KEY}}
+      #     JUNO_ANDI_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_ANDI_AUTH0_CLIENT_SECRET}}
+      #     JUNO_AZURE_SUB_ID: ${{secrets.JUNO_AZURE_SUB_ID}}
+      #     JUNO_DEMO_AZURE_APP_ID: ${{secrets.JUNO_DEMO_AZURE_APP_ID}}
+      #     JUNO_DEMO_AZURE_PASSWORD: ${{secrets.JUNO_DEMO_AZURE_PASSWORD}}
+      #     JUNO_DEMO_AZURE_TENANT: ${{secrets.JUNO_DEMO_AZURE_TENANT}}
+      #     JUNO_DEMO_TF_BACKEND_KEY: ${{secrets.JUNO_DEMO_TF_BACKEND_KEY}}
+      #     JUNO_DOMAIN_NO_SUFFIX: ${{secrets.JUNO_DOMAIN_NO_SUFFIX}}
+      #     JUNO_DOMAIN_WITH_SUFFIX: ${{secrets.JUNO_DOMAIN_WITH_SUFFIX}}
+      #     JUNO_EVENT_HUB_URL: ${{secrets.JUNO_EVENT_HUB_URL}}
+      #     JUNO_RAPTOR_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_RAPTOR_AUTH0_CLIENT_SECRET}}
 
       - name: Initialize Andi Sample Datasets
-        run: ./scripts/initialize_andi_req_data/initialize_andi.sh
         if: github.events.inputs.skip-andi-init == false
+        # run: ./scripts/initialize_andi_req_data/initialize_andi.sh
+        run: echo "init andi!"
