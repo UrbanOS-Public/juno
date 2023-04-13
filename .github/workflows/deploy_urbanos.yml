@@ -49,7 +49,7 @@ jobs:
           JUNO_RAPTOR_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_RAPTOR_AUTH0_CLIENT_SECRET}}
 
       - name: Deploy UrbanOS using generated terraform
-        run: cd cdktf.out/stacks/juno && terraform apply -refresh=false
+        run: cd cdktf.out/stacks/juno && terraform init -reconfigure && terraform apply -refresh=false
 
       - name: Initialize Andi Sample Datasets
         if: ${{ github.event.inputs.skip-andi-init != 'true' }}
