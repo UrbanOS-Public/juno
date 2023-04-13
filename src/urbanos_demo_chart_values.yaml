@@ -164,7 +164,7 @@ discovery-ui:
     auth0_domain: "urbanos-demo.us.auth0.com"
     auth0_client_id: "3o2V7xHvmV2nQjp1HapX68DzWvxVQdJ2"
     auth0_audience: "discovery_api"
-    additional_csp_hosts: "*.demo-urbanos.com"
+    additional_csp_hosts: "*.demo-urbanos.com *.githubusercontent.com"
     footer_right_links: '[{"linkText":"Powered by UrbanOS", "url":"https://github.com/UrbanOS-Public"}]'
     regenerate_api_key_ff: true
 
