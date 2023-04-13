@@ -41,13 +41,8 @@ export const createCluster = (classRef: TerraformStack) => {
   // https://azure.microsoft.com/en-us/pricing/vm-selector/
   // see resource_calculations.xlsx for compute pricing
   // https://azureprice.net/
-
-  const date = new Date();
-
   const cluster = new KubernetesCluster(classRef, `AzureCluster`, {
-    name: `${date.getMonth() + 1}-${date.getDate()}-${
-      Config.resourcePrefix
-    }-cluster`,
+    name: `4-12-${Config.resourcePrefix}-cluster`,
     location: Config.resourceGroupLocation,
     resourceGroupName: Config.resourceGroupName,
     dnsPrefix: Config.resourcePrefix,
