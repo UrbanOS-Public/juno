@@ -23,13 +23,13 @@ jobs:
       - name: Generate module and provider bindings
         run: npx cdktf-cli get
 
-      - name: Run Terraform CDK and Deploy UrbanOS
+      - name: Run Terraform CDK and to generate Terraform
         uses: hashicorp/terraform-cdk-action@v0.1.13
         with:
           terraformVersion: 1.3.7
           cdktfVersion: 0.15.5
           stackName: juno
-          mode: auto-approve-apply
+          mode: synth-only
           commentOnPr: false
         env:
           # ensure edits to these are added to the "teardown_urbanos" workflow as well
@@ -47,6 +47,9 @@ jobs:
           JUNO_DOMAIN_WITH_SUFFIX: ${{secrets.JUNO_DOMAIN_WITH_SUFFIX}}
           JUNO_EVENT_HUB_URL: ${{secrets.JUNO_EVENT_HUB_URL}}
           JUNO_RAPTOR_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_RAPTOR_AUTH0_CLIENT_SECRET}}
+
+      - name: Deploy UrbanOS using generated terraform
+        run: cd cdktf.out/stacks/juno && terraform apply -refresh=false
 
       - name: Initialize Andi Sample Datasets
         if: ${{ github.event.inputs.skip-andi-init != 'true' }}
