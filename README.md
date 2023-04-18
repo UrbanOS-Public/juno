@@ -83,6 +83,11 @@ those references can be made in "configuration.ts"
 Create your own instance of UrbanOS, separate from the Demo instance that
 the github workflow here creates.
 
+- `npm i cdktf-cli@0.15.5 --global`
+- `npm i`
+- `npm run get`
+- `cdktf apply` (will apply changes to the environment described in your .env file)
+
 Instructions TODO, but running `cdktf apply` from root and editing `.env` should
 be most of it. You'll need your own domain or resource group ahead of time for
 this terraform to deploy into.
