@@ -21,7 +21,7 @@ jobs:
       - run: npm ci
 
       - name: Generate module and provider bindings
-        run: npx cdktf-cli get
+        run: npx cdktf-cli@0.15.5 get
 
       - name: Run Terraform CDK and to generate Terraform
         uses: hashicorp/terraform-cdk-action@v0.1.13

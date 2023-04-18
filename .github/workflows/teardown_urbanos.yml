@@ -17,7 +17,7 @@ jobs:
       - run: npm ci
 
       - name: Generate module and provider bindings
-        run: npx cdktf-cli get
+        run: npx cdktf-cli@0.15.5 get
 
       - name: Prepare Teardown with Terraform CDK
         uses: hashicorp/terraform-cdk-action@v0.1.13
