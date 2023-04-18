@@ -121,7 +121,7 @@ export const installElasticsearch = (
   new Release(classRef, "ElasticsearchHelmRelease", {
     name: "elasticsearch",
     chart: "elasticsearch",
-    version: "7.14.0",
+    version: "7.17.3",
     repository: "https://helm.elastic.co",
     description:
       "Install of Elasticsearch using values from the Juno terraform repo. Installed with the helm provider.",

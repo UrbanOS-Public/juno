@@ -1,5 +1,4 @@
-# https://github.com/elastic/helm-charts/blob/v7.14.0/elasticsearch/values.yaml
-imageTag: "7.14.1"
+# https://github.com/elastic/helm-charts/blob/v7.17.3/elasticsearch/values.yaml
 clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
 esConfig:
   elasticsearch.yml: |
@@ -16,3 +15,5 @@ volumeClaimTemplate:
   resources:
     requests:
       storage: 500M
+tests:
+  enabled: false
