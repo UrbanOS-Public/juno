@@ -43,10 +43,7 @@ class MyStack extends TerraformStack {
     super(scope, id);
     const classRef = this;
 
-    // DEMO_MODE is enabled only in the github workflow.
-    //     When not running in DEMO_MODE, aka running locally, a local state file
-    //     will be used instead of terraform cloud remote state.
-    if (Config.demoMode) initTFRemoteBackend(classRef);
+    if (Config.tfBackendKey) initTFRemoteBackend(classRef);
 
     ////////////////////////////////////////////////////////////////////////
     // Azure Setup

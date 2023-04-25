@@ -1,5 +1,24 @@
 ////////////////////////////////////////////////////////////////////////
 // Configuration
+
+private static getEnvVar(input: {
+  varName: string;
+  defaultValue?: string;
+  errorMsg?: string;
+}) {
+  const { varName, defaultValue, errorMsg } = input;
+  const envVar = process.env[varName];
+  if (envVar) {
+    return envVar;
+  } else if (defaultValue != undefined) {
+    return defaultValue;
+  } else {
+    throw Error(
+      `${varName} is not set in environment variables. ${errorMsg}`
+    );
+  }
+}
+
 export class Config {
   static get URLNoSuffix() {
     return this.getEnvVar({
@@ -51,19 +70,6 @@ export class Config {
     });
   }
 
-  // demoMode is intended for github actions execution and effecting
-  //     demo-urbanos.com resources. Should not be enabled in other
-  //     contexts or if developers are running the script locally for other
-  //     domains.
-  static get demoMode() {
-    return this.getEnvVar({
-      varName: "JUNO_DEMO_MODE_ENABLED",
-      defaultValue: "false",
-    }) === "true"
-      ? true
-      : false;
-  }
-
   static get auth0ApiKey() {
     return this.getEnvVar({
       varName: "AUTH0_USER_API_KEY",
@@ -71,37 +77,33 @@ export class Config {
     });
   }
 
-  // tag to put on all created resources, helpful for billing info + confirming
-  //     that resources related to this terraform has been entirely removed
-  static get tags() {
-    return {
-      environment: `${this.resourcePrefix}-terraform`,
-    };
-  }
-
   static get azureAppID() {
     return this.getEnvVar({
       varName: "JUNO_DEMO_AZURE_APP_ID",
-      errorMsg: "Required for azure login.",
-    });
-  }
-  static get azurePassword() {
-    return this.getEnvVar({
-      varName: "JUNO_DEMO_AZURE_PASSWORD",
-      errorMsg: "Required for azure login.",
-    });
-  }
-  static get azureTenant() {
-    return this.getEnvVar({
-      varName: "JUNO_DEMO_AZURE_TENANT",
-      errorMsg: "Required for azure login.",
+      defaultValue: ""
     });
   }
 
+  static get azurePassword() {
+    return this.getEnvVar({
+      varName: "JUNO_DEMO_AZURE_PASSWORD",
+      defaultValue: ""
+    });
+  }
+
+  static get azureTenant() {
+    return this.getEnvVar({
+      varName: "JUNO_DEMO_AZURE_TENANT",
+      defaultValue: ""
+    });
+  }
+
+  // if provided, store tf state in terraform.io
+  //     if omitted, use local state
   static get tfBackendKey() {
     return this.getEnvVar({
       varName: "JUNO_DEMO_TF_BACKEND_KEY",
-      errorMsg: "Required for remote tf state access.",
+      defaultValue: "",
     });
   }
 
@@ -118,22 +120,12 @@ export class Config {
       errorMsg: "UrbanOS requires auth0 client secret for Raptor service",
     });
   }
-
-  private static getEnvVar(input: {
-    varName: string;
-    defaultValue?: string;
-    errorMsg?: string;
-  }) {
-    const { varName, defaultValue, errorMsg } = input;
-    const envVar = process.env[varName];
-    if (envVar) {
-      return envVar;
-    } else if (defaultValue != undefined) {
-      return defaultValue;
-    } else {
-      throw Error(
-        `${varName} is not set in environment variables. ${errorMsg}`
-      );
-    }
+  
+  // tag to put on all created resources, helpful for billing info + confirming
+  //     that resources related to this terraform has been entirely removed
+  static get tags() {
+    return {
+      environment: `${this.resourcePrefix}-terraform`,
+    };
   }
 }
