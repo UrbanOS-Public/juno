@@ -43,7 +43,14 @@ class MyStack extends TerraformStack {
     super(scope, id);
     const classRef = this;
 
-    if (Config.tfBackendKey) initTFRemoteBackend(classRef);
+    if (Config.tfBackendKey && Config.tfWorkspaceName) {
+      console.log("Using remote TF backend:", Config.tfWorkspaceName);
+      initTFRemoteBackend(classRef);
+    } else {
+      console.log(
+        "Using local terraform state, since backend key or workspace name were not provided."
+      );
+    }
 
     ////////////////////////////////////////////////////////////////////////
     // Azure Setup
