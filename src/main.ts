@@ -66,7 +66,7 @@ class MyStack extends TerraformStack {
     //     (Ingresses / Namespaces / etc.)
     initializeKubectlProvider(classRef, clusterKubeConf);
     const namespace = createUrbanOSNamespace(classRef, {
-      dependsOn: [cluster],
+      dependsOn: [cluster, medram, highram],
     });
 
     //////////////////////////////////////////////////////////////////////////
