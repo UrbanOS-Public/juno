@@ -229,7 +229,8 @@ persistence:
           memory: 3000M
           cpu: 500m
 
-    # applies to worker and coordinator as of chart 0.8.0
+    # applies to both worker and coordinator as of chart 0.8.0, later versions
+    #   can set them independently
     # affinity:
     #     nodeAffinity:
     #       requiredDuringSchedulingIgnoredDuringExecution:
