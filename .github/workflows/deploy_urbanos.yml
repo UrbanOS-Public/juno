@@ -6,6 +6,9 @@ on:
       skip-andi-init:
         type: boolean
         description: Skip initializing andi. Useful to enable this if Andi has already been initialized, and you'd only like to apply the terraform.
+      use-staging-lets-encrypt:
+        type: boolean
+        description: Use staging lets encrypt instead of prod. When enabled, deployments of juno won't count towards the 5 prod certs a week rate limit. More info in the .env file.
 
 jobs:
   Deploy_UrbanOS:
@@ -33,9 +36,9 @@ jobs:
           commentOnPr: false
         env:
           # ensure edits to these are added to the "teardown_urbanos" workflow as well
+          # in order of env secrets of github action settings
           JUNO_DEMO_MODE_ENABLED: ${{vars.JUNO_DEMO_MODE_ENABLED}}
           JUNO_RESOURCE_PREFIX: ${{vars.JUNO_RESOURCE_PREFIX}}
-          # in order of env secrets of github action settings
           AUTH0_USER_API_KEY: ${{secrets.AUTH0_USER_API_KEY}}
           JUNO_ANDI_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_ANDI_AUTH0_CLIENT_SECRET}}
           JUNO_AZURE_SUB_ID: ${{secrets.JUNO_AZURE_SUB_ID}}
@@ -47,6 +50,7 @@ jobs:
           JUNO_DOMAIN_WITH_SUFFIX: ${{secrets.JUNO_DOMAIN_WITH_SUFFIX}}
           JUNO_EVENT_HUB_URL: ${{secrets.JUNO_EVENT_HUB_URL}}
           JUNO_RAPTOR_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_RAPTOR_AUTH0_CLIENT_SECRET}}
+          JUNO_USE_STAGING_LETS_ENCRYPT: ${{github.event.inputs.use-staging-lets-encrypt}}
 
       - name: Initialize Andi Sample Datasets
         if: ${{ github.event.inputs.skip-andi-init != 'true' }}
