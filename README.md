@@ -64,6 +64,8 @@ those references can be made in "configuration.ts"
   that helm uninstalls everything + manually deletes pvcs + secrets, then runs
   the terraform apply action again to create only the helm releases and reuse
   existing azure resources.
+- Vault is not deployed to this environment, so the Andi "add secret" step
+  will fail in configuring ingestions if attempted.
 - The environment can be stood up 5 times a week.
   - This is because we're regenerating certs for ingresses upon environment
     start. Lets Encrypt allows for 5 generations per specific URL. See
