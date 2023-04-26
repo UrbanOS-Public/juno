@@ -35,7 +35,12 @@ export const installUrbanOS = (
       "Install of UrbanOS using values from the Juno terraform repo. Installed with the helm provider.",
     namespace: "urbanos",
     createNamespace: false,
-    values: [loadFileContentsAsString("urbanos_demo_chart_values.yaml")],
+    values: [
+      loadFileContentsAsString("urbanos_demo_chart_values.yaml").replace(
+        "URL_W_SUFFIX",
+        Config.URLWithSuffix
+      ),
+    ],
     ...dependsOn,
     timeout: 600,
   });
@@ -156,6 +161,8 @@ export const installStreamsToEventHub = (
 ) => {
   const secrets = installStreamsToEventHubSecrets(classRef, dependsOn);
 
+  const sourceStreamsURL = `wss://streams.${Config.URLWithSuffix}/socket/websocket`;
+
   return new Release(classRef, "SteamsToEventHubRelease", {
     name: "streams-to-event-hub",
     chart: "streams-to-event-hub",
@@ -168,7 +175,7 @@ export const installStreamsToEventHub = (
     set: [
       {
         name: "sourceStreamsUrl",
-        value: "wss://streams.demo-urbanos.com/socket/websocket",
+        value: sourceStreamsURL,
       },
       {
         name: "streamsTopic",

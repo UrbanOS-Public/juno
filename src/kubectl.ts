@@ -49,7 +49,8 @@ export const installIngresses = (
       classRef,
       dependsOn,
       `${label}Ingress`,
-      `resource_additions/ingresses/${ingress_file}`
+      `resource_additions/ingresses/${ingress_file}`,
+      { key: "URL_W_SUFFIX", value: Config.URLWithSuffix }
     );
   });
 };

@@ -9,10 +9,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - andi.demo-urbanos.com
+        - andi.URL_W_SUFFIX
       secretName: andi-tls-secret
   rules:
-    - host: andi.demo-urbanos.com
+    - host: andi.URL_W_SUFFIX
       http:
         paths:
           - path: /

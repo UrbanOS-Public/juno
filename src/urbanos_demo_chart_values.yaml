@@ -8,8 +8,8 @@ global:
   kafka:
     brokers: pipeline-kafka-bootstrap:9092
   ingress:
-    dnsZone: "demo-urbanos.com"
-    rootDnsZone: "demo-urbanos.com"
+    dnsZone: "URL_W_SUFFIX"
+    rootDnsZone: "URL_W_SUFFIX"
   buckets:
     hostedFileBucket: "hosted-dataset-files"
     hiveStorageBucket: "presto-hive-storage"
@@ -156,15 +156,15 @@ discovery-ui:
       memory: 500M
       cpu: 300m
   env:
-    disc_api_url: "https://data.demo-urbanos.com"
-    disc_streams_url: "ws://streams.demo-urbanos.com"
-    disc_ui_url: "http://discovery.demo-urbanos.com"
+    disc_api_url: "https://data.URL_W_SUFFIX"
+    disc_streams_url: "ws://streams.URL_W_SUFFIX"
+    disc_ui_url: "http://discovery.URL_W_SUFFIX"
     streets_tile_layer_url: ""
     mapbox_access_token: ""
     auth0_domain: "urbanos-demo.us.auth0.com"
     auth0_client_id: "3o2V7xHvmV2nQjp1HapX68DzWvxVQdJ2"
     auth0_audience: "discovery_api"
-    additional_csp_hosts: "*.demo-urbanos.com *.githubusercontent.com"
+    additional_csp_hosts: "*.URL_W_SUFFIX *.githubusercontent.com"
     footer_right_links: '[{"linkText":"Powered by UrbanOS", "url":"https://github.com/UrbanOS-Public"}]'
     regenerate_api_key_ff: true
 

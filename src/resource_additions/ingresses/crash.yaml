@@ -9,10 +9,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - crash.demo-urbanos.com
+        - crash.URL_W_SUFFIX
       secretName: crash-tls-secret
   rules:
-    - host: crash.demo-urbanos.com
+    - host: crash.URL_W_SUFFIX
       http:
         paths:
           - path: /
