@@ -13,7 +13,8 @@ tsconfig.tsbuildinfo
 juno_kube_config
 kubecm.config
 
-helm_template_output.yaml
+helm_urbanos_template_output.yaml
+helm_kafka_template_output.yaml
 
 .DS_Store
 graph.png

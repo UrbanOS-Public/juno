@@ -29,6 +29,7 @@ import {
   installCertManager,
   installElasticsearch,
   installIngressNginx,
+  installKafka,
   installMinioOperator,
   installMinioTenant,
   installMockCVEData,
@@ -108,11 +109,15 @@ class MyStack extends TerraformStack {
       dependsOn: [namespace],
     });
 
+    const kafka = installKafka(classRef, {
+      dependsOn: [strimziCRDs],
+    });
+
     const urbanos = installUrbanOS(classRef, {
       dependsOn: [
         minioTenant,
         postgresql,
-        strimziCRDs,
+        kafka,
         auth0,
         redis,
         elasticsearch,

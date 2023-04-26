@@ -171,41 +171,9 @@ discovery-ui:
 elasticsearch:
   enabled: false
 
+# installed prior to urbanos as a separate release with urbanos_kafka_values.yaml
 kafka:
-  enabled: true
-  strimzi-kafka-operator:
-    enabled: true
-    resources:
-      limits:
-        memory: 400M
-        cpu: 500m
-      requests:
-        memory: 400M
-        cpu: 500m
-  kafka:
-    enabled: true
-    storageSize: 4Gi
-    version: 3.1.2
-    defaultReplicas: 1
-    resources:
-      requests:
-        cpu: 500m
-        memory: 700M
-      limits:
-        cpu: 500m
-        memory: 700M
-  zookeeper:
-    resources:
-      requests:
-        cpu: 200m
-        memory: 500M
-      limits:
-        cpu: 200m
-        memory: 500M
-  kafkaExporter:
-    enabled: false
-  rbac:
-    enabled: false
+  enabled: false
 
 kubernetes-data-platform:
   enabled: false

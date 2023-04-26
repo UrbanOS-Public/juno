@@ -45,6 +45,21 @@ export const installUrbanOS = (
     timeout: 600,
   });
 
+export const installKafka = (classRef: TerraformStack, dependsOn: DependsOn) =>
+  new Release(classRef, "KafkaHelmRelease", {
+    name: "kafka",
+    chart: "kafka",
+    version: "1.2.20",
+    repository: "https://urbanos-public.github.io/charts/",
+    description:
+      "Install of Kafka using values from the Juno terraform repo. Installed with the helm provider.",
+    namespace: "urbanos",
+    createNamespace: false,
+    values: [loadFileContentsAsString("urbanos_kafka_values.yaml")],
+    ...dependsOn,
+    timeout: 600,
+  });
+
 export const installMinioOperator = (
   classRef: TerraformStack,
   dependsOn: DependsOn
