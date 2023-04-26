@@ -1,25 +1,25 @@
 ////////////////////////////////////////////////////////////////////////
 // Configuration
 
-private static getEnvVar(input: {
-  varName: string;
-  defaultValue?: string;
-  errorMsg?: string;
-}) {
-  const { varName, defaultValue, errorMsg } = input;
-  const envVar = process.env[varName];
-  if (envVar) {
-    return envVar;
-  } else if (defaultValue != undefined) {
-    return defaultValue;
-  } else {
-    throw Error(
-      `${varName} is not set in environment variables. ${errorMsg}`
-    );
-  }
-}
-
 export class Config {
+  private static getEnvVar(input: {
+    varName: string;
+    defaultValue?: string;
+    errorMsg?: string;
+  }) {
+    const { varName, defaultValue, errorMsg } = input;
+    const envVar = process.env[varName];
+    if (envVar) {
+      return envVar;
+    } else if (defaultValue != undefined) {
+      return defaultValue;
+    } else {
+      throw Error(
+        `${varName} is not set in environment variables. ${errorMsg}`
+      );
+    }
+  }
+
   static get URLNoSuffix() {
     return this.getEnvVar({
       varName: "JUNO_DOMAIN_NO_SUFFIX",
@@ -80,21 +80,21 @@ export class Config {
   static get azureAppID() {
     return this.getEnvVar({
       varName: "JUNO_DEMO_AZURE_APP_ID",
-      defaultValue: ""
+      defaultValue: "",
     });
   }
 
   static get azurePassword() {
     return this.getEnvVar({
       varName: "JUNO_DEMO_AZURE_PASSWORD",
-      defaultValue: ""
+      defaultValue: "",
     });
   }
 
   static get azureTenant() {
     return this.getEnvVar({
       varName: "JUNO_DEMO_AZURE_TENANT",
-      defaultValue: ""
+      defaultValue: "",
     });
   }
 
@@ -127,7 +127,16 @@ export class Config {
       errorMsg: "UrbanOS requires auth0 client secret for Raptor service",
     });
   }
-  
+
+  static get useStagingLetsEncrypt() {
+    return this.getEnvVar({
+      varName: "JUNO_USE_STAGING_LETS_ENCRYPT",
+      defaultValue: "false",
+    }).toLowerCase() === "true"
+      ? true
+      : false;
+  }
+
   // tag to put on all created resources, helpful for billing info + confirming
   //     that resources related to this terraform has been entirely removed
   static get tags() {
