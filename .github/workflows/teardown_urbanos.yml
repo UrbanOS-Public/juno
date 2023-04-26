@@ -37,7 +37,7 @@ jobs:
           commentOnPr: false
         env:
           # ensure edits to these are added to the "teardown_urbanos" workflow as well
-          # in order of env secrets of github action settings and .env file
+          # in order of .env file secrets and of github action secrets list
           AUTH0_USER_API_KEY: ${{secrets.AUTH0_USER_API_KEY}}
           JUNO_ANDI_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_ANDI_AUTH0_CLIENT_SECRET}}
           JUNO_AZURE_SUB_ID: ${{secrets.JUNO_AZURE_SUB_ID}}
