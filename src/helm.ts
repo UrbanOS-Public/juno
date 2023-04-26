@@ -236,11 +236,19 @@ export const installCertManager = (
     ...dependsOn,
   });
 
+  const letsEncryptProd = "https://acme-v02.api.letsencrypt.org/directory";
+  const letsEncryptStaging =
+    "https://acme-staging-v02.api.letsencrypt.org/directory";
+
+  const CA_Server = Config.useStagingLetsEncrypt
+    ? letsEncryptStaging
+    : letsEncryptProd;
+
   new Manifest(classRef, "CertIssuer", {
     dependsOn: [release],
     yamlBody: loadFileContentsAsString(
       "resource_additions/cluster_issuer.yaml"
-    ),
+    ).replace("INJECT_CA_SERVER", CA_Server),
   });
 
   return release;
