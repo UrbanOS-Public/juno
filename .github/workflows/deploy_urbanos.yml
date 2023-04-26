@@ -9,11 +9,18 @@ on:
       use-staging-lets-encrypt:
         type: boolean
         description: Use staging lets encrypt instead of prod. When enabled, deployments of juno won't count towards the 5 prod certs a week rate limit. More info in the .env file.
+      environment:
+        type: choice
+        description: Choose the environment used to deploy urbanos.
+        options:
+          - demo-urbanos.com
+          - dev1-urbanos.com
+        required: true
 
 jobs:
   Deploy_UrbanOS:
     runs-on: ubuntu-latest
-    environment: Actions
+    environment: ${{ github.event.inputs.environment }}
     steps:
       - uses: actions/checkout@v2
 
@@ -37,8 +44,7 @@ jobs:
         env:
           # ensure edits to these are added to the "teardown_urbanos" workflow as well
           # in order of env secrets of github action settings
-          JUNO_DEMO_MODE_ENABLED: ${{vars.JUNO_DEMO_MODE_ENABLED}}
-          JUNO_RESOURCE_PREFIX: ${{vars.JUNO_RESOURCE_PREFIX}}
+          JUNO_RESOURCE_PREFIX: ${{secrets.JUNO_RESOURCE_PREFIX}}
           AUTH0_USER_API_KEY: ${{secrets.AUTH0_USER_API_KEY}}
           JUNO_ANDI_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_ANDI_AUTH0_CLIENT_SECRET}}
           JUNO_AZURE_SUB_ID: ${{secrets.JUNO_AZURE_SUB_ID}}
