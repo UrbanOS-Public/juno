@@ -129,6 +129,10 @@ class MyStack extends TerraformStack {
 
     const mockCVEData = installMockCVEData(classRef, { dependsOn: [urbanos] });
 
+    // wait to install ingresses until mockCVE and urbanos are deployed, so that
+    //   service challenges pass when generating certs
+    installIngresses(classRef, { dependsOn: [ingressNginx, mockCVEData] });
+
     if (Config.eventHubURL) {
       console.log("EVENTHUB WILL BE INSTALLED");
       installStreamsToEventHub(classRef, {
@@ -137,10 +141,6 @@ class MyStack extends TerraformStack {
     } else {
       console.log("EVENTHUB WILL *NOT* BE INSTALLED");
     }
-
-    // wait to install ingresses until mockCVE and urbanos are deployed, so that
-    //   service challenges pass when generating certs
-    installIngresses(classRef, { dependsOn: [ingressNginx, mockCVEData] });
 
     //////////////////////////////////////////////////////////////////////////
     // Outputs
