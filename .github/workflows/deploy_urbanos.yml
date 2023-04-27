@@ -5,7 +5,7 @@ on:
     inputs:
       skip-andi-init:
         type: boolean
-        description: Skip initializing andi. Useful to enable this if Andi has already been initialized, and you'd only like to apply the terraform.
+        description: Skip initializing andi. Enable this skip if not deploying to demo-urbanos.com. Useful to enable this if Andi has already been initialized, and you'd only like to apply the terraform.
       use-staging-lets-encrypt:
         type: boolean
         description: Use staging lets encrypt instead of prod. When enabled, deployments of juno won't count towards the 5 prod certs a week rate limit. More info in the .env file.
