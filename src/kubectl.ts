@@ -3,7 +3,7 @@ import { KubernetesClusterKubeConfigOutputReference } from "../.gen/providers/az
 import { Manifest } from "../.gen/providers/kubectl/manifest";
 import { KubectlProvider } from "../.gen/providers/kubectl/provider";
 import { Config } from "./configuration";
-import { DependsOn, loadFileContentsAsString } from "./utils";
+import { DependsOn, loadFileContentsAsString, replaceAll } from "./utils";
 
 /////////////////////////////////////////////////////
 // connect with kubectl to install individual resources.
@@ -133,7 +133,7 @@ const installResource = (
   let yamlBody = loadFileContentsAsString(yamlFile);
 
   if (secretInject) {
-    yamlBody = yamlBody.replaceAll(secretInject.key, secretInject.value);
+    yamlBody = replaceAll(yamlBody, secretInject.key, secretInject.value);
   }
 
   return new Manifest(classRef, tfID, {

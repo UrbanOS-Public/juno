@@ -6,7 +6,7 @@ import { Release } from "../.gen/providers/helm/release";
 import { Manifest } from "../.gen/providers/kubectl/manifest";
 import { Config } from "./configuration";
 import { installMinioUser, installStreamsToEventHubSecrets } from "./kubectl";
-import { DependsOn, loadFileContentsAsString } from "./utils";
+import { DependsOn, loadFileContentsAsString, replaceAll } from "./utils";
 
 export const initializeHelm = (
   classRef: TerraformStack,
@@ -36,7 +36,8 @@ export const installUrbanOS = (
     namespace: "urbanos",
     createNamespace: false,
     values: [
-      loadFileContentsAsString("urbanos_demo_chart_values.yaml").replaceAll(
+      replaceAll(
+        loadFileContentsAsString("urbanos_demo_chart_values.yaml"),
         "URL_W_SUFFIX",
         Config.URLWithSuffix
       ),
@@ -263,7 +264,7 @@ export const installCertManager = (
     dependsOn: [release],
     yamlBody: loadFileContentsAsString(
       "resource_additions/cluster_issuer.yaml"
-    ).replaceAll("INJECT_CA_SERVER", CA_Server),
+    ).replace("INJECT_CA_SERVER", CA_Server),
   });
 
   return release;
