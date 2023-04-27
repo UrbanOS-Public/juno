@@ -36,7 +36,7 @@ export const installUrbanOS = (
     namespace: "urbanos",
     createNamespace: false,
     values: [
-      loadFileContentsAsString("urbanos_demo_chart_values.yaml").replace(
+      loadFileContentsAsString("urbanos_demo_chart_values.yaml").replaceAll(
         "URL_W_SUFFIX",
         Config.URLWithSuffix
       ),
@@ -263,7 +263,7 @@ export const installCertManager = (
     dependsOn: [release],
     yamlBody: loadFileContentsAsString(
       "resource_additions/cluster_issuer.yaml"
-    ).replace("INJECT_CA_SERVER", CA_Server),
+    ).replaceAll("INJECT_CA_SERVER", CA_Server),
   });
 
   return release;

@@ -133,7 +133,7 @@ const installResource = (
   let yamlBody = loadFileContentsAsString(yamlFile);
 
   if (secretInject) {
-    yamlBody = yamlBody.replace(secretInject.key, secretInject.value);
+    yamlBody = yamlBody.replaceAll(secretInject.key, secretInject.value);
   }
 
   return new Manifest(classRef, tfID, {
