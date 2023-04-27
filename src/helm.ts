@@ -181,7 +181,7 @@ export const installStreamsToEventHub = (
   return new Release(classRef, "SteamsToEventHubRelease", {
     name: "streams-to-event-hub",
     chart: "streams-to-event-hub",
-    version: "0.0.6",
+    version: "0.0.7",
     repository: "https://urbanos-public.github.io/streams-to-event-hub",
     description:
       "Install of StreamsToEventHub using values from the Juno terraform repo. Installed with the helm provider.",
