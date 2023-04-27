@@ -218,6 +218,7 @@ export const installIngressNginx = (
     name: "ingress-nginx",
     chart: "ingress-nginx",
     repository: "https://kubernetes.github.io/ingress-nginx",
+    version: "4.6.0",
     description:
       "Install of ingress-nginx for making andi and the discovery suite applications available on the internet",
     namespace: "urbanos",
@@ -229,6 +230,10 @@ export const installIngressNginx = (
       {
         name: "controller.service.loadBalancerIP",
         value: ip.ipAddress,
+      },
+      {
+        name: "controller.admissionWebhooks.failurePolicy",
+        values: "Ignore",
       },
     ],
     ...dependsOn,
