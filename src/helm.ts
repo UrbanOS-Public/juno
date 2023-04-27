@@ -233,7 +233,7 @@ export const installIngressNginx = (
       },
       {
         name: "controller.admissionWebhooks.failurePolicy",
-        values: "Ignore",
+        value: "Ignore",
       },
     ],
     ...dependsOn,
