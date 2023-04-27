@@ -43,7 +43,7 @@ export const installUrbanOS = (
       ),
     ],
     ...dependsOn,
-    timeout: 600,
+    timeout: 300,
   });
 
 export const installKafka = (classRef: TerraformStack, dependsOn: DependsOn) =>
