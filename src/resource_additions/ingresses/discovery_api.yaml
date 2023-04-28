@@ -9,10 +9,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - data.demo-urbanos.com
+        - data.URL_W_SUFFIX
       secretName: discovery-api-tls-secret
   rules:
-    - host: data.demo-urbanos.com
+    - host: data.URL_W_SUFFIX
       http:
         paths:
           - path: /

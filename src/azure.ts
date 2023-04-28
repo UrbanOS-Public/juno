@@ -8,7 +8,7 @@ import { DnsARecord } from "../.gen/providers/azurerm/dns-a-record";
 
 export const initializeAzureProvider = (classRef: TerraformStack) => {
   let credentials = {};
-  if (Config.demoMode) {
+  if (Config.azureTenant && Config.azurePassword && Config.azureAppID) {
     credentials = {
       subscriptionId: Config.azureSubID,
       clientId: Config.azureAppID,
@@ -16,7 +16,10 @@ export const initializeAzureProvider = (classRef: TerraformStack) => {
       tenantId: Config.azureTenant,
     };
   } else {
-    // use cli that's already been logged into with a local "az login"
+    // Attempt to use cli that's already been logged into with an "az login"
+    console.log(
+      "No azure credential set supplied, using the active Azure CLI user / tenant."
+    );
     credentials = {
       subscriptionId: Config.azureSubID,
     };

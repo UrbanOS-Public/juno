@@ -3,7 +3,7 @@ import { KubernetesClusterKubeConfigOutputReference } from "../.gen/providers/az
 import { Manifest } from "../.gen/providers/kubectl/manifest";
 import { KubectlProvider } from "../.gen/providers/kubectl/provider";
 import { Config } from "./configuration";
-import { DependsOn, loadFileContentsAsString } from "./utils";
+import { DependsOn, loadFileContentsAsString, replaceAll } from "./utils";
 
 /////////////////////////////////////////////////////
 // connect with kubectl to install individual resources.
@@ -49,7 +49,8 @@ export const installIngresses = (
       classRef,
       dependsOn,
       `${label}Ingress`,
-      `resource_additions/ingresses/${ingress_file}`
+      `resource_additions/ingresses/${ingress_file}`,
+      { key: "URL_W_SUFFIX", value: Config.URLWithSuffix }
     );
   });
 };
@@ -132,7 +133,7 @@ const installResource = (
   let yamlBody = loadFileContentsAsString(yamlFile);
 
   if (secretInject) {
-    yamlBody = yamlBody.replace(secretInject.key, secretInject.value);
+    yamlBody = replaceAll(yamlBody, secretInject.key, secretInject.value);
   }
 
   return new Manifest(classRef, tfID, {

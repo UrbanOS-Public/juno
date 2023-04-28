@@ -29,6 +29,7 @@ import {
   installCertManager,
   installElasticsearch,
   installIngressNginx,
+  installKafka,
   installMinioOperator,
   installMinioTenant,
   installMockCVEData,
@@ -43,10 +44,14 @@ class MyStack extends TerraformStack {
     super(scope, id);
     const classRef = this;
 
-    // DEMO_MODE is enabled only in the github workflow.
-    //     When not running in DEMO_MODE, aka running locally, a local state file
-    //     will be used instead of terraform cloud remote state.
-    if (Config.demoMode) initTFRemoteBackend(classRef);
+    if (Config.tfBackendKey && Config.tfWorkspaceName) {
+      console.log("Using remote TF backend:", Config.tfWorkspaceName);
+      initTFRemoteBackend(classRef);
+    } else {
+      console.log(
+        "Using local terraform state, since backend key or workspace name were not provided."
+      );
+    }
 
     ////////////////////////////////////////////////////////////////////////
     // Azure Setup
@@ -61,7 +66,7 @@ class MyStack extends TerraformStack {
     //     (Ingresses / Namespaces / etc.)
     initializeKubectlProvider(classRef, clusterKubeConf);
     const namespace = createUrbanOSNamespace(classRef, {
-      dependsOn: [cluster],
+      dependsOn: [cluster, medram, highram],
     });
 
     //////////////////////////////////////////////////////////////////////////
@@ -104,11 +109,15 @@ class MyStack extends TerraformStack {
       dependsOn: [namespace],
     });
 
+    const kafka = installKafka(classRef, {
+      dependsOn: [strimziCRDs],
+    });
+
     const urbanos = installUrbanOS(classRef, {
       dependsOn: [
         minioTenant,
         postgresql,
-        strimziCRDs,
+        kafka,
         auth0,
         redis,
         elasticsearch,
@@ -131,7 +140,9 @@ class MyStack extends TerraformStack {
 
     // wait to install ingresses until mockCVE and urbanos are deployed, so that
     //   service challenges pass when generating certs
-    installIngresses(classRef, { dependsOn: [ingressNginx, mockCVEData] });
+    installIngresses(classRef, {
+      dependsOn: [ingressNginx, mockCVEData, urbanos],
+    });
 
     //////////////////////////////////////////////////////////////////////////
     // Outputs
