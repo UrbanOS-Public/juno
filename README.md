@@ -46,8 +46,11 @@ those references can be made in "configuration.ts"
     json. The URL is hardcoded to demo-urbanos.com in a few places.
 - Images are pinned at January 30th 2023. Upgrading to newer versions will
   require:
-  - upgrading the urbanos chart version installed in helm.ts
+  - upgrading the urbanos chart version installed in the urbanos release in helm.ts
+  - upgrading the kafka chart version installed in the kafka release in helm.ts
   - altering urbanos_demo_chart_values to correspond with this new chart version
+  - altering urbanos_kafka_values to correspond with this new chart version
+  - updating the version pin in the helm template script in "scripts"
   - pinning each urbanos image in urbanos_demo_chart_values at a release tag
     (or preferably, pinning those in the charts repo itself. Upgrading all
     environments would be much smoother if charts didn't always point to
@@ -61,6 +64,8 @@ those references can be made in "configuration.ts"
   that helm uninstalls everything + manually deletes pvcs + secrets, then runs
   the terraform apply action again to create only the helm releases and reuse
   existing azure resources.
+- Vault is not deployed to this environment, so the Andi "add secret" step
+  will fail in configuring ingestions if attempted.
 - The environment can be stood up 5 times a week.
   - This is because we're regenerating certs for ingresses upon environment
     start. Lets Encrypt allows for 5 generations per specific URL. See

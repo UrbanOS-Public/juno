@@ -8,7 +8,7 @@ export const initTFRemoteBackend = (classRef: TerraformStack) =>
     hostname: "app.terraform.io",
     organization: "benjaminmitchinson",
     workspaces: {
-      name: "juno-demo-workspace",
+      name: Config.tfWorkspaceName,
     },
     token: Config.tfBackendKey,
   });

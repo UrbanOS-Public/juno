@@ -6,7 +6,7 @@ import { Release } from "../.gen/providers/helm/release";
 import { Manifest } from "../.gen/providers/kubectl/manifest";
 import { Config } from "./configuration";
 import { installMinioUser, installStreamsToEventHubSecrets } from "./kubectl";
-import { DependsOn, loadFileContentsAsString } from "./utils";
+import { DependsOn, loadFileContentsAsString, replaceAll } from "./utils";
 
 export const initializeHelm = (
   classRef: TerraformStack,
@@ -35,7 +35,28 @@ export const installUrbanOS = (
       "Install of UrbanOS using values from the Juno terraform repo. Installed with the helm provider.",
     namespace: "urbanos",
     createNamespace: false,
-    values: [loadFileContentsAsString("urbanos_demo_chart_values.yaml")],
+    values: [
+      replaceAll(
+        loadFileContentsAsString("urbanos_demo_chart_values.yaml"),
+        "URL_W_SUFFIX",
+        Config.URLWithSuffix
+      ),
+    ],
+    ...dependsOn,
+    timeout: 300,
+  });
+
+export const installKafka = (classRef: TerraformStack, dependsOn: DependsOn) =>
+  new Release(classRef, "KafkaHelmRelease", {
+    name: "kafka",
+    chart: "kafka",
+    version: "1.2.20",
+    repository: "https://urbanos-public.github.io/charts/",
+    description:
+      "Install of Kafka using values from the Juno terraform repo. Installed with the helm provider.",
+    namespace: "urbanos",
+    createNamespace: false,
+    values: [loadFileContentsAsString("urbanos_kafka_values.yaml")],
     ...dependsOn,
     timeout: 600,
   });
@@ -156,10 +177,12 @@ export const installStreamsToEventHub = (
 ) => {
   const secrets = installStreamsToEventHubSecrets(classRef, dependsOn);
 
+  const sourceStreamsURL = `wss://streams.${Config.URLWithSuffix}/socket/websocket`;
+
   return new Release(classRef, "SteamsToEventHubRelease", {
     name: "streams-to-event-hub",
     chart: "streams-to-event-hub",
-    version: "0.0.6",
+    version: "0.0.7",
     repository: "https://urbanos-public.github.io/streams-to-event-hub",
     description:
       "Install of StreamsToEventHub using values from the Juno terraform repo. Installed with the helm provider.",
@@ -168,7 +191,7 @@ export const installStreamsToEventHub = (
     set: [
       {
         name: "sourceStreamsUrl",
-        value: "wss://streams.demo-urbanos.com/socket/websocket",
+        value: sourceStreamsURL,
       },
       {
         name: "streamsTopic",
@@ -195,6 +218,7 @@ export const installIngressNginx = (
     name: "ingress-nginx",
     chart: "ingress-nginx",
     repository: "https://kubernetes.github.io/ingress-nginx",
+    version: "4.6.0",
     description:
       "Install of ingress-nginx for making andi and the discovery suite applications available on the internet",
     namespace: "urbanos",
@@ -206,6 +230,10 @@ export const installIngressNginx = (
       {
         name: "controller.service.loadBalancerIP",
         value: ip.ipAddress,
+      },
+      {
+        name: "controller.admissionWebhooks.failurePolicy",
+        value: "Ignore",
       },
     ],
     ...dependsOn,
@@ -229,11 +257,19 @@ export const installCertManager = (
     ...dependsOn,
   });
 
+  const letsEncryptProd = "https://acme-v02.api.letsencrypt.org/directory";
+  const letsEncryptStaging =
+    "https://acme-staging-v02.api.letsencrypt.org/directory";
+
+  const CA_Server = Config.useStagingLetsEncrypt
+    ? letsEncryptStaging
+    : letsEncryptProd;
+
   new Manifest(classRef, "CertIssuer", {
     dependsOn: [release],
     yamlBody: loadFileContentsAsString(
       "resource_additions/cluster_issuer.yaml"
-    ),
+    ).replace("INJECT_CA_SERVER", CA_Server),
   });
 
   return release;
