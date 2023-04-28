@@ -2,13 +2,11 @@ confirm_success() {
   if [ $res_code != "201" ]; then
       cat response.txt
       echo "\n❌ Unable to create resource. Response - $res_code"
+      exit 10
   else
       echo "✅ - Create success!"
   fi
 }
-
-# exit when any command fails
-set -e
 
 if [[ $* != *--skip-health-check* ]]; then
   # for 10 minutes, try to make an organization
@@ -37,7 +35,7 @@ if [[ $* != *--skip-health-check* ]]; then
     echo "❌ - After 10 minutes, andi was never healhty"
     echo "last response ($res_code)"
     cat response.txt
-    exit 1
+    exit 11
   fi
 fi
 
