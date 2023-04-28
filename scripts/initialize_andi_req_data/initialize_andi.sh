@@ -49,11 +49,12 @@ res_code=$(curl -k -s -o response.txt -w "%{http_code}" -d "@scripts/initialize_
 confirm_success
 sleep 5
 
-echo "Drafting crash ingestion"
+echo "Creating crash ingestion"
 res_code=$(curl -k -s -o response.txt -w "%{http_code}" -d "@scripts/initialize_andi_req_data/create_crash_ingestion.json" -H "Content-Type: application/json" -X PUT https://andi.demo-urbanos.com/api/v1/ingestion)
 confirm_success
 sleep 5
 
-echo "Publishing drafted crash ingestion"
-res_code=$(curl -k -s -o response.txt -w "%{http_code}" -X POST "https://andi.demo-urbanos.com/api/v1/ingestion/publish?id=a9ab987d-fcce-4ee7-94b4-9b87588a1c68")
-confirm_success
+# prior step both drafts and creates ingestion?
+# echo "Publishing drafted crash ingestion"
+# res_code=$(curl -k -s -o response.txt -w "%{http_code}" -X POST "https://andi.demo-urbanos.com/api/v1/ingestion/publish?id=a9ab987d-fcce-4ee7-94b4-9b87588a1c68")
+# confirm_success
