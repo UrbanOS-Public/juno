@@ -37,7 +37,7 @@ export const installUrbanOS = (
     createNamespace: false,
     values: [
       replaceAll(
-        loadFileContentsAsString("urbanos_demo_chart_values.yaml"),
+        loadFileContentsAsString("urbanos_dev_chart_values.yaml"),
         "URL_W_SUFFIX",
         Config.URLWithSuffix
       ),

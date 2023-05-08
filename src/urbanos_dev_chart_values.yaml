@@ -34,20 +34,10 @@ global:
     discoveryApi: "data"
     discoveryUi: "discovery"
     raptor: "raptor"
-
-# All images pinned corresponding to chart 1.13.31 (jan 30th 2023)
-#     pinned to whatever tag was around that time.
-# The urbanos chart should pin versions but it just points to
-#     development tags, meaning images could outpace the pinned chart version.
 andi:
   enabled: true
   image:
-    # versions newer than march 2023 will break the "initialize ingestions"
-    # script. Calls there will now require a user auth0 key, which is great,
-    # but making that a problem for the future, since at the moment no images
-    # for smartcitiesdata are being cut, and I don't want to pin to the always
-    # changing "development"
-    tag: 2.5.53 # jan 30th 2023
+    tag: development
   ingress:
     tls: true
     enabled: false
@@ -92,7 +82,7 @@ discovery-api:
       memory: 512Mi
       cpu: 250m
   image:
-    tag: 1.3.8
+    tag: development
     pullPolicy: IfNotPresent
   ingress:
     enabled: false
@@ -121,7 +111,7 @@ discovery-api:
 discovery-streams:
   enabled: true
   image:
-    tag: 3.0.20
+    tag: development
     pullPolicy: IfNotPresent
   auth:
     raptor_url: "http://raptor/api"
@@ -138,7 +128,7 @@ discovery-streams:
 discovery-ui:
   enabled: true
   image:
-    tag: 2.1.13
+    tag: development
   ingress:
     enabled: false
   resources:
@@ -254,7 +244,7 @@ persistence:
 raptor:
   enabled: true
   image:
-    tag: 1.2.13
+    tag: development
     pullPolicy: IfNotPresent
   resources:
     requests:
@@ -272,7 +262,7 @@ raptor:
 reaper:
   enabled: true
   image:
-    tag: 2.0.18
+    tag: development
     pullPolicy: IfNotPresent
   resources:
     limits:
@@ -290,7 +280,7 @@ reaper:
 alchemist:
   enabled: true
   image:
-    tag: 0.2.19
+    tag: development
     pullPolicy: IfNotPresent
   kafka:
     inputTopicPrefix: "raw"
@@ -306,7 +296,7 @@ alchemist:
 valkyrie:
   enabled: true
   image:
-    tag: 1.7.23
+    tag: development
     pullPolicy: IfNotPresent
   replicaCount: 1
   kafka:
@@ -323,7 +313,7 @@ valkyrie:
 forklift:
   enabled: true
   image:
-    tag: 0.19.5
+    tag: development
     pullPolicy: IfNotPresent
   overwrite_mode: true
   resources:
