@@ -13,8 +13,8 @@ on:
         type: choice
         description: Choose the environment used to deploy urbanos.
         options:
-          - demo-urbanos.com
           - dev1-urbanos.com
+          - demo-urbanos.com
         required: true
 
 jobs:
