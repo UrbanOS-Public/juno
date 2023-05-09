@@ -51,7 +51,7 @@ export const installSauron = (
   dependsOn: DependsOn
 ) =>
   new Release(classRef, "SauronHelmRelease", {
-    name: "urbanos",
+    name: "sauron",
     chart: "sauron",
     version: "0.0.16",
     repository: "https://urbanos-public.github.io/charts/",
