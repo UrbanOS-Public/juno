@@ -6,7 +6,7 @@ import { Config } from "./configuration";
 export const initTFRemoteBackend = (classRef: TerraformStack) =>
   new RemoteBackend(classRef, {
     hostname: "app.terraform.io",
-    organization: "benjaminmitchinson",
+    organization: "urbanos",
     workspaces: {
       name: Config.tfWorkspaceName,
     },
