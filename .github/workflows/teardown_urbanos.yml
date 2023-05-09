@@ -9,6 +9,7 @@ on:
         options:
           - dev1-urbanos.com
           - demo-urbanos.com
+          - dock-urbanos.com
         required: true
 
 jobs:
