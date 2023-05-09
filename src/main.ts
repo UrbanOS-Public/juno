@@ -35,6 +35,7 @@ import {
   installMockCVEData,
   installPostgresql,
   installRedis,
+  installSauron,
   installStreamsToEventHub,
   installUrbanOS,
 } from "./helm";
@@ -125,6 +126,10 @@ class MyStack extends TerraformStack {
         medram,
         highram,
       ],
+    });
+
+    installSauron(classRef, {
+      dependsOn: [urbanos]
     });
 
     const mockCVEData = installMockCVEData(classRef, { dependsOn: [urbanos] });

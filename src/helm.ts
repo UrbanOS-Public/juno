@@ -46,6 +46,23 @@ export const installUrbanOS = (
     timeout: 600,
   });
 
+export const installSauron = (
+  classRef: TerraformStack,
+  dependsOn: DependsOn
+) =>
+  new Release(classRef, "SauronHelmRelease", {
+    name: "urbanos",
+    chart: "sauron",
+    version: "0.0.16",
+    repository: "https://urbanos-public.github.io/charts/",
+    description:
+      "Install of Sauron using values from the Juno terraform repo. Installed with the helm provider.",
+    namespace: "urbanos",
+    createNamespace: false,
+    ...dependsOn,
+    timeout: 600,
+  });
+
 export const installKafka = (classRef: TerraformStack, dependsOn: DependsOn) =>
   new Release(classRef, "KafkaHelmRelease", {
     name: "kafka",
