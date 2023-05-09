@@ -58,6 +58,7 @@ export const installSauron = (
     description:
       "Install of Sauron using values from the Juno terraform repo. Installed with the helm provider.",
     namespace: "urbanos",
+    values: [loadFileContentsAsString("sauron_values.yaml")],
     createNamespace: false,
     ...dependsOn,
     timeout: 600,
