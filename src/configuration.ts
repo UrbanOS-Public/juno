@@ -137,7 +137,7 @@ export class Config {
       : false;
   }
 
-  static get sauronGhPatSecret() {
+  static get sauronGithubToken() {
     return this.getEnvVar({
       varName: "JUNO_SAURON_GITHUB_PAT",
       defaultValue: "false"
