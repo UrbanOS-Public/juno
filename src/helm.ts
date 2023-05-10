@@ -53,7 +53,7 @@ export const installSauron = (
   new Release(classRef, "SauronHelmRelease", {
     name: "sauron",
     chart: "sauron",
-    version: "0.0.16",
+    version: "0.0.17",
     repository: "https://urbanos-public.github.io/charts/",
     description:
       "Install of Sauron using values from the Juno terraform repo. Installed with the helm provider.",
