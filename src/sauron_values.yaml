@@ -9,7 +9,7 @@ config:
   managedReleaseName: "urban-os"
 
 remoteDeployment:
-  gitHttpsCloneUrl: "https://github.com/<Org>/<Repo>.git"
+  gitHttpsCloneUrl: "https://github.com/UrbanOS-Public/smartcitiesdata.git"
   targetBranch: "main"
   valuesFileFromRepoRoot: "./envs/dev/values.yaml"
   postRendererFromRepoRoot: ""
