@@ -107,6 +107,13 @@ export class Config {
     });
   }
 
+  static get tfOrgName() {
+    return this.getEnvVar({
+      varName: "JUNO_DEMO_TF_ORGANIZATION_NAME",
+      defaultValue: "",
+    });
+  }
+
   static get tfWorkspaceName() {
     return this.getEnvVar({
       varName: "JUNO_DEMO_TF_WORKSPACE_NAME",
