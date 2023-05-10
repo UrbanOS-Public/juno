@@ -137,6 +137,14 @@ export class Config {
       : false;
   }
 
+  static get sauronGhPatSecret() {
+    return this.getEnvVar({
+      varName: "JUNO_SAURON_GITHUB_PAT",
+      defaultValue: "false"
+      // errorMsg: "UrbanOS requires a github private access token for Sauron service",
+    });
+  }
+
   // tag to put on all created resources, helpful for billing info + confirming
   //     that resources related to this terraform has been entirely removed
   static get tags() {
