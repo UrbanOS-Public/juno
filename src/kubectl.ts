@@ -95,9 +95,9 @@ export const installSauronGithubToken = (
   return installResource(
     classRef,
     { dependsOn: [...dependsOn.dependsOn] },
-    "SauronGithubToken",
+    "SauronGithub",
     "resource_additions/sauron_github_token.yaml",
-    { key: "REPLACE-WITH-BASE64", value: Config.sauronGithubToken }
+    { key: "REPLACE-WITH-BASE64", value: btoa(Config.sauronGithubToken) }
   );
 };
 
