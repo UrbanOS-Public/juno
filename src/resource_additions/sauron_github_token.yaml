@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: sauron-remote_deployment-proxy_account_pat
+  name: sauron-remoteDeployment-proxyAccountPAT
   namespace: urbanos
 type: Opaque
 data:
