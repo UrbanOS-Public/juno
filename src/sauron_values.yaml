@@ -10,7 +10,7 @@ config:
 
 remoteDeployment:
   gitHttpsCloneUrl: "https://github.com/UrbanOS-Public/smartcitiesdata.git"
-  targetBranch: "main"
+  targetBranch: "master"
   valuesFileFromRepoRoot: "./envs/dev/values.yaml"
   postRendererFromRepoRoot: ""
   proxyAccountPAT: ""
