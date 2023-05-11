@@ -140,8 +140,8 @@ export class Config {
   static get sauronGithubToken() {
     return this.getEnvVar({
       varName: "JUNO_SAURON_GITHUB_PAT",
-      defaultValue: "false"
-      // errorMsg: "UrbanOS requires a github private access token for Sauron service",
+      // defaultValue: "false"
+      errorMsg: "UrbanOS requires a github private access token for Sauron service"
     });
   }
 
