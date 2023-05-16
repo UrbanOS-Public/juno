@@ -38,6 +38,8 @@ andi:
   enabled: true
   image:
     tag: development
+    majorPin: "2"
+    minorPin: "6"
   ingress:
     tls: true
     enabled: false
@@ -83,7 +85,9 @@ discovery-api:
       cpu: 250m
   image:
     tag: development
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
+    majorPin: "1"
+    minorPin: "3"
   ingress:
     enabled: false
   secrets:
@@ -113,6 +117,8 @@ discovery-streams:
   image:
     tag: development
     pullPolicy: IfNotPresent
+    majorPin: "3"
+    minorPin: "0"
   auth:
     raptor_url: "http://raptor/api"
   resources:
@@ -245,6 +251,8 @@ raptor:
   enabled: true
   image:
     tag: development
+    majorPin: "1"
+    minorPin: "2"
     pullPolicy: IfNotPresent
   resources:
     requests:
@@ -264,6 +272,8 @@ reaper:
   image:
     tag: development
     pullPolicy: IfNotPresent
+    majorPin: "2"
+    minorPin: "0"
   resources:
     limits:
       memory: 500M
@@ -282,6 +292,8 @@ alchemist:
   image:
     tag: development
     pullPolicy: IfNotPresent
+    majorPin: "0"
+    minorPin: "2"
   kafka:
     inputTopicPrefix: "raw"
     outputTopicPrefix: "transformed"
@@ -298,6 +310,8 @@ valkyrie:
   image:
     tag: development
     pullPolicy: IfNotPresent
+    majorPin: "1"
+    minorPin: "7"
   replicaCount: 1
   kafka:
     inputTopicPrefix: "transformed"
@@ -315,6 +329,8 @@ forklift:
   image:
     tag: development
     pullPolicy: IfNotPresent
+    majorPin: "0"
+    minorPin: "19"
   overwrite_mode: true
   resources:
     requests:
