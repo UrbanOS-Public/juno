@@ -4,12 +4,12 @@ global:
     accessSecret: []
 
 config:
-  cron: "*/2 * * * *"
+  cron: "*/15 * * * *"
   image: "smartcitiesdata/sauron:0.0.8"
   managedReleaseName: "urban-os"
 
 remoteDeployment:
-  gitHttpsCloneUrl: "https://github.com/UrbanOS-Public/smartcitiesdata.git"
+  gitHttpsCloneUrl: "https://github.com/UrbanOS-Public/juno.git"
   targetBranch: "master"
   valuesFileFromRepoRoot: "./envs/dev/values.yaml"
   postRendererFromRepoRoot: ""
