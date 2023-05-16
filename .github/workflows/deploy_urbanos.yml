@@ -13,14 +13,14 @@ on:
         type: choice
         description: Choose the environment used to deploy urbanos.
         options:
-          - dev1-urbanos.com
-          - demo-urbanos.com
+          - dev1
+          - demo
         required: true
 
 jobs:
   Deploy_UrbanOS:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
+    environment: ${{ github.event.inputs.environment }}-urbanos.com
     steps:
       - uses: actions/checkout@v2
 
@@ -44,6 +44,7 @@ jobs:
         env:
           # ensure edits to these are added to the "teardown_urbanos" workflow as well
           # in order of .env file secrets and of github action secrets list
+          ENV: ${{ github.event.inputs.environment }}
           AUTH0_USER_API_KEY: ${{secrets.AUTH0_USER_API_KEY}}
           JUNO_ANDI_AUTH0_CLIENT_SECRET: ${{secrets.JUNO_ANDI_AUTH0_CLIENT_SECRET}}
           JUNO_AZURE_SUB_ID: ${{secrets.JUNO_AZURE_SUB_ID}}

@@ -145,6 +145,13 @@ export class Config {
     });
   }
 
+  static get env() {
+    return this.getEnvVar({
+      varName: "ENV",
+      errorMsg: "Unable to determine environment"
+    });
+  }
+
   // tag to put on all created resources, helpful for billing info + confirming
   //     that resources related to this terraform has been entirely removed
   static get tags() {

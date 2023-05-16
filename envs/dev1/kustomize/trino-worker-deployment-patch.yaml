@@ -1,0 +1,12 @@
+# This patch is needed because the latest trino chart does not allow for security context
+# to be configured for the trino-workers. By default, openshift runs them as the cluster
+# default user, which causes filesystem permission issues.
+kind: Deployment
+metadata:
+  name: requiredForKustomizeButNotUsed
+spec:
+  template:
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000

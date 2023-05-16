@@ -37,7 +37,7 @@ export const installUrbanOS = (
     createNamespace: false,
     values: [
       replaceAll(
-        loadFileContentsAsString("urbanos_dev_chart_values.yaml"),
+        loadFileContentsAsString(`../envs/${Config.env}/urbanos_values.yaml`),
         "URL_W_SUFFIX",
         Config.URLWithSuffix
       ),
@@ -58,7 +58,7 @@ export const installSauron = (
     description:
       "Install of Sauron using values from the Juno terraform repo. Installed with the helm provider.",
     namespace: "urbanos",
-    values: [loadFileContentsAsString("sauron_values.yaml")],
+    values: [loadFileContentsAsString(`../envs/${Config.env}/sauron_values.yaml`)],
     createNamespace: false,
     ...dependsOn,
     timeout: 600,
