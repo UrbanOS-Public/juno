@@ -312,7 +312,6 @@ valkyrie:
     pullPolicy: IfNotPresent
     majorPin: "1"
     minorPin: "7"
-  replicaCount: 1
   kafka:
     inputTopicPrefix: "transformed"
     outputTopicPrefix: "validated"
