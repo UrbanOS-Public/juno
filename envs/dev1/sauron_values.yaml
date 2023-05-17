@@ -10,7 +10,7 @@ config:
 
 remoteDeployment:
   gitHttpsCloneUrl: "https://github.com/UrbanOS-Public/juno.git"
-  targetBranch: "maini"
+  targetBranch: "main"
   valuesFileFromRepoRoot: "./envs/dev/values.yaml"
   postRendererFromRepoRoot: ""
   proxyAccountPAT: ""
