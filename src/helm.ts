@@ -74,7 +74,7 @@ export const installKafka = (classRef: TerraformStack, dependsOn: DependsOn) =>
       "Install of Kafka using values from the Juno terraform repo. Installed with the helm provider.",
     namespace: "urbanos",
     createNamespace: false,
-    values: [loadFileContentsAsString("urbanos_kafka_values.yaml")],
+    values: [loadFileContentsAsString(`../envs/${Config.env}/urbanos_kafka_values.yaml`)],
     ...dependsOn,
     timeout: 600,
   });
