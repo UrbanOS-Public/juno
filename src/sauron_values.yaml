@@ -13,37 +13,3 @@ remoteDeployment:
   targetBranch: "dev1-may-upgrade"
   valuesFileFromRepoRoot: "./envs/dev1/values.yaml"
   postRendererFromRepoRoot: "./envs/dev1/kustomize/hook.sh"
-  # proxyAccountPAT: ""
-  # secrets:
-  #   andi:
-  #     postgres:
-  #       password: ""
-  #     auth:
-  #       auth0_client_secret: ""
-
-  #   persistence:
-  #     metastore:
-  #       postgres:
-  #         password: ""
-
-  #     trino:
-  #       enabled: true
-
-  #   raptor:
-  #     auth:
-  #       auth0_client_secret: ""
-
-  #   discovery-api:
-  #     secrets:
-  #       discoveryApiPresignKey: ""
-  #       guardianSecretKey: ""
-  #     postgres:
-  #       password: ""
-
-  #   minio:
-  #     #This endpoint is only needed in here because we have to apply it post-render via environment variables for the hive-catalog workaround
-  #     endpoint: "http://minio:80"
-  #     base64UserAccessKey: ""
-  #     base64UserSecretKey: ""
-  #     rootUserName: ""
-  #     rootPassword: ""
