@@ -103,10 +103,6 @@ class MyStack extends TerraformStack {
       dependsOn: [namespace],
     });
 
-    const sauronGithubToken = installSauronGithubToken(classRef, {
-      dependsOn: [namespace],
-    });
-
     const redis = installRedis(classRef, {
       dependsOn: [namespace],
     });
@@ -133,9 +129,15 @@ class MyStack extends TerraformStack {
       ],
     });
 
-    installSauron(classRef, {
-      dependsOn: [urbanos, sauronGithubToken]
-    });
+    if (Config.enableSauron && Config.env !== "demo") {
+      const sauronGithubToken = installSauronGithubToken(classRef, {
+        dependsOn: [namespace],
+      });
+
+      installSauron(classRef, {
+        dependsOn: [urbanos, sauronGithubToken]
+      });
+    }
 
     const mockCVEData = installMockCVEData(classRef, { dependsOn: [urbanos] });
 

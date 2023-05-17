@@ -140,7 +140,6 @@ export class Config {
   static get sauronGithubToken() {
     return this.getEnvVar({
       varName: "JUNO_SAURON_GITHUB_PAT",
-      // defaultValue: "false"
       errorMsg: "UrbanOS requires a github private access token for Sauron service"
     });
   }
@@ -150,6 +149,15 @@ export class Config {
       varName: "ENV",
       errorMsg: "Unable to determine environment"
     });
+  }
+
+  static get enableSauron() {
+    return this.getEnvVar({
+      varName: "JUNO_ENABLE_SAURON",
+      defaultValue: "false",
+    }).toLowerCase() === "true"
+      ? true
+      : false;
   }
 
   // tag to put on all created resources, helpful for billing info + confirming
