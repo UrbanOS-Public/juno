@@ -283,11 +283,11 @@ reaper:
     pullPolicy: IfNotPresent
   resources:
     limits:
-      memory: 500M
+      memory: 1G
       cpu: 400m
       ephemeral-storage: 2G
     requests:
-      memory: 500M
+      memory: 1G
       cpu: 400m
       ephemeral-storage: 2G
   aws:
