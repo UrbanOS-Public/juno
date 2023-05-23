@@ -252,7 +252,7 @@ raptor:
   image:
     tag: development
     majorPin: "1"
-    minorPin: "2"
+    minorPin: "3"
     pullPolicy: IfNotPresent
   resources:
     requests:
@@ -262,7 +262,7 @@ raptor:
       cpu: 250m
       memory: 500M
   auth:
-    auth0_client_id: PuL20cfxgzSu6jpMRQAT2mZ2pwhfFzH8
+    raptor_auth0_client_id: PuL20cfxgzSu6jpMRQAT2mZ2pwhfFzH8
     # {{ .Release.Name }}-andi-auth0-client-secret will be referenced,
     #   created ahead of time
     auth0_client_secret: ""
