@@ -266,10 +266,10 @@ raptor:
   resources:
     requests:
       cpu: 250m
-      memory: 500M
+      memory: 250M
     limits:
       cpu: 250m
-      memory: 500M
+      memory: 250M
   auth:
     auth0_client_id: PuL20cfxgzSu6jpMRQAT2mZ2pwhfFzH8
     # {{ .Release.Name }}-andi-auth0-client-secret will be referenced,
@@ -283,11 +283,11 @@ reaper:
     pullPolicy: IfNotPresent
   resources:
     limits:
-      memory: 1G
+      memory: 750M
       cpu: 400m
       ephemeral-storage: 2G
     requests:
-      memory: 1G
+      memory: 750M
       cpu: 400m
       ephemeral-storage: 2G
   aws:
@@ -305,10 +305,10 @@ alchemist:
   resources:
     limits:
       cpu: 400m
-      memory: 500M
+      memory: 750M
     requests:
       cpu: 400m
-      memory: 500M
+      memory: 750M
 
 valkyrie:
   enabled: true
@@ -322,10 +322,10 @@ valkyrie:
   resources:
     limits:
       cpu: 250m
-      memory: 500M
+      memory: 750M
     requests:
       cpu: 250m
-      memory: 500M
+      memory: 750M
 
 forklift:
   enabled: true
@@ -336,10 +336,10 @@ forklift:
   resources:
     requests:
       cpu: 400m
-      memory: 500M
+      memory: 750M
     limits:
       cpu: 400m
-      memory: 500M
+      memory: 750M
   aws:
     s3HostName: minio
     s3Port: 80
