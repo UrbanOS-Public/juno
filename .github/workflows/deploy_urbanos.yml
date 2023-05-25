@@ -14,6 +14,7 @@ on:
         description: Choose the environment used to deploy urbanos.
         options:
           - dev1-urbanos.com
+          - qual-urbanos.com
           - demo-urbanos.com
         required: true
 
