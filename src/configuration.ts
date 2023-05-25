@@ -116,7 +116,7 @@ export class Config {
 
   static get tfOrganizationName() {
     return this.getEnvVar({
-      varName: "JUNO_DEMO_TF_WORKSPACE_NAME",
+      varName: "JUNO_DEMO_TF_ORGANIZATION_NAME",
       defaultValue: "",
     });
   }
