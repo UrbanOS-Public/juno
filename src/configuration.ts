@@ -114,6 +114,13 @@ export class Config {
     });
   }
 
+  static get tfOrganizationName() {
+    return this.getEnvVar({
+      varName: "JUNO_DEMO_TF_WORKSPACE_NAME",
+      defaultValue: "",
+    });
+  }
+
   static get andiAuth0Secret() {
     return this.getEnvVar({
       varName: "JUNO_ANDI_AUTH0_CLIENT_SECRET",
