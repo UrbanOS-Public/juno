@@ -157,8 +157,8 @@ discovery-ui:
       cpu: 300m
   env:
     disc_api_url: "https://data.URL_W_SUFFIX"
-    disc_streams_url: "ws://streams.URL_W_SUFFIX"
-    disc_ui_url: "http://discovery.URL_W_SUFFIX"
+    disc_streams_url: "wss://streams.URL_W_SUFFIX"
+    disc_ui_url: "https://discovery.URL_W_SUFFIX"
     streets_tile_layer_url: ""
     mapbox_access_token: ""
     auth0_domain: "urbanos-demo.us.auth0.com"
