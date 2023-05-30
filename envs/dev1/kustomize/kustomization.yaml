@@ -1,0 +1,11 @@
+resources:
+  - helm_output.yaml
+patches:
+  - path: trino-worker-deployment-patch.yaml
+    target:
+      kind: Deployment
+      name: ".*-trino-worker"
+  - path: minio-tenant-remove-logs.yaml
+    target:
+      kind: Tenant
+      name: "minio1"

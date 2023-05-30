@@ -144,6 +144,29 @@ export class Config {
       : false;
   }
 
+  static get sauronGithubToken() {
+    return this.getEnvVar({
+      varName: "JUNO_SAURON_GITHUB_PAT",
+      errorMsg: "UrbanOS requires a github private access token for Sauron service"
+    });
+  }
+
+  static get env() {
+    return this.getEnvVar({
+      varName: "ENV",
+      errorMsg: "Unable to determine environment"
+    });
+  }
+
+  static get enableSauron() {
+    return this.getEnvVar({
+      varName: "JUNO_ENABLE_SAURON",
+      defaultValue: "false",
+    }).toLowerCase() === "true"
+      ? true
+      : false;
+  }
+
   // tag to put on all created resources, helpful for billing info + confirming
   //     that resources related to this terraform has been entirely removed
   static get tags() {

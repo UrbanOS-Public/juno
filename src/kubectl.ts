@@ -88,6 +88,19 @@ export const installAuth0Secrets = (
   );
 };
 
+export const installSauronGithubToken = (
+  classRef: TerraformStack,
+  dependsOn: DependsOn
+) => {
+  return installResource(
+    classRef,
+    { dependsOn: [...dependsOn.dependsOn] },
+    "SauronGithub",
+    "resource_additions/sauron_github_token.yaml",
+    { key: "REPLACE-WITH-BASE64", value: btoa(Config.sauronGithubToken) }
+  );
+};
+
 export const installStreamsToEventHubSecrets = (
   classRef: TerraformStack,
   dependsOn: DependsOn

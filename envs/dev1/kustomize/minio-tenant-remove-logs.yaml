@@ -1,0 +1,13 @@
+# These services are for logging purposes only and cause various permission issues.
+# It wouldn't take much to work through the permission issues, however, we are
+# relatively resource constrained, so we opt to disable them.
+- path: /spec/log
+  op: remove
+- path: /spec/logging
+  op: remove
+- path: /spec/prometheus
+  op: remove
+- path: /spec/prometheusOperator
+  op: remove
+- path: /spec/features
+  op: remove

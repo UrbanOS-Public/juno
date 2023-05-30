@@ -21,6 +21,7 @@ import {
   createUrbanOSNamespace,
   initializeKubectlProvider,
   installAuth0Secrets,
+  installSauronGithubToken,
   installIngresses,
   installStrimziCRDs,
 } from "./kubectl";
@@ -35,6 +36,7 @@ import {
   installMockCVEData,
   installPostgresql,
   installRedis,
+  installSauron,
   installStreamsToEventHub,
   installUrbanOS,
 } from "./helm";
@@ -126,6 +128,16 @@ class MyStack extends TerraformStack {
         highram,
       ],
     });
+
+    if (Config.enableSauron && Config.env !== "demo") {
+      const sauronGithubToken = installSauronGithubToken(classRef, {
+        dependsOn: [namespace],
+      });
+
+      installSauron(classRef, {
+        dependsOn: [urbanos, sauronGithubToken]
+      });
+    }
 
     const mockCVEData = installMockCVEData(classRef, { dependsOn: [urbanos] });
 

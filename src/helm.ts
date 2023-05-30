@@ -37,11 +37,29 @@ export const installUrbanOS = (
     createNamespace: false,
     values: [
       replaceAll(
-        loadFileContentsAsString("urbanos_demo_chart_values.yaml"),
+        loadFileContentsAsString(`../envs/${Config.env}/urbanos_values.yaml`),
         "URL_W_SUFFIX",
         Config.URLWithSuffix
       ),
     ],
+    ...dependsOn,
+    timeout: 600,
+  });
+
+export const installSauron = (
+  classRef: TerraformStack,
+  dependsOn: DependsOn
+) =>
+  new Release(classRef, "SauronHelmRelease", {
+    name: "sauron",
+    chart: "sauron",
+    version: "0.0.17",
+    repository: "https://urbanos-public.github.io/charts/",
+    description:
+      "Install of Sauron using values from the Juno terraform repo. Installed with the helm provider.",
+    namespace: "urbanos",
+    values: [loadFileContentsAsString(`../envs/${Config.env}/sauron_values.yaml`)],
+    createNamespace: false,
     ...dependsOn,
     timeout: 600,
   });
@@ -56,7 +74,7 @@ export const installKafka = (classRef: TerraformStack, dependsOn: DependsOn) =>
       "Install of Kafka using values from the Juno terraform repo. Installed with the helm provider.",
     namespace: "urbanos",
     createNamespace: false,
-    values: [loadFileContentsAsString("urbanos_kafka_values.yaml")],
+    values: [loadFileContentsAsString(`../envs/${Config.env}/urbanos_kafka_values.yaml`)],
     ...dependsOn,
     timeout: 600,
   });

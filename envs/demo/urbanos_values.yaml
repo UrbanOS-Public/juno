@@ -117,13 +117,6 @@ discovery-api:
   aws:
     s3HostName: "minio"
     s3Port: 80
-  resources:
-    limits:
-      memory: 500M
-      cpu: 1
-    requests:
-      memory: 500M
-      cpu: 1
 
 discovery-streams:
   enabled: true
@@ -272,6 +265,7 @@ raptor:
       memory: 500M
   auth:
     auth0_client_id: PuL20cfxgzSu6jpMRQAT2mZ2pwhfFzH8
+    raptor_auth0_client_id: PuL20cfxgzSu6jpMRQAT2mZ2pwhfFzH8
     # {{ .Release.Name }}-andi-auth0-client-secret will be referenced,
     #   created ahead of time
     auth0_client_secret: ""
