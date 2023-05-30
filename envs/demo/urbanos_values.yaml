@@ -276,11 +276,11 @@ reaper:
     pullPolicy: IfNotPresent
   resources:
     limits:
-      memory: 500M
+      memory: 800M
       cpu: 400m
       ephemeral-storage: 2G
     requests:
-      memory: 500M
+      memory: 800M
       cpu: 400m
       ephemeral-storage: 2G
   aws:
@@ -298,10 +298,10 @@ alchemist:
   resources:
     limits:
       cpu: 400m
-      memory: 500M
+      memory: 750M
     requests:
       cpu: 400m
-      memory: 500M
+      memory: 750M
 
 valkyrie:
   enabled: true
@@ -315,10 +315,10 @@ valkyrie:
   resources:
     limits:
       cpu: 250m
-      memory: 500M
+      memory: 750M
     requests:
       cpu: 250m
-      memory: 500M
+      memory: 750M
 
 forklift:
   enabled: true
@@ -329,10 +329,10 @@ forklift:
   resources:
     requests:
       cpu: 400m
-      memory: 500M
+      memory: 750M
     limits:
       cpu: 400m
-      memory: 500M
+      memory: 750M
   aws:
     s3HostName: minio
     s3Port: 80

@@ -10,6 +10,6 @@ config:
 
 remoteDeployment:
   gitHttpsCloneUrl: "https://github.com/UrbanOS-Public/juno.git"
-  targetBranch: "dev1-may-upgrade"
+  targetBranch: "main"
   valuesFileFromRepoRoot: "./envs/dev1/values.yaml"
   postRendererFromRepoRoot: "./envs/dev1/kustomize/hook.sh"
