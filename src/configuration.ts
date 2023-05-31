@@ -107,16 +107,16 @@ export class Config {
     });
   }
 
-  static get tfOrgName() {
+  static get tfWorkspaceName() {
     return this.getEnvVar({
-      varName: "JUNO_DEMO_TF_ORGANIZATION_NAME",
+      varName: "JUNO_DEMO_TF_WORKSPACE_NAME",
       defaultValue: "",
     });
   }
 
-  static get tfWorkspaceName() {
+  static get tfOrganizationName() {
     return this.getEnvVar({
-      varName: "JUNO_DEMO_TF_WORKSPACE_NAME",
+      varName: "JUNO_DEMO_TF_ORGANIZATION_NAME",
       defaultValue: "",
     });
   }
@@ -138,6 +138,29 @@ export class Config {
   static get useStagingLetsEncrypt() {
     return this.getEnvVar({
       varName: "JUNO_USE_STAGING_LETS_ENCRYPT",
+      defaultValue: "false",
+    }).toLowerCase() === "true"
+      ? true
+      : false;
+  }
+
+  static get sauronGithubToken() {
+    return this.getEnvVar({
+      varName: "JUNO_SAURON_GITHUB_PAT",
+      errorMsg: "UrbanOS requires a github private access token for Sauron service"
+    });
+  }
+
+  static get env() {
+    return this.getEnvVar({
+      varName: "ENV",
+      errorMsg: "Unable to determine environment"
+    });
+  }
+
+  static get enableSauron() {
+    return this.getEnvVar({
+      varName: "JUNO_ENABLE_SAURON",
       defaultValue: "false",
     }).toLowerCase() === "true"
       ? true
