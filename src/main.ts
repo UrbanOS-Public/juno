@@ -46,6 +46,8 @@ class MyStack extends TerraformStack {
     super(scope, id);
     const classRef = this;
 
+    console.log(">>>>>>>>>>>>>>>>>>>> Starting script for:", Config.env);
+
     if (Config.tfBackendKey && Config.tfWorkspaceName) {
       console.log("Using remote TF backend:", Config.tfWorkspaceName);
       initTFRemoteBackend(classRef);
