@@ -39,7 +39,7 @@ andi:
   image:
     tag: development
     majorPin: "2"
-    minorPin: "6"
+    minorPin: "7"
   ingress:
     tls: true
     enabled: false
