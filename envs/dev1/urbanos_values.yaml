@@ -51,7 +51,7 @@ andi:
     password: "admin"
     verifySNI: false
   auth:
-    auth0_client_id: "S3H3cToHVddG7Q7zEKK1nJbzrAy9GqG0"
+    andi_auth0_client_id: "S3H3cToHVddG7Q7zEKK1nJbzrAy9GqG0"
     # {{ .Release.Name }}-andi-auth0-client-secret will be referenced,
     #   created ahead of time
     auth0_client_secret: ""
@@ -151,7 +151,7 @@ discovery-ui:
     streets_tile_layer_url: ""
     mapbox_access_token: ""
     auth0_domain: "urbanos-demo.us.auth0.com"
-    auth0_client_id: "3o2V7xHvmV2nQjp1HapX68DzWvxVQdJ2"
+    discovery_auth0_client_id: "3o2V7xHvmV2nQjp1HapX68DzWvxVQdJ2"
     auth0_audience: "discovery_api"
     additional_csp_hosts: "*.URL_W_SUFFIX *.githubusercontent.com"
     footer_right_links: '[{"linkText":"Powered by UrbanOS", "url":"https://github.com/UrbanOS-Public"}]'
@@ -262,7 +262,6 @@ raptor:
       cpu: 250m
       memory: 500M
   auth:
-    auth0_client_id: PuL20cfxgzSu6jpMRQAT2mZ2pwhfFzH8
     raptor_auth0_client_id: PuL20cfxgzSu6jpMRQAT2mZ2pwhfFzH8
     # {{ .Release.Name }}-andi-auth0-client-secret will be referenced,
     #   created ahead of time
