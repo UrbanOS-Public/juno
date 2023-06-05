@@ -121,6 +121,13 @@ export class Config {
     });
   }
 
+  static get urbanosChartVersion() {
+    return this.getEnvVar({
+      varName: "URBANOS_CHART_VERSION",
+      errorMsg: "UrbanOS requires URBANOS_CHART_VERSION for installation",
+    });
+  }
+
   static get andiAuth0Secret() {
     return this.getEnvVar({
       varName: "JUNO_ANDI_AUTH0_CLIENT_SECRET",

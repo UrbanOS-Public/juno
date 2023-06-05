@@ -29,7 +29,7 @@ export const installUrbanOS = (
   new Release(classRef, "UrbanOSHelmRelease", {
     name: "urbanos",
     chart: "urban-os",
-    version: "1.13.49",
+    version: Config.urbanosChartVersion,
     repository: "https://urbanos-public.github.io/charts/",
     description:
       "Install of UrbanOS using values from the Juno terraform repo. Installed with the helm provider.",

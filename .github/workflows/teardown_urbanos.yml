@@ -57,3 +57,4 @@ jobs:
           JUNO_USE_STAGING_LETS_ENCRYPT: does_not_matter
           JUNO_ENABLE_SAURON: does_not_matter
           JUNO_SAURON_GITHUB_PAT: ${{secrets.JUNO_SAURON_GITHUB_PAT}}
+          URBANOS_CHART_VERSION: ${{vars.URBANOS_CHART_VERSION}}

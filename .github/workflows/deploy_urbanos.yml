@@ -66,6 +66,7 @@ jobs:
           JUNO_USE_STAGING_LETS_ENCRYPT: ${{github.event.inputs.use-staging-lets-encrypt}}
           JUNO_ENABLE_SAURON: ${{github.event.inputs.enable-sauron}}
           JUNO_SAURON_GITHUB_PAT: ${{secrets.JUNO_SAURON_GITHUB_PAT}}
+          URBANOS_CHART_VERSION: ${{vars.URBANOS_CHART_VERSION}}
 
       - name: Initialize Andi Sample Datasets
         if: ${{ github.event.inputs.skip-andi-init != 'true' }}
