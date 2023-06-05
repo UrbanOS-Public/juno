@@ -48,12 +48,12 @@ class MyStack extends TerraformStack {
 
     console.log(">>>>>>>>>>>>>>>>>>>> Starting script for:", Config.env);
 
-    if (Config.tfBackendKey && Config.tfWorkspaceName) {
+    if (Config.tfBackendKey && Config.tfWorkspaceName && Config.tfOrganizationName) {
       console.log("Using remote TF backend:", Config.tfWorkspaceName);
       initTFRemoteBackend(classRef);
     } else {
       console.log(
-        "Using local terraform state, since backend key or workspace name were not provided."
+        "Using local terraform state, since either backend key, workspace name, or organization name were not provided."
       );
     }
 

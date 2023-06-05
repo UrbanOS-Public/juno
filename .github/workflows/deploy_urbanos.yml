@@ -56,8 +56,8 @@ jobs:
           JUNO_DEMO_AZURE_PASSWORD: ${{secrets.JUNO_DEMO_AZURE_PASSWORD}}
           JUNO_DEMO_AZURE_TENANT: ${{secrets.JUNO_DEMO_AZURE_TENANT}}
           JUNO_DEMO_TF_BACKEND_KEY: ${{secrets.JUNO_DEMO_TF_BACKEND_KEY}}
-          JUNO_DEMO_TF_ORGANIZATION_NAME: ${{secrets.JUNO_DEMO_TF_ORGANIZATION_NAME}}
-          JUNO_DEMO_TF_WORKSPACE_NAME: ${{secrets.JUNO_DEMO_TF_WORKSPACE_NAME}}
+          JUNO_DEMO_TF_ORGANIZATION_NAME: ${{vars.JUNO_DEMO_TF_ORGANIZATION_NAME}}
+          JUNO_DEMO_TF_WORKSPACE_NAME: ${{vars.JUNO_DEMO_TF_WORKSPACE_NAME}}
           JUNO_DOMAIN_NO_SUFFIX: ${{secrets.JUNO_DOMAIN_NO_SUFFIX}}
           JUNO_DOMAIN_WITH_SUFFIX: ${{secrets.JUNO_DOMAIN_WITH_SUFFIX}}
           JUNO_EVENT_HUB_URL: ${{secrets.JUNO_EVENT_HUB_URL}}
@@ -66,6 +66,7 @@ jobs:
           JUNO_USE_STAGING_LETS_ENCRYPT: ${{github.event.inputs.use-staging-lets-encrypt}}
           JUNO_ENABLE_SAURON: ${{github.event.inputs.enable-sauron}}
           JUNO_SAURON_GITHUB_PAT: ${{secrets.JUNO_SAURON_GITHUB_PAT}}
+          URBANOS_CHART_VERSION: ${{vars.URBANOS_CHART_VERSION}}
 
       - name: Initialize Andi Sample Datasets
         if: ${{ github.event.inputs.skip-andi-init != 'true' }}
