@@ -29,7 +29,7 @@ export const installUrbanOS = (
   new Release(classRef, "UrbanOSHelmRelease", {
     name: "urbanos",
     chart: "urban-os",
-    version: "1.13.31",
+    version: "1.13.49",
     repository: "https://urbanos-public.github.io/charts/",
     description:
       "Install of UrbanOS using values from the Juno terraform repo. Installed with the helm provider.",
@@ -68,7 +68,7 @@ export const installKafka = (classRef: TerraformStack, dependsOn: DependsOn) =>
   new Release(classRef, "KafkaHelmRelease", {
     name: "kafka",
     chart: "kafka",
-    version: "1.2.20",
+    version: "1.2.24",
     repository: "https://urbanos-public.github.io/charts/",
     description:
       "Install of Kafka using values from the Juno terraform repo. Installed with the helm provider.",
@@ -86,7 +86,7 @@ export const installMinioOperator = (
   new Release(classRef, "MinioOperatorHelmRelease", {
     name: "minio-operator",
     chart: "operator",
-    version: "4.5.8",
+    version: "5.0.5",
     repository: "https://operator.min.io/",
     description:
       "Install of Minio Operator using values from the Juno terraform repo. Installed with the helm provider.",
@@ -107,7 +107,7 @@ export const installMinioTenant = (
   return new Release(classRef, "MinioTenantHelmRelease", {
     name: "minio-tenant",
     chart: "tenant",
-    version: "4.5.8",
+    version: "5.0.5",
     repository: "https://operator.min.io/",
     description:
       "Install of Minio Tenant using values from the Juno terraform repo. Installed with the helm provider.",
