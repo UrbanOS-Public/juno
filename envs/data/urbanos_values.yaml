@@ -205,10 +205,10 @@ persistence:
       resources:
         limits:
           memory: 3000M
-          cpu: 500m
+          cpu: 1000m
         requests:
           memory: 3000M
-          cpu: 500m
+          cpu: 1000m
 
     worker:
       resources:
