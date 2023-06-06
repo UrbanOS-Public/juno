@@ -200,7 +200,7 @@ persistence:
 
   trino:
     image:
-      tag: 389
+      tag: 419
     server:
       workers: 1
 
@@ -208,10 +208,10 @@ persistence:
       resources:
         limits:
           memory: 3000M
-          cpu: 500m
+          cpu: 1000m
         requests:
           memory: 3000M
-          cpu: 500m
+          cpu: 1000m
 
     worker:
       resources:
