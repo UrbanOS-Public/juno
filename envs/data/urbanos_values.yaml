@@ -197,6 +197,7 @@ persistence:
   trino:
     image:
       tag: 419
+      pullPolicy: Always
     server:
       workers: 1
 
