@@ -196,7 +196,7 @@ persistence:
 
   trino:
     image:
-      tag: 389
+      tag: 419
     server:
       workers: 1
 
