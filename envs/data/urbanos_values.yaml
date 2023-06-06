@@ -1,0 +1,352 @@
+global:
+  require_api_key: true # true since on public endpoints
+  redis:
+    host: redis-master
+    port: 6379
+    password: urbanos123
+    sslEnabled: false
+  kafka:
+    brokers: pipeline-kafka-bootstrap:9092
+  ingress:
+    dnsZone: "URL_W_SUFFIX"
+    rootDnsZone: "URL_W_SUFFIX"
+  buckets:
+    hostedFileBucket: "hosted-dataset-files"
+    hiveStorageBucket: "presto-hive-storage"
+  presto:
+    url: http://urbanos-trino:8080
+  auth:
+    auth0_domain: urbanos-demo.us.auth0.com
+    jwt_issuer: "https://urbanos-demo.us.auth0.com/" #end "/"" required for jwks_endpoint to be reached
+    raptor_url: http://raptor/api
+    auth0_management_client_id: jSEXPEDqWSmEs2UGRTvL2cyXKk4BAjtD
+  vault:
+    endpoint: "urban-os-vault:8200" # not deployed, qual doesn't have vault
+  objectStore:
+    host: minio
+    port: 80
+    hiveStoragePath: hive-s3
+    accessKey: "minio_root"
+    accessSecret: "minio123"
+  subdomains:
+    andi: "andi"
+    share: "sharedata"
+    discoveryApi: "data"
+    discoveryUi: "discovery"
+    raptor: "raptor"
+andi:
+  enabled: true
+  image:
+    tag: development
+    majorPin: "2"
+    minorPin: "7"
+  ingress:
+    tls: true
+    enabled: false
+  postgres:
+    host: "postgresql"
+    port: "5432"
+    dbname: "andi"
+    user: "urbanos"
+    password: "admin"
+    verifySNI: false
+  auth:
+    andi_auth0_client_id: "S3H3cToHVddG7Q7zEKK1nJbzrAy9GqG0"
+    # {{ .Release.Name }}-andi-auth0-client-secret will be referenced,
+    #   created ahead of time
+    auth0_client_secret: ""
+  aws:
+    accessKeyId: "minio_root"
+    accessKeySecret: "minio123"
+    s3HostName: "minio"
+    s3Port: 80
+  s3:
+    hostedFileBucket: "andi-public-sample-datasets"
+    hostedFileRegion: "us-west-2"
+  footer:
+    rightLinks: '[{"linkText":"Powered by UrbanOS", "url":"https://github.com/UrbanOS-Public"}]'
+  secureCookie: "false"
+  resources:
+    limits:
+      memory: 250M
+      cpu: 150m
+    requests:
+      memory: 250M
+      cpu: 150m
+
+discovery-api:
+  enabled: true
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 250m
+    requests:
+      memory: 512Mi
+      cpu: 250m
+  image:
+    tag: development
+    pullPolicy: Always
+    majorPin: "1"
+    minorPin: "3"
+  ingress:
+    enabled: false
+  secrets:
+    discoveryApiPresignKey: "HRswqhKmHiYOiZGVBf8Z94wEJU4SqwwRgtt4220y8JHyFArJDsmfLfjZGwljuusP"
+    guardianSecretKey: "sNhamYJEldAR7qsdAaMHbBDk5pOrp4QI1EWzheuttcMw533QR5BkZXyOJpZRIsu"
+  postgres:
+    host: "postgresql"
+    port: "5432"
+    dbname: "discovery"
+    user: "urbanos"
+    password: "admin"
+    verifySNI: false
+  auth:
+    jwks_endpoint: https://urbanos-demo.us.auth0.com/.well-known/jwks.json
+    user_info_endpoint: https://urbanos-demo.us.auth0.com/userinfo
+    client_id: "3o2V7xHvmV2nQjp1HapX68DzWvxVQdJ2"
+    redirect_base_url: "http://localhost" # only used by tableau
+  elasticsearch:
+    host: elasticsearch-master:9200
+    tls: false
+  aws:
+    s3HostName: "minio"
+    s3Port: 80
+
+discovery-streams:
+  enabled: true
+  image:
+    tag: development
+    pullPolicy: IfNotPresent
+    majorPin: "3"
+    minorPin: "0"
+  auth:
+    raptor_url: "http://raptor/api"
+  resources:
+    requests:
+      cpu: 250m
+      memory: 500M
+    limits:
+      cpu: 250m
+      memory: 500M
+  ingress:
+    enabled: false
+
+discovery-ui:
+  enabled: true
+  image:
+    tag: development
+  ingress:
+    enabled: false
+  resources:
+    limits:
+      memory: 500M
+      cpu: 300m
+    requests:
+      memory: 500M
+      cpu: 300m
+  env:
+    disc_api_url: "https://data.URL_W_SUFFIX"
+    disc_streams_url: "ws://streams.URL_W_SUFFIX"
+    disc_ui_url: "http://discovery.URL_W_SUFFIX"
+    streets_tile_layer_url: ""
+    mapbox_access_token: ""
+    auth0_domain: "urbanos-demo.us.auth0.com"
+    discovery_auth0_client_id: "3o2V7xHvmV2nQjp1HapX68DzWvxVQdJ2"
+    auth0_audience: "discovery_api"
+    additional_csp_hosts: "*.URL_W_SUFFIX *.githubusercontent.com"
+    footer_right_links: '[{"linkText":"Powered by UrbanOS", "url":"https://github.com/UrbanOS-Public"}]'
+    regenerate_api_key_ff: true
+
+elasticsearch:
+  enabled: false
+
+# installed prior to urbanos as a separate release with urbanos_kafka_values.yaml
+kafka:
+  enabled: false
+
+kubernetes-data-platform:
+  enabled: false
+
+monitoring:
+  enabled: false
+
+minio-operator:
+  enabled: false
+
+minio-tenant:
+  enabled: false
+
+persistence:
+  enabled: true
+
+  metastore:
+    postgres:
+      host: postgresql
+      user: urbanos
+      password: admin
+      port: 5432
+      name: trino_metastore
+    resources:
+      limits:
+        memory: 500M
+        cpu: 500m
+      requests:
+        memory: 500M
+        cpu: 500m
+
+  trino:
+    image:
+      tag: 389
+    server:
+      workers: 1
+
+    coordinator:
+      resources:
+        limits:
+          memory: 3000M
+          cpu: 500m
+        requests:
+          memory: 3000M
+          cpu: 500m
+
+    worker:
+      resources:
+        limits:
+          memory: 3000M
+          cpu: 500m
+        requests:
+          memory: 3000M
+          cpu: 500m
+
+    # applies to both worker and coordinator as of chart 0.8.0, later versions
+    #   can set them independently
+    # affinity:
+    #     nodeAffinity:
+    #       requiredDuringSchedulingIgnoredDuringExecution:
+    #         nodeSelectorTerms:
+    #         - matchExpressions:
+    #           - key: agentpool
+    #             operator: In
+    #             values:
+    #             - highrampool
+
+    additionalCatalogs:
+      hive: |
+        connector.name=hive
+        hive.metastore.uri=thrift://hive-metastore:8000
+        hive.metastore.username=urbanos
+        hive.metastore-timeout=1m
+        hive.allow-drop-table=true
+        hive.allow-rename-table=true
+        hive.allow-drop-column=true
+        hive.allow-rename-column=true
+        hive.allow-add-column=true
+        hive.s3.aws-access-key=minio_root
+        hive.s3.aws-secret-key=minio123
+        hive.s3.path-style-access=true
+        hive.s3.endpoint=http://minio:80
+        hive.s3.ssl.enabled=false
+
+raptor:
+  enabled: true
+  image:
+    tag: development
+    majorPin: "1"
+    minorPin: "3"
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 250m
+      memory: 500M
+    limits:
+      cpu: 250m
+      memory: 500M
+  auth:
+    raptor_auth0_client_id: PuL20cfxgzSu6jpMRQAT2mZ2pwhfFzH8
+    # {{ .Release.Name }}-andi-auth0-client-secret will be referenced,
+    #   created ahead of time
+    auth0_client_secret: ""
+
+reaper:
+  enabled: true
+  image:
+    tag: development
+    pullPolicy: IfNotPresent
+    majorPin: "2"
+    minorPin: "0"
+  resources:
+    limits:
+      memory: 500M
+      cpu: 400m
+      ephemeral-storage: 2G
+    requests:
+      memory: 500M
+      cpu: 400m
+      ephemeral-storage: 2G
+  aws:
+    accessKeyId: "minio_root"
+    accessKeySecret: "minio123"
+
+alchemist:
+  enabled: true
+  image:
+    tag: development
+    pullPolicy: IfNotPresent
+    majorPin: "0"
+    minorPin: "2"
+  kafka:
+    inputTopicPrefix: "raw"
+    outputTopicPrefix: "transformed"
+  resources:
+    limits:
+      cpu: 400m
+      memory: 500M
+    requests:
+      cpu: 400m
+      memory: 500M
+
+valkyrie:
+  enabled: true
+  image:
+    tag: development
+    pullPolicy: IfNotPresent
+    majorPin: "1"
+    minorPin: "7"
+  kafka:
+    inputTopicPrefix: "transformed"
+    outputTopicPrefix: "validated"
+  resources:
+    limits:
+      cpu: 250m
+      memory: 500M
+    requests:
+      cpu: 250m
+      memory: 500M
+
+forklift:
+  enabled: true
+  image:
+    tag: development
+    pullPolicy: IfNotPresent
+    majorPin: "0"
+    minorPin: "19"
+  overwrite_mode: true
+  resources:
+    requests:
+      cpu: 400m
+      memory: 500M
+    limits:
+      cpu: 400m
+      memory: 500M
+  aws:
+    s3HostName: minio
+    s3Port: 80
+  kafka:
+    dataTopicPrefix: "validated"
+    outputTopic: "streaming-persisted"
+
+vault:
+  enabled: false
+
+external-services:
+  enabled: false

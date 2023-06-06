@@ -10,6 +10,7 @@ on:
           - dev1
           - qual
           - demo
+          - data
         required: true
 
 jobs:
