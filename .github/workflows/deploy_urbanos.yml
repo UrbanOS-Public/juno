@@ -18,6 +18,7 @@ on:
         options:
           - dev1
           - qual
+          - uat
           - demo
         required: true
 
