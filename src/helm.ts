@@ -25,8 +25,11 @@ export const initializeHelm = (
 export const installUrbanOS = (
   classRef: TerraformStack,
   dependsOn: DependsOn
-) =>
-  new Release(classRef, "UrbanOSHelmRelease", {
+) => {
+  // Waits 5 minutes because Postgres marks as complete before it's ready
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 3000);
+
+  return new Release(classRef, "UrbanOSHelmRelease", {
     name: "urbanos",
     chart: "urban-os",
     version: Config.urbanosChartVersion,
@@ -45,6 +48,8 @@ export const installUrbanOS = (
     ...dependsOn,
     timeout: 600,
   });
+}
+
 
 export const installSauron = (
   classRef: TerraformStack,
