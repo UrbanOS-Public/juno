@@ -6,7 +6,7 @@ metadata:
 spec:
   acme:
     server: INJECT_CA_SERVER
-    email: benjamin.mitchinson@accenture.com
+    email: urbanos-devs@accenture.com
     privateKeySecretRef:
       name: letsencrypt
     solvers:
