@@ -20,3 +20,6 @@ helm_kafka_template_output.yaml
 graph.png
 -approve/
 response.txt
+
+#"Convenient" way to not commit .env file
+.envignore
