@@ -53,7 +53,7 @@ export const createCluster = (classRef: TerraformStack) => {
     defaultNodePool: {
       name: `defaultpool`,
       vmSize: "Standard_B2s", // 4GB RAM, 8 GB Storage $.0416 / hr
-      nodeCount: 5,
+      nodeCount: 10,
       tags: Config.tags,
     },
     azurePolicyEnabled: true,
@@ -67,7 +67,7 @@ export const createCluster = (classRef: TerraformStack) => {
     name: "medrampool",
     kubernetesClusterId: cluster.id,
     vmSize: "Standard_B2ms", //8GB RAM, 16 GB Storage $.0832 / hr
-    nodeCount: 1,
+    nodeCount: 5,
     tags: Config.tags,
   });
 
@@ -75,7 +75,7 @@ export const createCluster = (classRef: TerraformStack) => {
     name: "highrampool",
     kubernetesClusterId: cluster.id,
     vmSize: "Standard_B4ms", //16GB RAM, 32 GB Storage $.166 / hr
-    nodeCount: 1,
+    nodeCount: 5,
     tags: Config.tags,
   });
 

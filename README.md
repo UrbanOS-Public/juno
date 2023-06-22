@@ -11,6 +11,29 @@ An empty DNSZone, App Service DNS name, and resource group, are the only
 resources that exist ahead of this terraform creating resources. Alterations to
 those references can be made in "configuration.ts"
 
+## Local Setup
+- `npm install @types/node --save-dev` to enable better code sense
+- Install azure CLI: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
+- Install terraform: https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+- Install NVM: https://github.com/nvm-sh/nvm#installing-and-updating
+- Install node: `nvm install 16.19.0` & `nvm use 16.19.0`
+
+
+## Auth0 Setup
+- Create an Auth0 Tenant by following up to step #7 from here: https://github.com/UrbanOS-Public/auth0-setup#setting-up-new-auth0-tenants
+- Clone the Auth0 setup repo: https://github.com/UrbanOS-Public/auth0-setup
+- Place the file the previous command created inside the config folder
+- - Removed duplicate items in this config file
+  - For example, both `\"https://discovery.urbanosinternal.com\"` and ` \"https://data.urbanosinternal.com\"` have duplicate entries in the following example:
+```
+  "allowedOrigins": "[\"http://localhost:9001\", \"http://localhost:9002\", \"https://discovery.urbanosinternal.com\", \"https://discovery.urbanosinternal.com\",\"https://data.urbanosinternal.com\", \"https://data.urbanosinternal.com\"]"
+```
+- Completed step #8 from here: https://github.com/UrbanOS-Public/auth0-setup#setting-up-new-auth0-tenants
+  - Answered no to googl-0auth2 question
+  - Answered yes to User/Password question
+- In Auth0, navigate to "Applications" -> "Raptor" -> "APIs" -> Expanded the dropdown for "Auth0 Management API" -> Added "read:roles" to list of permissions
+- In Auth0, navigate to "Applications" -> "Andi" -> "Connections" -> Enabled Username/pass and Disabled Google
+
 ## Debugging the cluster
 
 - Should any issues with the demo, a teardown followed by a create
@@ -88,13 +111,47 @@ those references can be made in "configuration.ts"
 Create your own instance of UrbanOS, separate from the Demo instance that
 the github workflow here creates.
 
+#### Prerequisites:
+- Complete Local Setup section
+- Create an azure environment with billing, subscription, and resource groups already setup
+
+#### Azure/Terraform Setup:
+- Logged into azure cli with `az login --tenant={tenant_id}
+  - Tenant ID was found in the Azure Active Directory while under the correct directory/subscription
+- Create a contributor role for Terraform to use: `az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/{subscription_id}"`
+- Populated the env vars: JUNO_AZURE_SUB_ID, JUNO_DEMO_AZURE_APP_ID, JUNO_DEMO_AZURE_PASSWORD, JUNO_DEMO_AZURE_TENANT
+- Change function "resourceGroupName" inside configuration.ts #TODO: Add this to .env
+- Purchase a custom domain to create App Service domain and custom domain manually
+- Add custom domain to env file
+
+#### Setting up UrbanOS Values:
+- Set "URBANOS_CHART_VERSION" in env file to latest at https://github.com/UrbanOS-Public/charts/tree/master/charts/urban-os
+- Created a folder in env directory
+- Copied urbanos_kafka_values.yaml and urbanos_values.yaml to the new env folder
+- Adjusted values as needed. Mainly, Auth0 domain, ingress domain, and secrets. (Note: Most secrets aren't available yet until first deployment.) #TODO: Be more specific here
+- Set "ENV" in .env to the name of the env folder that was created
+- Set "AUTH0_USER_API_KEY", "JUNO_ANDI_AUTH0_CLIENT_SECRET", "JUNO_RAPTOR_AUTH0_CLIENT_SECRET" to "NA" for now. Will replace after first deployment once values are generated
+- Run the deployment section once in order to generate some values needed for Auth0. This should successfully deploy the cluster and all pods. You can verify this through kubectl commands or preferably k9s.
+- `kubectl get configmap auth0-config -o jsonpath='{.data.auth0\.config}' > auth0-config.json`
+- Complete Auth0 Setup Part 2 from this README
+- Added ClientID/Secret from Auth0 to values file in Juno
+- Added ClientID/Secrets from Auth0 to env file in Juno
+- Delete the DNSZone lock file manually in Azure
+- `cdktf destroy`
+- `cdktf apply`
+
+#### First Time Using the Application:
+- Signed up through discovery's Auth0 login (discovery.<dnsdomain>.com)
+- Verified my email (You will see a poor user experience login loop before you verify email)
+- Grants Curator role to my user via Auth0
+    - "User Management" -> Select your user -> "Roles" -> "Assign Roles" -> "Curator"
+
+
+#### Deployment:
 - `npm i cdktf-cli@0.15.5 --global`
 - `npm i`
 - `npm run get`
 - `cdktf apply` (will apply changes to the environment described in your .env file)
 
-Instructions TODO, but running `cdktf apply` from root and editing `.env` should
-be most of it. You'll need your own domain or resource group ahead of time for
-this terraform to deploy into.
 
 [Notes on using CDKTF are here](/notes/cdktf.md)
