@@ -50,8 +50,12 @@ export class Config {
   }
 
   static get resourceGroupName() {
-    // too lazy to move to .env
-    return "urbanos-team";
+    return this.getEnvVar({
+      varName: "AZURE_RESOURCE_GROUP_NAME",
+      errorMsg:
+        "RESOURCE_GROUP_NAME is used deploy resource into Azure. It needs to be manually created before deployment",
+    });
+    
   }
 
   static get eventHubURL() {
