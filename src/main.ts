@@ -20,7 +20,7 @@ import {
 import {
   createUrbanOSNamespace,
   initializeKubectlProvider,
-  // installAuth0Secrets,
+  installAuth0Secrets,
   installSauronGithubToken,
   installIngresses,
   installStrimziCRDs,
@@ -101,9 +101,9 @@ class MyStack extends TerraformStack {
       dependsOn: [namespace],
     });
 
-    // const auth0 = installAuth0Secrets(classRef, {
-    //   dependsOn: [namespace],
-    // });
+    const auth0 = installAuth0Secrets(classRef, {
+      dependsOn: [namespace],
+    });
 
     const redis = installRedis(classRef, {
       dependsOn: [namespace],
@@ -122,7 +122,7 @@ class MyStack extends TerraformStack {
         minioTenant,
         postgresql,
         kafka,
-        // auth0,
+        auth0,
         redis,
         elasticsearch,
         cluster,
