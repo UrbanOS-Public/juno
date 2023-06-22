@@ -15,6 +15,9 @@ those references can be made in "configuration.ts"
 - `npm install @types/node --save-dev` to enable better code sense
 - Install azure CLI: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
 - Install terraform: https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+- Install NVM: https://github.com/nvm-sh/nvm#installing-and-updating
+- Install node: `nvm install 16.19.0` & `nvm use 16.19.0`
+
 
 ## Auth0 Setup
 - Create an Auth0 Tenant by following up to step #7 from here: https://github.com/UrbanOS-Public/auth0-setup#setting-up-new-auth0-tenants

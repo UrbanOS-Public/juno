@@ -54,7 +54,7 @@ andi:
     andi_auth0_client_id: "pwIGDUbk9JRr5XHaSTSco5b28jlmovOY"
     # {{ .Release.Name }}-andi-auth0-client-secret will be referenced,
     #   created ahead of time
-    auth0_client_secret: "7NIaUCsGN9L0MPJwadmYQ04AoxHzwU4zi4bzSCaX2S9Oi5sl56sIFAgOXRB4wGS9"
+    auth0_client_secret: ""
   aws:
     accessKeyId: "minio_root"
     accessKeySecret: "minio123"
@@ -270,7 +270,7 @@ raptor:
     raptor_auth0_client_id: lel7PTwTbTOPSNgMJUv8f4kEag0Ykfax
     # {{ .Release.Name }}-andi-auth0-client-secret will be referenced,
     #   created ahead of time
-    auth0_client_secret: "mmskjIhWTskLPDEEpDHqlWW10jD4b8fgTTKwblwiFgXzi8IdU_IujoY6cPlS2nCN"
+    auth0_client_secret: ""
 
 reaper:
   enabled: true
