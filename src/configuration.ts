@@ -53,7 +53,7 @@ export class Config {
     return this.getEnvVar({
       varName: "AZURE_RESOURCE_GROUP_NAME",
       errorMsg:
-        "RESOURCE_GROUP_NAME is used deploy resource into Azure. It needs to be manually created before deployment",
+        "AZURE_RESOURCE_GROUP_NAME is used deploy resource into Azure. It needs to be manually created before deployment",
     });
     
   }
